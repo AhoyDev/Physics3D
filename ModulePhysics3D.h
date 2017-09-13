@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "p2List.h"
 #include "Primitive.h"
-#include "Bullet/src/btBulletDynamicsCommon.h"
+#include "Bullet/include/btBulletDynamicsCommon.h"
 
 // Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
@@ -11,7 +11,7 @@
 class DebugDrawer;
 struct PhysBody3D;
 struct PhysVehicle3D;
-struct VehicleInfo;
+
 
 class ModulePhysics3D : public Module
 {
@@ -31,7 +31,6 @@ public:
 	PhysBody3D*		AddBody(const Cylinder& cylinder, float mass = 1.0f);
 	PhysBody3D*		AddBody(const Plane& plane);
 	PhysBody3D*		AddHeighField(const char* filename, int width, int height);
-	PhysVehicle3D*	AddVehicle(const VehicleInfo& info);
 
 	void DeleteBody(PhysBody3D* body);
 
@@ -49,13 +48,13 @@ private:
 
 	p2List<btCollisionShape*> shapes;
 	p2List<PhysBody3D*> bodies;
-	p2List<PhysVehicle3D*> vehicles;
+
 };
 
 class DebugDrawer : public btIDebugDraw
 {
 public:
-	DebugDrawer() : line(0,0,0)
+	DebugDrawer() : line(0, 0, 0)
 	{}
 
 	void drawLine(const btVector3& from, const btVector3& to, const btVector3& color);
