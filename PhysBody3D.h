@@ -1,5 +1,5 @@
 #pragma once
-#include "p2List.h"
+#include <list>
 
 class btCollisionShape;
 class btRigidBody;
@@ -21,5 +21,5 @@ private:
 	btRigidBody* body;
 
 public:
-	p2List<Module*> collision_listeners;
+	std::list<Module*> collision_listeners;
 };

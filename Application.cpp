@@ -35,13 +35,19 @@ Application::Application()
 
 Application::~Application()
 {
+	while (!list_modules.empty())
+	{
+		list_modules.pop_back();
+	}
+
+	/* STDSUB POLISH
 	p2List_item<Module*>* item = list_modules.getLast();
 
 	while(item != NULL)
 	{
 		delete item->data;
 		item = item->prev;
-	}
+	}*/
 }
 
 bool Application::Init()
@@ -49,16 +55,35 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
+	std::list<Module*>::iterator item = list_modules.begin();
+	while (ret && item != list_modules.end())
+	{
+		ret = (*item)->Init();
+		item++;
+	}
+
+	/* STDSUB POLISH
 	p2List_item<Module*>* item = list_modules.getFirst();
 
 	while(item != NULL && ret == true)
 	{
 		ret = item->data->Init();
 		item = item->next;
-	}
+	}*/
+
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
+	item = list_modules.begin();
+	while (ret && item != list_modules.end())
+	{
+		if((*item)->IsEnabled())
+			ret = (*item)->Start();
+
+		item++;
+	}
+
+	/* STDSUB POLISH
 	item = list_modules.getFirst();
 
 	while(item != NULL && ret == true)
@@ -66,7 +91,7 @@ bool Application::Init()
 		if(item->data->IsEnabled())
 			ret = item->data->Start();
 		item = item->next;
-	}
+	}*/
 	
 	return ret;
 }
@@ -111,7 +136,33 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
-	
+
+
+	std::list<Module*>::iterator item = list_modules.begin();
+	while (ret == UPDATE_CONTINUE && item != list_modules.end())
+	{
+		if ((*item)->IsEnabled())
+			ret = (*item)->PreUpdate(dt);
+		item++;
+	}
+
+	item = list_modules.begin();
+	while (ret == UPDATE_CONTINUE && item != list_modules.end())
+	{
+		if ((*item)->IsEnabled())
+			ret = (*item)->Update(dt);
+		item++;
+	}
+
+	item = list_modules.begin();
+	while (ret == UPDATE_CONTINUE && item != list_modules.end())
+	{
+		if ((*item)->IsEnabled())
+			ret = (*item)->PostUpdate(dt);
+		item++;
+	}
+
+	/* STDSUB POLISH
 	p2List_item<Module*>* item = list_modules.getFirst();
 	
 	while(item != NULL && ret == UPDATE_CONTINUE)
@@ -137,7 +188,7 @@ update_status Application::Update()
 		if(item->data->IsEnabled())
 			ret = item->data->PostUpdate(dt);
 		item = item->next;
-	}
+	}*/
 
 	FinishUpdate();
 	return ret;
@@ -146,17 +197,26 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
+
+	std::list<Module*>::reverse_iterator rit = list_modules.rbegin();
+	for (; rit != list_modules.rend() && ret; ++rit)
+	{
+		ret = (*rit)->CleanUp();
+	}
+
+	/* STDSUB POLISH
 	p2List_item<Module*>* item = list_modules.getLast();
 
 	while(item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
-	}
+	}*/
+
 	return ret;
 }
 
 void Application::AddModule(Module* mod)
 {
-	list_modules.add(mod);
+	list_modules.push_back(mod);
 }
