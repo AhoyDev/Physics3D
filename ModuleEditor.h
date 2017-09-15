@@ -4,15 +4,16 @@
 #include "Module.h"
 
 
-class ModuleUI : public Module
+class ModuleEditor : public Module
 {
 public:
 
-	ModuleUI(Application* app, bool start_enabled = true);
-	~ModuleUI();
+	ModuleEditor(Application* app, bool start_enabled = true);
+	~ModuleEditor();
 
 	bool Init();
 	update_status PreUpdate(float dt);
+	update_status PostUpdate(float dt);
 	bool CleanUp();
 
 
