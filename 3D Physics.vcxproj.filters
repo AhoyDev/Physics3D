@@ -84,6 +84,9 @@
     <ClInclude Include="PhysVehicle3D.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>3d Party\Imgui</Filter>
     </ClInclude>
@@ -96,8 +99,14 @@
     <ClInclude Include="imgui\imgui_internal.h">
       <Filter>3d Party\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEditor.h">
-      <Filter>Sources\Modules</Filter>
+    <ClInclude Include="imgui\stb_rect_pack.h">
+      <Filter>3d Party\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_textedit.h">
+      <Filter>3d Party\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_truetype.h">
+      <Filter>3d Party\Imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +164,9 @@
     <ClCompile Include="PhysVehicle3D.cpp">
       <Filter>Sources\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>3d Party\Imgui</Filter>
     </ClCompile>
@@ -166,9 +178,6 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_sdl_gl3.cpp">
       <Filter>3d Party\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -37,9 +37,11 @@ Application::Application()
 
 Application::~Application()
 {
-	while (!list_modules.empty())
+	std::list<Module*>::reverse_iterator i = list_modules.rbegin();
+	while (i != list_modules.rend())
 	{
-		list_modules.pop_back();
+		delete (*i);
+		++i;
 	}
 
 	/* STDSUB POLISH
