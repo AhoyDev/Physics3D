@@ -1,5 +1,15 @@
 #include "Application.h"
 
+#include "Module.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleAudio.h"
+#include "ModulePhysics3D.h"
+#include "ModuleSceneIntro.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
+#include "ModuleEditor.h"
+
 Application::Application()
 {
 	frames = 0;
@@ -8,14 +18,14 @@ Application::Application()
 	capped_ms = 1000 / 60;
 	fps_counter = 0;
 
-	window = new ModuleWindow(this);
-	input = new ModuleInput(this);
-	audio = new ModuleAudio(this, true);
-	scene_intro = new ModuleSceneIntro(this);
-	physics3D = new ModulePhysics3D(this);
-	renderer3D = new ModuleRenderer3D(this);
-	camera = new ModuleCamera3D(this);
-	editor = new ModuleEditor(this);
+	window = new ModuleWindow();
+	physics3D = new ModulePhysics3D();
+	input = new ModuleInput();
+	audio = new ModuleAudio();
+	scene_intro = new ModuleSceneIntro();
+	renderer3D = new ModuleRenderer3D();
+	camera = new ModuleCamera3D();
+	editor = new ModuleEditor();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -23,25 +33,23 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window);
-	AddModule(physics3D);
-	AddModule(renderer3D);
-	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(editor);
-	
-	// Scenes
+	AddModule(physics3D);
+	AddModule(camera);
+
 	AddModule(scene_intro);
-	
+
+	AddModule(editor);
+	AddModule(renderer3D);
 }
 
 Application::~Application()
 {
 	std::list<Module*>::reverse_iterator i = list_modules.rbegin();
-	while (i != list_modules.rend())
+	for (; i != list_modules.rend(); ++i)
 	{
 		delete (*i);
-		++i;
 	}
 
 	/* STDSUB POLISH

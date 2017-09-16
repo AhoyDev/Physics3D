@@ -1,12 +1,13 @@
-#pragma once
+#ifndef __MODULECAMERA3D_H__
+#define __MODULECAMERA3D_H__
+
 #include "Module.h"
-#include "Globals.h"
 #include "glmath.h"
 
 class ModuleCamera3D : public Module
 {
 public:
-	ModuleCamera3D(Application* app, bool start_enabled = true);
+	ModuleCamera3D(bool start_enabled = true);
 	~ModuleCamera3D();
 
 	bool Start();
@@ -35,3 +36,5 @@ private:
 	float max_following_dist;
 	float following_height;
 };
+
+#endif

@@ -1,14 +1,12 @@
-#include "Globals.h"
-#include "Application.h"
 #include "ModuleRenderer3D.h"
 
+#include "Application.h"
+#include "ModuleWindow.h"
+#include "ModuleCamera3D.h"
 
 #include "Glew\include\glew.h"
-
 #include <gl/GL.h>
 #include <gl/GLU.h>
-
-
 #include "SDL\include\SDL_opengl.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -19,9 +17,8 @@
 #include "Imgui\imgui_impl_sdl_gl3.h"
 
 
-ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
-{
-}
+ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
+{}
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()

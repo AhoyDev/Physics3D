@@ -1,22 +1,17 @@
-#include "Globals.h"
-#include "Application.h"
 #include "ModuleEditor.h"
 
-/*#include "Glew\include\glew.h"
-//#include <GL/gl3w.h>*/
+#include "Application.h"
+#include "ModuleWindow.h"
 
 #include "imgui/imgui.h"
 #include "Imgui\imgui_impl_sdl_gl3.h"
 
 
-ModuleEditor::ModuleEditor(Application * app, bool start_enabled) : Module(app, start_enabled)
-{
-}
+ModuleEditor::ModuleEditor(bool start_enabled) : Module(start_enabled)
+{}
 
 ModuleEditor::~ModuleEditor()
-{
-	
-}
+{}
 
 bool ModuleEditor::Init()
 {

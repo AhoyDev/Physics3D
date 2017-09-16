@@ -1,7 +1,8 @@
-#include "Globals.h"
-#include "Application.h"
 #include "ModulePhysics3D.h"
-#include "Primitive.h"
+
+#include "Application.h"
+#include "ModuleInput.h"
+#include "ModuleCamera3D.h"
 #include "PhysBody3D.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 #include "Bullet/include/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h"
@@ -16,7 +17,7 @@
 #pragma comment (lib, "Bullet/bin/LinearMath_Debug.lib")
 #endif
 
-ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
 {
 	debug = false;
 }
@@ -311,26 +312,26 @@ update_status ModulePhysics3D::Update(float dt)
 	{
 		world->debugDrawWorld();
 
-		// drop some primitives on 1,2,3
+		// drop primitives on 1,2,3
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			Sphere s(1);
 			s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-			App->physics3D->AddBody(s);
+			AddBody(s);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		{
 			Cube c(1, 1, 1);
 			c.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-			App->physics3D->AddBody(c);
+			AddBody(c);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		{
 			Cylinder c(0.5, 1);
 			c.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-			App->physics3D->AddBody(c);
+			AddBody(c);
 		}
 	}
 

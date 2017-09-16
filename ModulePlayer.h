@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULEPLAYER_H__
+#define __MODULEPLAYER_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
@@ -12,7 +14,7 @@ struct PhysVehicle3D;
 class ModulePlayer : public Module
 {
 public:
-	ModulePlayer(Application* app, bool start_enabled = true);
+	ModulePlayer(bool start_enabled = true);
 	virtual ~ModulePlayer();
 
 	bool Start();
@@ -26,3 +28,5 @@ public:
 	float acceleration;
 	float brake;
 };
+
+#endif

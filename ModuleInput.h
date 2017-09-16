@@ -1,6 +1,7 @@
-#pragma once
+#ifndef __MODULEINPUT_H__
+#define __MODULEINPUT_H__
+
 #include "Module.h"
-#include "Globals.h"
 
 #define MAX_MOUSE_BUTTONS 5
 
@@ -16,47 +17,20 @@ class ModuleInput : public Module
 {
 public:
 	
-	ModuleInput(Application* app, bool start_enabled = true);
+	ModuleInput(bool start_enabled = true);
 	~ModuleInput();
 
 	bool Init();
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
-	KEY_STATE GetKey(int id) const
-	{
-		return keyboard[id];
-	}
-
-	KEY_STATE GetMouseButton(int id) const
-	{
-		return mouse_buttons[id];
-	}
-
-	int GetMouseX() const
-	{
-		return mouse_x;
-	}
-
-	int GetMouseY() const
-	{
-		return mouse_y;
-	}
-
-	int GetMouseZ() const
-	{
-		return mouse_z;
-	}
-
-	int GetMouseXMotion() const
-	{
-		return mouse_x_motion;
-	}
-
-	int GetMouseYMotion() const
-	{
-		return mouse_y_motion;
-	}
+	KEY_STATE GetKey(int id) const;
+	KEY_STATE GetMouseButton(int id) const;
+	int GetMouseX() const;
+	int GetMouseY() const;
+	int GetMouseZ() const;
+	int GetMouseXMotion() const;
+	int GetMouseYMotion() const;
 
 private:
 	KEY_STATE* keyboard;
@@ -68,3 +42,5 @@ private:
 	int mouse_y_motion;
 	//int mouse_z_motion;
 };
+
+#endif // !__MODULEINPUT_H__

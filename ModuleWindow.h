@@ -2,15 +2,15 @@
 #define __ModuleWindow_H__
 
 #include "Module.h"
-#include "SDL/include/SDL.h"
 
-class Application;
+class SDL_Window;
+class SDL_Surface;
 
 class ModuleWindow : public Module
 {
 public:
 
-	ModuleWindow(Application* app, bool start_enabled = true);
+	ModuleWindow(bool start_enabled = true);
 
 	// Destructor
 	virtual ~ModuleWindow();
