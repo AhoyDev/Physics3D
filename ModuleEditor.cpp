@@ -3,8 +3,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
-#include "imgui/imgui.h"
-#include "Imgui\imgui_impl_sdl_gl3.h"
+#include "imgui\imgui.h"
 
 
 ModuleEditor::ModuleEditor(bool start_enabled) : Module(start_enabled)
@@ -33,10 +32,7 @@ bool ModuleEditor::Init()
 
 update_status ModuleEditor::PreUpdate(float dt)
 {
-
 	LOG("EDITOR");
-
-	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 
 	/*ImGuiIO& io = ImGui::GetIO();
 	io.DisplaySize.x = 1920.0f;
@@ -53,14 +49,16 @@ update_status ModuleEditor::PreUpdate(float dt)
 
 	ImGui::NewFrame();*/
 
-	ImGui::ShowTestWindow();
+	
 
 
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleEditor::PostUpdate(float dt)
+update_status ModuleEditor::Update(float dt)
 {
+	ImGui::ShowTestWindow();
+
 	return UPDATE_CONTINUE;
 }
 

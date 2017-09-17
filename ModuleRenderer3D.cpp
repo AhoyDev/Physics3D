@@ -135,6 +135,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	ImGui_ImplSdlGL3_NewFrame(App->window->window);
+
 	return UPDATE_CONTINUE;
 }
 

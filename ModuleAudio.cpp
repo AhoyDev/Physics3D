@@ -1,6 +1,7 @@
 #include "ModuleAudio.h"
 
 #include "Application.h"
+#include "SDL\include\SDL.h"
 
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
@@ -59,13 +60,6 @@ bool ModuleAudio::CleanUp()
 	{
 		Mix_FreeChunk(*item);
 	}
-
-	/* STDSUB POLISH
-	p2List_item<Mix_Chunk*>* item;
-	for(item = fx.getFirst(); item != NULL; item = item->next)
-	{
-		Mix_FreeChunk(item->data);
-	}*/
 
 	fx.clear();
 	Mix_CloseAudio();
@@ -165,21 +159,4 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
-
-
-	/* STDSUB POLISH
-	if(IsEnabled() == false)
-		return false;
-
-	bool ret = false;
-
-	Mix_Chunk* chunk = NULL;
-	
-	if(fx.at(id-1, chunk) == true)
-	{
-		Mix_PlayChannel(-1, chunk, repeat);
-		ret = true;
-	}
-
-	return ret;*/
 }

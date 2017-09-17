@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+class SDL_Texture;
+
 #define BOUNCER_TIME 200
 
 struct PhysBody3D;

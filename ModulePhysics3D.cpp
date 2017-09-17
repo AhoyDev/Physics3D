@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleCamera3D.h"
 #include "PhysBody3D.h"
+#include "SDL\include\SDL.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 #include "Bullet/include/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h"
 
@@ -280,21 +281,6 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				{
 					(*item)->OnCollision(pbodyB, pbodyA);
 				}
-
-				/* STDSUB POLISH
-				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
-				while (item)
-				{
-					item->data->OnCollision(pbodyA, pbodyB);
-					item = item->next;
-				}
-
-				item = pbodyB->collision_listeners.getFirst();
-				while (item)
-				{
-					item->data->OnCollision(pbodyB, pbodyA);
-					item = item->next;
-				}*/
 			}
 		}
 	}
@@ -376,23 +362,6 @@ bool ModulePhysics3D::CleanUp()
 		delete (*b_item);
 		b_item = bodies.erase(b_item);
 	}
-
-	/* STDSUB POLISH
-	p2List_item<btCollisionShape*>* s_item = shapes.getFirst();
-	while (s_item)
-	{
-		delete s_item->data;
-		s_item = s_item->next;
-	}
-	shapes.clear();
-
-	p2List_item<PhysBody3D*>* b_item = bodies.getFirst();
-	while (b_item)
-	{
-		delete b_item->data;
-		b_item = b_item->next;
-	}
-	bodies.clear();*/
 
 	// Order matters !
 	delete vehicle_raycaster;

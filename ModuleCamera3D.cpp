@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleInput.h"
+#include "SDL\include\SDL.h"
 #include "PhysBody3D.h"
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)

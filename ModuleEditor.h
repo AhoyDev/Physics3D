@@ -2,6 +2,7 @@
 #define __ModuleUI_H__
 
 #include "Module.h"
+#include "Globals.h"
 
 class ModuleEditor : public Module
 {
@@ -12,10 +13,8 @@ public:
 
 	bool Init();
 	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
+	update_status Update(float dt);
 	bool CleanUp();
-
-
 };
 
 #endif // __ModuleAudio_H__

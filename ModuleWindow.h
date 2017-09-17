@@ -11,9 +11,7 @@ class ModuleWindow : public Module
 public:
 
 	ModuleWindow(bool start_enabled = true);
-
-	// Destructor
-	virtual ~ModuleWindow();
+	~ModuleWindow();
 
 	bool Init();
 	bool CleanUp();

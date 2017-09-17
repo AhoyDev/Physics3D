@@ -1,14 +1,12 @@
-// ----------------------------------------------------
-// Timer.cpp
-// Body for CPU Tick Timer class
-// ----------------------------------------------------
-
 #include "Timer.h"
 
 // ---------------------------------------------
-Timer::Timer()
+Timer::Timer(bool start_active)
 {
-	Start();
+	running = false;
+
+	if (start_active)
+		Start();
 }
 
 // ---------------------------------------------
@@ -28,14 +26,22 @@ void Timer::Stop()
 // ---------------------------------------------
 Uint32 Timer::Read()
 {
-	if(running == true)
-	{
-		return SDL_GetTicks() - started_at;
-	}
-	else
-	{
-		return stopped_at - started_at;
-	}
+	return running ? SDL_GetTicks() - started_at : stopped_at - started_at;
 }
 
 
+
+
+
+
+
+/** Alarm Mechanic
+* \brief Compare SDL ticks values, and return true if A has passed B
+*
+* e.g. if you want to wait 100 ms, you could do this:
+*  Uint32 timeout = SDL_GetTicks() + 100;
+*  while (!SDL_TICKS_PASSED(SDL_GetTicks(), timeout)) {
+*      ... do work until timeout has elapsed
+*  }
+*/
+//#define SDL_TICKS_PASSED(A, B)  ((Sint32)((B) - (A)) <= 0)

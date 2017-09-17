@@ -3,9 +3,9 @@
 
 #include <list>
 #include "Globals.h"
-#include "Timer.h"
 
 class Module;
+class ModuleTime;
 class ModuleWindow;
 class ModuleInput;
 class ModuleAudio;
@@ -14,6 +14,8 @@ class ModuleCamera3D;
 class ModuleSceneIntro;
 class ModuleEditor;
 class ModuleRenderer3D;
+
+class Timer;
 
 class Application
 {
@@ -26,13 +28,14 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-private:
+private: 
 
 	void AddModule(Module* mod);
-	void PrepareUpdate();
 	void FinishUpdate();
 
 public:
+
+	ModuleTime* time;
 	ModuleWindow* window;
 	ModuleInput* input;
 	ModuleAudio* audio;
@@ -51,15 +54,7 @@ public:
 	*/
 
 private:
-
-	Timer	ms_timer;
-	Timer	fps_timer;
-	Uint32	frames;
-	float	dt;
-	int		fps_counter;
-	int		last_frame_ms;
-	int		last_fps;
-	int		capped_ms;
+	
 	std::list<Module*> list_modules;
 };
 
