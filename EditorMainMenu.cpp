@@ -57,7 +57,7 @@ update_status EditorMainMenu::ShowMainMenu()
 	ImGui::EndMainMenuBar();
 
 
-
+	//Shows hardware if activated on the main menu
 	if (configuration)
 		hardware_menu->ShowHardwareMenu();
 
@@ -65,4 +65,9 @@ update_status EditorMainMenu::ShowMainMenu()
 
 
 	return UPDATE_CONTINUE;
+}
+
+void EditorMainMenu::CleanUp()
+{
+	delete hardware_menu;
 }

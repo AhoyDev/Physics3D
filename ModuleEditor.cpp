@@ -69,6 +69,7 @@ update_status ModuleEditor::Update(float dt)
 
 bool ModuleEditor::CleanUp()
 {
+	main_menu->CleanUp();
 	delete main_menu;
 	return true;
 }
