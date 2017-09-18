@@ -15,6 +15,9 @@ class ModuleSceneIntro;
 class ModuleEditor;
 class ModuleRenderer3D;
 
+
+
+
 class Timer;
 
 class Application
@@ -32,6 +35,7 @@ private:
 
 	void AddModule(Module* mod);
 	void FinishUpdate();
+	
 
 public:
 
@@ -52,7 +56,7 @@ public:
 	ModuleLighting* lighting;
 	ModuleScripting* scripting;
 	*/
-
+	void OpenURL(const char* url);
 private:
 	
 	std::list<Module*> list_modules;

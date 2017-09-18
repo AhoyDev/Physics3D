@@ -43,6 +43,9 @@
     <Filter Include="3d Party\MathGeoLib\Algorithm\Random">
       <UniqueIdentifier>{23259e7a-4350-4d85-8212-4aa4cf4363c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\GUI">
+      <UniqueIdentifier>{3686e3f9-71c7-47a6-9b0a-c4b9bf603d91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -318,6 +321,12 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h">
       <Filter>3d Party\MathGeoLib\Time</Filter>
     </ClInclude>
+    <ClInclude Include="EditorMainMenu.h">
+      <Filter>Sources\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI_Hardware.h">
+      <Filter>Sources\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -500,6 +509,8 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp">
       <Filter>3d Party\MathGeoLib\Time</Filter>
     </ClCompile>
+    <ClCompile Include="EditorMainMenu.cpp" />
+    <ClCompile Include="GUI_Hardware.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">

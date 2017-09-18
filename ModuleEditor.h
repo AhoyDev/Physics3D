@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "EditorMainMenu.h"
+#include "GUI_Hardware.h"
 class ModuleEditor : public Module
 {
 public:
@@ -15,6 +17,11 @@ public:
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	bool CleanUp();
+
+private:
+	EditorMainMenu* main_menu;
+	
+
 };
 
 #endif // __ModuleAudio_H__
