@@ -24,11 +24,6 @@ bool ModuleEditor::Init()
 
 update_status ModuleEditor::PreUpdate(float dt)
 {
-	LOG("EDITOR");
-
-	
-
-
 	return UPDATE_CONTINUE;
 }
 

@@ -32,7 +32,7 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update(float dt)
 {
-	Plane(0, 1, 0, 0).Render();
+	PrimPlane(0, 1, 0, 0).Render();
 
 	return UPDATE_CONTINUE;
 }

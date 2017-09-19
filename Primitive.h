@@ -1,7 +1,7 @@
 #ifndef __PRIMITIVE_H__
 #define __PRIMITIVE_H__
 
-#include "glmath.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 #include "Color.h"
 
 enum PrimitiveTypes
@@ -22,15 +22,18 @@ public:
 
 	virtual void	Render() const;
 	virtual void	InnerRender() const;
-	void			SetPos(float x, float y, float z);
-	void			SetRotation(float angle, const vec3 &u);
-	void			Scale(float x, float y, float z);
+	void			SetPos(const float x, const float y, const float z);
+	void			SetPos(const float3 pos);
+	void			SetRotation(const float angle, const float3 &u);
+	void			SetRotation(const Quat rot);
+	void			Scale(const float x, const float y, const float z);
+	void			Scale(const float3 scale);
 	PrimitiveTypes	GetType() const;
 
 public:
 	
 	Color color;
-	mat4x4 transform;
+	float4x4 transform;
 	bool axis,wire;
 
 protected:
@@ -38,33 +41,33 @@ protected:
 };
 
 // ============================================
-class Cube : public Primitive
+class PrimCube : public Primitive
 {
 public :
-	Cube();
-	Cube(float sizeX, float sizeY, float sizeZ);
+	PrimCube();
+	PrimCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
 public:
-	vec3 size;
+	float3 size;
 };
 
 // ============================================
-class Sphere : public Primitive
+class PrimSphere : public Primitive
 {
 public:
-	Sphere();
-	Sphere(float radius);
+	PrimSphere();
+	PrimSphere(float radius);
 	void InnerRender() const;
 public:
 	float radius;
 };
-
+//(btScalar*)
 // ============================================
-class Cylinder : public Primitive
+class PrimCylinder : public Primitive
 {
 public:
-	Cylinder();
-	Cylinder(float radius, float height);
+	PrimCylinder();
+	PrimCylinder(float radius, float height);
 	void InnerRender() const;
 public:
 	float radius;
@@ -72,26 +75,26 @@ public:
 };
 
 // ============================================
-class Line : public Primitive
+class PrimLine : public Primitive
 {
 public:
-	Line();
-	Line(float x, float y, float z);
+	PrimLine();
+	PrimLine(float x, float y, float z);
 	void InnerRender() const;
 public:
-	vec3 origin;
-	vec3 destination;
+	float3 origin;
+	float3 destination;
 };
 
 // ============================================
-class Plane : public Primitive
+class PrimPlane : public Primitive
 {
 public:
-	Plane();
-	Plane(float x, float y, float z, float d);
+	PrimPlane();
+	PrimPlane(float x, float y, float z, float d);
 	void InnerRender() const;
 public:
-	vec3 normal;
+	float3 normal;
 	float constant;
 };
 

@@ -16,6 +16,9 @@
 #include "Imgui\imgui.h"
 #include "Imgui\imgui_impl_sdl_gl3.h"
 
+// TEMPORAL
+#include "glmath.h"
+
 
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
 {}
@@ -115,7 +118,7 @@ bool ModuleRenderer3D::Init()
 
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	
-	App->camera->Look(vec3(1.75f, 1.75f, 5.0f), vec3(0.0f, 0.0f, 0.0f));
+	App->camera->Look(float3(1.75f, 1.75f, 5.0f), float3(0.0f, 0.0f, 0.0f));
 
 	return ret;
 }
@@ -171,8 +174,25 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+
+	/* OpenGL perspective projection matrix function calls:
+		- ProjectionMatrix = OpenGLPerspProjLH(float n, float f, float h, float v);
+		- ProjectionMatrix = OpenGLPerspProjRH(float n, float f, float h, float v);
+
+	In OpenGL, the post-perspective unit cube ranges in [-1, 1] in all X, Y and Z directions.
+	OpenGLPerspProjLH is the same as OpenGLPerspProjRH, except that the camera looks towards +Z in view space, instead of -Z.
+
+	Although these functions change the projection matrix, it will eventually depend on the fustrum culling.
+	Furthermore OnResize should more conveniently trigger an event the later updates the projection matrix.
+
+	Therefore, for now trashy code will have to suffice.*/
+
+	mat4x4 tmp = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	for (int row = 0; row < 4; row++)
+		for (int col = 0; col < 4; col++)
+			ProjectionMatrix[row][col] = tmp[(row * 4) + col];
+
+	glLoadMatrixf((GLfloat*)ProjectionMatrix.v);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
