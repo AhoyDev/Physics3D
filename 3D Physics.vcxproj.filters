@@ -46,6 +46,9 @@
     <Filter Include="Sources\GUI">
       <UniqueIdentifier>{3686e3f9-71c7-47a6-9b0a-c4b9bf603d91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Math">
+      <UniqueIdentifier>{5457fdc9-9a78-4011-8ac8-f2843d6147b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -327,8 +330,14 @@
     <ClInclude Include="glmath.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Primitives.h">
+      <Filter>Sources\Math</Filter>
+    </ClInclude>
     <ClInclude Include="RandomGenerator.h">
-      <Filter>Sources\Tools</Filter>
+      <Filter>Sources\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="R_Sphere.h">
+      <Filter>Sources\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,12 +518,22 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp">
       <Filter>3d Party\MathGeoLib\Time</Filter>
     </ClCompile>
-    <ClCompile Include="EditorMainMenu.cpp" />
-    <ClCompile Include="GUI_Hardware.cpp" />
     <ClCompile Include="glmath.cpp">
       <Filter>Sources\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="RandomGenerator.cpp" />
+    <ClCompile Include="Primitives.cpp">
+      <Filter>Sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI_Hardware.cpp">
+      <Filter>Sources\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorMainMenu.cpp">
+      <Filter>Sources\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomGenerator.cpp">
+      <Filter>Sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="R_Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">

@@ -8,7 +8,7 @@
 #include "EditorMainMenu.h"
 #include "RandomGenerator.h"
 
-
+#include "MathGeoLib\include\MathGeoLib.h"
 ModuleEditor::ModuleEditor(bool start_enabled) : Module(start_enabled)
 {
 	main_menu = new EditorMainMenu();
@@ -21,6 +21,12 @@ bool ModuleEditor::Init()
 {
 	random_machine = new RandomGenerator();
 
+	sphere = new R_Sphere(vec(0, 0, 0), 3.0f);
+	math::Line line =  math::Line(vec(0, 0, 0), vec(0, 5, 0));
+
+	capsule = new R_Capsule(LineSegment(line, 3.0f), 3.0f);
+	
+	
 	return true;
 }
 
@@ -52,12 +58,12 @@ update_status ModuleEditor::Update(float dt)
 		else
 			main_menu->show = true;
 		
-		
-
 	}
 
-	
-	LOG("Random Number 1-100 =  ", random_machine->RandomInt(1,100));
+	bool result_intersection = capsule->Intersects(*sphere);
+
+	LOG("%d",result_intersection);
+	LOG("Random Number 1-100 = %d ", random_machine->RandomInt(1,100));
 
 
 

@@ -8,6 +8,9 @@
 #include "GUI_Hardware.h"
 #include "RandomGenerator.h"
 
+
+#include "Primitives.h"
+
 class ModuleEditor : public Module
 {
 public:
@@ -23,6 +26,9 @@ public:
 private:
 	EditorMainMenu* main_menu;
 	RandomGenerator* random_machine;
+
+	R_Sphere* sphere;
+	R_Capsule* capsule;
 
 };
 

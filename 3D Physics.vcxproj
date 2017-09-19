@@ -165,7 +165,9 @@
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="PhysVehicle3D.h" />
+    <ClInclude Include="Primitives.h" />
     <ClInclude Include="RandomGenerator.h" />
+    <ClInclude Include="R_Sphere.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -230,7 +232,9 @@
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="PhysVehicle3D.cpp" />
+    <ClCompile Include="Primitives.cpp" />
     <ClCompile Include="RandomGenerator.cpp" />
+    <ClCompile Include="R_Sphere.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
