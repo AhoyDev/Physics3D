@@ -19,7 +19,6 @@ ModuleEditor::~ModuleEditor()
 
 bool ModuleEditor::Init()
 {
-	//RUB
 	random_machine = new RandomGenerator();
 
 	sphere = new R_Sphere(vec(0, 0, 0), 3.0f);
@@ -61,7 +60,6 @@ update_status ModuleEditor::Update(float dt)
 		
 	}
 
-	//RUB
 	bool result_intersection = capsule->Intersects(*sphere);
 
 	LOG("%d",result_intersection);
