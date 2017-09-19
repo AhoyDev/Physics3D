@@ -6,6 +6,8 @@
 #include "ModuleWindow.h"
 #include "imgui\imgui.h"
 #include "EditorMainMenu.h"
+#include "RandomGenerator.h"
+
 
 ModuleEditor::ModuleEditor(bool start_enabled) : Module(start_enabled)
 {
@@ -17,7 +19,7 @@ ModuleEditor::~ModuleEditor()
 
 bool ModuleEditor::Init()
 {
-	
+	random_machine = new RandomGenerator();
 
 	return true;
 }
@@ -55,7 +57,7 @@ update_status ModuleEditor::Update(float dt)
 	}
 
 	
-
+	LOG("Random Number 1-100 =  ", random_machine->RandomInt(1,100));
 
 
 
@@ -66,5 +68,6 @@ bool ModuleEditor::CleanUp()
 {
 	main_menu->CleanUp();
 	delete main_menu;
+	delete random_machine;
 	return true;
 }

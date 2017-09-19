@@ -6,6 +6,8 @@
 
 #include "EditorMainMenu.h"
 #include "GUI_Hardware.h"
+#include "RandomGenerator.h"
+
 class ModuleEditor : public Module
 {
 public:
@@ -20,7 +22,7 @@ public:
 
 private:
 	EditorMainMenu* main_menu;
-	
+	RandomGenerator* random_machine;
 
 };
 

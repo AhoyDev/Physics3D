@@ -327,6 +327,9 @@
     <ClInclude Include="glmath.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="RandomGenerator.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -511,6 +514,7 @@
     <ClCompile Include="glmath.cpp">
       <Filter>Sources\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="RandomGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">
