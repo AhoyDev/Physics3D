@@ -79,6 +79,7 @@
     <ClInclude Include="EditorMainMenu.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="GUI_Console.h" />
     <ClInclude Include="GUI_Hardware.h" />
     <ClInclude Include="GUI_Tests.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="EditorMainMenu.cpp" />
     <ClCompile Include="glmath.cpp" />
+    <ClCompile Include="GUI_Console.cpp" />
     <ClCompile Include="GUI_Hardware.cpp" />
     <ClCompile Include="GUI_Tests.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />

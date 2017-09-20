@@ -7,7 +7,7 @@
 #include "EditorMainMenu.h"
 #include "GUI_Hardware.h"
 #include "RandomGenerator.h"
-
+#include "GUI_Console.h"
 
 #include "Primitives.h"
 
@@ -26,6 +26,9 @@ public:
 private:
 	EditorMainMenu* main_menu;
 	RandomGenerator* random_machine;
+	GUI_Console* console;
+
+
 
 	R_Sphere* sphere;
 	R_Capsule* capsule;

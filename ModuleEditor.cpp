@@ -15,18 +15,14 @@ ModuleEditor::ModuleEditor(bool start_enabled) : Module(start_enabled)
 }
 
 ModuleEditor::~ModuleEditor()
-{}
+{
+
+}
 
 bool ModuleEditor::Init()
 {
-	//RUB
-	random_machine = new RandomGenerator();
-
-	sphere = new R_Sphere(vec(0, 0, 0), 3.0f);
-	math::Line line =  math::Line(vec(0, 0, 0), vec(0, 5, 0));
-
-	capsule = new R_Capsule(LineSegment(line, 3.0f), 3.0f);
 	
+	random_machine = new RandomGenerator();
 	
 	return true;
 }
@@ -60,8 +56,6 @@ update_status ModuleEditor::Update(float dt)
 			main_menu->show = true;
 		
 	}
-
-	//RUB
 
 	//LOG("Random Number 1-100 = %d ", random_machine->RandomInt(0,100));
 

@@ -80,8 +80,6 @@ void GUI_Tests::ShowIntersectionMenu()
 	{
 		ImGui::TextWrapped("Intersection between Sphere and cilinder");
 		
-		
-
 		static bool a = false;
 		if (ImGui::Button("1 Test"))
 		{	

@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
+#include "GUI_Console.h"
+
 
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
@@ -16,6 +18,7 @@ enum main_states
 };
 
 Application* App = nullptr;
+
 
 int main(int argc, char ** argv)
 {
@@ -85,5 +88,6 @@ int main(int argc, char ** argv)
 
 	delete App;
 	LOG("Exiting game '%s'...\n", TITLE);
+	
 	return main_return;
 }
