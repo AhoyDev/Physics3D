@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "Module.h"
+#include "ModuleFS.h"
 #include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -13,7 +14,7 @@
 
 Application::Application()
 {
-	
+	fs = new ModuleFS();
 	time = new ModuleTime();
 	window = new ModuleWindow();
 	physics3D = new ModulePhysics3D();
@@ -29,6 +30,8 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
+	//AddModule(fs);
+	AddModule(time);
 	AddModule(window);
 	AddModule(input);
 	AddModule(audio);
@@ -53,6 +56,9 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
+
+	char* buffer = nullptr;
+	App->fs->LoadFileToBuffer(&buffer, "Configuration.json");
 
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();

@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 class Module;
+class ModuleFS;
 class ModuleTime;
 class ModuleWindow;
 class ModuleInput;
@@ -14,9 +15,6 @@ class ModuleCamera3D;
 class ModuleSceneIntro;
 class ModuleEditor;
 class ModuleRenderer3D;
-
-
-
 
 class Timer;
 
@@ -39,6 +37,7 @@ private:
 
 public:
 
+	ModuleFS* fs;
 	ModuleTime* time;
 	ModuleWindow* window;
 	ModuleInput* input;
@@ -50,7 +49,6 @@ public:
 	ModuleEditor* editor;
 	
 	/* Future Modules
-	ModuleFileSystem* file_system;
 	ModuleGOManager* go_manager;
 	ModuleResourceManager* resource_manager;
 	ModuleLighting* lighting;
