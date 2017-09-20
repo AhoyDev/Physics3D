@@ -339,6 +339,9 @@
     <ClInclude Include="R_Sphere.h">
       <Filter>Sources\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Sources\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -534,6 +537,9 @@
       <Filter>Sources\Math</Filter>
     </ClCompile>
     <ClCompile Include="R_Sphere.cpp" />
+    <ClCompile Include="Collider.cpp">
+      <Filter>Sources\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">
