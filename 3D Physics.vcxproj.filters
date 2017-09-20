@@ -49,6 +49,9 @@
     <Filter Include="Sources\Containers">
       <UniqueIdentifier>{afc36133-f401-499a-aa33-0da1e500fb52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3d Party\JSON">
+      <UniqueIdentifier>{c0c6bb99-2331-44ff-ba42-ff651ed1d6e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -351,6 +354,15 @@
     <ClInclude Include="SPrimitive.h">
       <Filter>Sources\Math</Filter>
     </ClInclude>
+    <ClInclude Include="JSON\parson.h">
+      <Filter>3d Party\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFS.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="JSONDataManager.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -559,6 +571,15 @@
     </ClCompile>
     <ClCompile Include="SPrimitive.cpp">
       <Filter>Sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON\parson.c">
+      <Filter>3d Party\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFS.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="JSONDataManager.cpp">
+      <Filter>Sources\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

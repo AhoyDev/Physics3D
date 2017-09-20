@@ -89,6 +89,8 @@
     <ClInclude Include="imgui\stb_rect_pack.h" />
     <ClInclude Include="imgui\stb_textedit.h" />
     <ClInclude Include="imgui\stb_truetype.h" />
+    <ClInclude Include="JSONDataManager.h" />
+    <ClInclude Include="JSON\parson.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\GJK.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -155,6 +157,7 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleEditor.h" />
+    <ClInclude Include="ModuleFS.h" />
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="Module.h" />
@@ -178,6 +181,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="JSONDataManager.cpp" />
     <ClCompile Include="EditorMainMenu.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="GUI_Console.cpp" />
@@ -187,6 +191,7 @@
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="JSON\parson.c" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -229,6 +234,7 @@
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="ModuleFS.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModulePlayer.cpp" />
