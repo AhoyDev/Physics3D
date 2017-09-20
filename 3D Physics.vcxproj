@@ -171,6 +171,7 @@
     <ClInclude Include="Primitives.h" />
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="R_Sphere.h" />
+    <ClInclude Include="SPrimitive.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +242,7 @@
     <ClCompile Include="Primitives.cpp" />
     <ClCompile Include="RandomGenerator.cpp" />
     <ClCompile Include="R_Sphere.cpp" />
+    <ClCompile Include="SPrimitive.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>

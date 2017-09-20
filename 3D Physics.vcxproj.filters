@@ -348,6 +348,9 @@
     <ClInclude Include="GUI_Console.h">
       <Filter>Sources\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="SPrimitive.h">
+      <Filter>Sources\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -553,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="GUI_Console.cpp">
       <Filter>Sources\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SPrimitive.cpp">
+      <Filter>Sources\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
