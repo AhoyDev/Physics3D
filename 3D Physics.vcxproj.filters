@@ -339,8 +339,12 @@
     <ClInclude Include="R_Sphere.h">
       <Filter>Sources\Math</Filter>
     </ClInclude>
+
     <ClInclude Include="GUI_Tests.h">
       <Filter>Sources\GUI</Filter>
+
+    <ClInclude Include="Collider.h">
+      <Filter>Sources\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -536,12 +540,18 @@
     <ClCompile Include="RandomGenerator.cpp">
       <Filter>Sources\Math</Filter>
     </ClCompile>
+
     <ClCompile Include="R_Sphere.cpp">
       <Filter>Sources\Math</Filter>
     </ClCompile>
     <ClCompile Include="GUI_Tests.cpp">
       <Filter>Sources\GUI</Filter>
     </ClCompile>
+
+    <ClCompile Include="Collider.cpp">
+      <Filter>Sources\Math</Filter>
+    </ClCompile>
+
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">
