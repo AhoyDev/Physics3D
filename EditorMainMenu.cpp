@@ -27,6 +27,11 @@ update_status EditorMainMenu::ShowMainMenu()
 		if (ImGui::MenuItem("HardWare"))
 			configuration = !configuration;
 
+
+		if (ImGui::MenuItem("Tests"))
+			tests = !tests;
+
+
 		ImGui::EndMenu();
 	}
 
@@ -61,7 +66,8 @@ update_status EditorMainMenu::ShowMainMenu()
 	if (configuration)
 		hardware_menu->ShowHardwareMenu();
 
-
+	if (tests)
+		tests_menu->ShowIntersectionMenu();
 
 
 	return UPDATE_CONTINUE;
