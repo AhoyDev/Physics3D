@@ -13,9 +13,9 @@
 #pragma comment (lib, "Bullet/bin/BulletCollision_Debug.lib")
 #pragma comment (lib, "Bullet/bin/LinearMath_Debug.lib")
 #else
-#pragma comment (lib, "Bullet/bin/BulletDynamics_Debug.lib")
-#pragma comment (lib, "Bullet/bin/BulletCollision_Debug.lib")
-#pragma comment (lib, "Bullet/bin/LinearMath_Debug.lib")
+#pragma comment (lib, "Bullet/bin/BulletDynamics.lib")
+#pragma comment (lib, "Bullet/bin/BulletCollision.lib")
+#pragma comment (lib, "Bullet/bin/LinearMath.lib")
 #endif
 
 ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
