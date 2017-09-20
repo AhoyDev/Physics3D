@@ -7,9 +7,6 @@
     <Filter Include="Sources\Modules">
       <UniqueIdentifier>{7b418be2-1631-4a31-9ef2-8a8b234a7339}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Containers">
-      <UniqueIdentifier>{afc36133-f401-499a-aa33-0da1e500fb52}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Tools">
       <UniqueIdentifier>{7e4dfaf7-022c-4f7d-92aa-f3b3fa9d6248}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="Sources\Math">
       <UniqueIdentifier>{5457fdc9-9a78-4011-8ac8-f2843d6147b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Containers">
+      <UniqueIdentifier>{afc36133-f401-499a-aa33-0da1e500fb52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -339,12 +339,11 @@
     <ClInclude Include="R_Sphere.h">
       <Filter>Sources\Math</Filter>
     </ClInclude>
-
-    <ClInclude Include="GUI_Tests.h">
-      <Filter>Sources\GUI</Filter>
-
     <ClInclude Include="Collider.h">
       <Filter>Sources\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI_Tests.h">
+      <Filter>Sources\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -540,18 +539,15 @@
     <ClCompile Include="RandomGenerator.cpp">
       <Filter>Sources\Math</Filter>
     </ClCompile>
-
-    <ClCompile Include="R_Sphere.cpp">
+    <ClCompile Include="Collider.cpp">
       <Filter>Sources\Math</Filter>
     </ClCompile>
     <ClCompile Include="GUI_Tests.cpp">
       <Filter>Sources\GUI</Filter>
     </ClCompile>
-
-    <ClCompile Include="Collider.cpp">
+    <ClCompile Include="R_Sphere.cpp">
       <Filter>Sources\Math</Filter>
     </ClCompile>
-
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">

@@ -62,10 +62,8 @@ update_status ModuleEditor::Update(float dt)
 	}
 
 	//RUB
-	bool result_intersection = capsule->Intersects(*sphere);
 
-	LOG("%d",result_intersection);
-	LOG("Random Number 1-100 = %d ", random_machine->RandomInt(1,100));
+	//LOG("Random Number 1-100 = %d ", random_machine->RandomInt(0,100));
 
 
 

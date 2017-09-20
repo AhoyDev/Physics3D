@@ -2,6 +2,7 @@
 #define __COLLIDER_H__
 
 #include "MathGeoLib\include\MathGeoLibFwd.h"
+#include "MathGeoLib\include\Math\float3.h"
 
 class Primitive;
 class PhysBody3D;

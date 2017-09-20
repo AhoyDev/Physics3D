@@ -7,6 +7,7 @@
 EditorMainMenu::EditorMainMenu()
 {
 	hardware_menu = new GUI_Hardware();
+	tests_menu = new GUI_Tests();
 }
 
 update_status EditorMainMenu::ShowMainMenu()
@@ -75,5 +76,6 @@ update_status EditorMainMenu::ShowMainMenu()
 
 void EditorMainMenu::CleanUp()
 {
+	delete tests_menu;
 	delete hardware_menu;
 }
