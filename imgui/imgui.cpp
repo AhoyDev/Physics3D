@@ -615,6 +615,9 @@
 #include <stdlib.h>     // NULL, malloc, free, qsort, atoi
 #include <stdio.h>      // vsnprintf, sscanf, printf
 #include <limits.h>     // INT_MIN, INT_MAX
+
+#include "../Brofiler/include/Brofiler.h"
+
 #if defined(_MSC_VER) && _MSC_VER <= 1500 // MSVC 2008 or earlier
 #include <stddef.h>     // intptr_t
 #else
@@ -643,6 +646,7 @@
 #pragma GCC diagnostic ignored "-Wdouble-promotion"         // warning: implicit conversion from 'float' to 'double' when passing argument to function
 #pragma GCC diagnostic ignored "-Wconversion"               // warning: conversion to 'xxxx' from 'xxxx' may alter its value
 #endif
+
 
 //-------------------------------------------------------------------------
 // Forward Declarations
@@ -2634,6 +2638,7 @@ void ImGui::EndFrame()
 
 void ImGui::Render()
 {
+	BROFILER_CATEGORY("ImGui::Render", Profiler::Color::LimeGreen);
     ImGuiContext& g = *GImGui;
     IM_ASSERT(g.Initialized);   // Forgot to call ImGui::NewFrame()
 
