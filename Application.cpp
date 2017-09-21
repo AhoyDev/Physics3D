@@ -95,7 +95,7 @@ void Application::FinishUpdate()
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
-	BROFILER_FRAME("GameLoop")
+	//BROFILER_FRAME("GameLoop")
 	update_status ret = UPDATE_CONTINUE;
 
 	float dt = time->UpdateDeltaTime();

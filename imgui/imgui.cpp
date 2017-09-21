@@ -2638,7 +2638,7 @@ void ImGui::EndFrame()
 
 void ImGui::Render()
 {
-	BROFILER_CATEGORY("ImGui::Render", Profiler::Color::LimeGreen);
+	//BROFILER_CATEGORY("ImGui::Render", Profiler::Color::LimeGreen);
     ImGuiContext& g = *GImGui;
     IM_ASSERT(g.Initialized);   // Forgot to call ImGui::NewFrame()
 
