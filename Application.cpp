@@ -59,8 +59,8 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	char* buffer = nullptr;
-	App->fs->LoadFileToBuffer(&buffer, "Configuration.json");
+	//char* buffer = nullptr;
+	//App->fs->LoadFileToBuffer(&buffer, "Configuration.json");
 
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();
