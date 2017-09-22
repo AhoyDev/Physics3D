@@ -23,6 +23,7 @@ public:
 	bool show = true;
 	bool configuration = false;
 	bool tests = false;
+	bool about = false;
 };
 
 

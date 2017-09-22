@@ -49,10 +49,9 @@ update_status EditorMainMenu::ShowMainMenu()
 	{
 		if (ImGui::MenuItem("About"))
 		{
-			ImGui::BeginPopup("Welcome to the best engine ever made. With it any game can be accomplished. ;)");
-			ImGui::EndPopup();
+			about = !about;
 		}
-
+		
 
 		if (ImGui::MenuItem("Demo"))
 			demo = !demo;
@@ -69,6 +68,30 @@ update_status EditorMainMenu::ShowMainMenu()
 
 	if (tests)
 		tests_menu->ShowIntersectionMenu();
+	if(about)
+	{
+		if (ImGui::Begin("_About"))
+		{	
+			ImGui::TextColored(ImVec4(230,250,240,255), "Engine Name:");
+			ImGui::Text("R Engine");
+
+			ImGui::TextColored(ImVec4(230, 250, 240, 255), "About: ");
+			ImGui::Text("Engine made in CITM (UPC) to develop an RPG game");
+
+			ImGui::TextColored(ImVec4(230, 250, 240, 255), "Core Developers: ");
+			ImGui::Text("Ruben Sardon");
+			ImGui::Text("Ruben Idigora");
+
+			ImGui::TextColored(ImVec4(230, 250, 240, 255), "Libraries used");
+
+			ImGui::Text("SDL");
+			ImGui::Text("OpenGL");
+			ImGui::Text("Imgui");
+			ImGui::Text("MathGeoLib");
+		}
+		ImGui::End();
+	}
+
 
 
 	return UPDATE_CONTINUE;
