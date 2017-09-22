@@ -11,6 +11,8 @@
 
 #include "Primitives.h"
 
+
+
 class ModuleEditor : public Module
 {
 public:
@@ -26,7 +28,7 @@ public:
 private:
 	EditorMainMenu* main_menu;
 	RandomGenerator* random_machine;
-	GUI_Console* console;
+	
 
 
 

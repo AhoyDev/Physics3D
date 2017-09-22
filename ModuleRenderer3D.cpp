@@ -9,6 +9,8 @@
 #include <gl/GLU.h>
 #include "SDL\include\SDL_opengl.h"
 
+#include "GUI_Console.h"
+
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Glew/libx86/glew32.lib") 
@@ -32,7 +34,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	LOG("Creating 3D Renderer context");
+	console->LogConsole("Creating 3D Renderer context\n");
 	bool ret = true;
 	
 	//Create context
@@ -45,7 +47,7 @@ bool ModuleRenderer3D::Init()
 
 	if (GLEW_OK != glewInit())
 	{
-		LOG("Glew failed");
+		console->LogConsole("Glew failed\n");
 	}
 	
 	if(ret == true)
@@ -166,7 +168,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
-	LOG("Destroying 3D Renderer");
+	console->LogConsole("Destroying 3D Renderer\n");
 	ImGui_ImplSdlGL3_Shutdown();
 	SDL_GL_DeleteContext(context);
 

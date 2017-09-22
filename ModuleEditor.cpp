@@ -6,12 +6,19 @@
 #include "ModuleWindow.h"
 #include "imgui\imgui.h"
 #include "EditorMainMenu.h"
+
 #include "RandomGenerator.h"
 
+
 #include "MathGeoLib\include\MathGeoLib.h"
+
+
+
+
 ModuleEditor::ModuleEditor(bool start_enabled) : Module(start_enabled)
 {
 	main_menu = new EditorMainMenu();
+	
 }
 
 ModuleEditor::~ModuleEditor()
@@ -23,7 +30,13 @@ bool ModuleEditor::Init()
 {
 	
 	random_machine = new RandomGenerator();
-	
+	console = new GUI_Console();
+
+	console->LogConsole("------------ Initializing Console -----------------\n");
+	console->LogConsole("------------ Console Ready -----------------\n");
+
+
+
 	return true;
 }
 
@@ -58,7 +71,7 @@ update_status ModuleEditor::Update(float dt)
 	}
 
 	//LOG("Random Number 1-100 = %d ", random_machine->RandomInt(0,100));
-
+	console->DrawLineConsole();
 
 
 	return status;
@@ -69,5 +82,6 @@ bool ModuleEditor::CleanUp()
 	main_menu->CleanUp();
 	delete main_menu;
 	delete random_machine;
+	delete console;
 	return true;
 }

@@ -3,6 +3,7 @@
 #include "SDL/include/SDL_filesystem.h"
 #include "SDL/include/SDL_stdinc.h"
 #include "SDL\include\SDL_assert.h"
+#include "GUI_Console.h"
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 

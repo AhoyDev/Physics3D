@@ -4,6 +4,7 @@
 #include "ModuleRenderer3D.h"
 
 #include "SDL\include\SDL.h"
+#include "GUI_Console.h"
 
 #define MAX_KEYS 300
 
@@ -125,7 +126,7 @@ update_status ModuleInput::PreUpdate(float dt)
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
-	LOG("Quitting SDL input event subsystem");
+	console->LogConsole("Quitting SDL input event subsystem\n");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

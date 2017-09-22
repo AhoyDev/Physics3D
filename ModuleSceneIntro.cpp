@@ -3,7 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
-
+#include "GUI_Console.h"
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled),
 graphics(NULL), ground(NULL)
 {}
@@ -14,7 +14,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-	LOG("Loading Intro assets");
+	console->LogConsole("Loading Intro assets\n");
 	bool ret = true;
 
 
@@ -24,7 +24,7 @@ bool ModuleSceneIntro::Start()
 // Load assets
 bool ModuleSceneIntro::CleanUp()
 {
-	LOG("Unloading Intro scene");
+	console->LogConsole("Unloading Intro scene\n");
 
 	return true;
 }

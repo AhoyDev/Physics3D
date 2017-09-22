@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "SDL\include\SDL.h"
+#include "GUI_Console.h"
 
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
@@ -15,7 +16,7 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init()
 {
-	LOG("Loading Audio Mixer");
+	LOG("Loading Audio Mixer\n");
 	bool ret = true;
 	SDL_Init(0);
 
@@ -48,7 +49,7 @@ bool ModuleAudio::Init()
 // Called before quitting
 bool ModuleAudio::CleanUp()
 {
-	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
+	console->LogConsole("Freeing sound FX, closing Mixer and Audio subsystem\n");
 
 	if(music != NULL)
 	{

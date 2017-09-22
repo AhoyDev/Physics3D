@@ -12,10 +12,13 @@
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
 
+#include "GUI_Console.h"
+
 #include "Brofiler/include/Brofiler.h"
 
 Application::Application()
 {
+	editor = new ModuleEditor();
 	fs = new ModuleFS();
 	time = new ModuleTime();
 	window = new ModuleWindow();
@@ -25,7 +28,7 @@ Application::Application()
 	scene_intro = new ModuleSceneIntro();
 	renderer3D = new ModuleRenderer3D();
 	camera = new ModuleCamera3D();
-	editor = new ModuleEditor();
+	
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -33,6 +36,7 @@ Application::Application()
 
 	// Main Modules
 	//AddModule(fs);
+	AddModule(editor);
 	AddModule(time);
 	AddModule(window);
 	AddModule(input);
@@ -42,7 +46,7 @@ Application::Application()
 
 	AddModule(scene_intro);
 
-	AddModule(editor);
+	;
 	AddModule(renderer3D);
 }
 
@@ -71,7 +75,7 @@ bool Application::Init()
 	}
 
 	// After all Init calls we call Start() in all modules
-	LOG("Application Start --------------");
+	console->LogConsole("Application Start --------------\n");
 	item = list_modules.begin();
 	while (ret && item != list_modules.end())
 	{

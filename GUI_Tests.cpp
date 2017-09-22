@@ -7,6 +7,10 @@
 
 #include "RandomGenerator.h"
 #include "MathGeoLib\include\MathGeoLib.h"
+#include "ModuleEditor.h"
+
+
+
 
 GUI_Tests::GUI_Tests()
 {
@@ -47,7 +51,7 @@ void GUI_Tests::Test1()
 	
 	bool result_intersection = sphere->Intersects(*capsule);
 
-	LOG("The result of the intersection between a Sphere and a Capsule is: %d (1 = intersects, 0 = doesn't intersect)", result_intersection);
+	console->LogConsole("The result of the intersection between a Sphere and a Capsule is: %d (1 = intersects, 0 = doesn't intersect)\n");
 	
 
 }

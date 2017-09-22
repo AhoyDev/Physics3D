@@ -1,6 +1,7 @@
-#include <stdio.h> 
-#include "GUI_Console.h"
 #include "Globals.h"
+#include "GUI_Console.h"
+
+GUI_Console* console;
 
 GUI_Console::GUI_Console()
 {
@@ -8,7 +9,7 @@ GUI_Console::GUI_Console()
 
 void GUI_Console::LogConsole(const char* file)
 {
-	if (!file)
+	if (file)
 		buf.append(file);
 	else
 		LOG("message to be displayed NULL");

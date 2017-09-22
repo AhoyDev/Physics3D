@@ -3,6 +3,7 @@
 #include "ModulePlayer.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
+#include "Gui_Console.h"
 
 ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled), vehicle(NULL)
 {
@@ -15,7 +16,7 @@ ModulePlayer::~ModulePlayer()
 // Load assets
 bool ModulePlayer::Start()
 {
-	LOG("Loading player");
+	console->LogConsole("Loading player\n");
 
 	return true;
 }
@@ -23,7 +24,7 @@ bool ModulePlayer::Start()
 // Unload assets
 bool ModulePlayer::CleanUp()
 {
-	LOG("Unloading player");
+	console->LogConsole("Unloading player\n");
 
 	return true;
 }

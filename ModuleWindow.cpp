@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "SDL/include/SDL.h"
 
+#include "GUI_Console.h"
+
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	window = NULL;
@@ -76,7 +78,7 @@ bool ModuleWindow::Init()
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
-	LOG("Destroying SDL window and quitting all SDL systems");
+	console->LogConsole("Destroying SDL window and quitting all SDL systems\n");
 
 	//Destroy window
 	if(window != NULL)

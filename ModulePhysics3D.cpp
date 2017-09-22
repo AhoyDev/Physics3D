@@ -8,6 +8,9 @@
 #include "Bullet/include/btBulletDynamicsCommon.h"
 #include "Bullet/include/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h"
 
+#include "GUI_Console.h"
+
+
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/bin/BulletDynamics_Debug.lib")
 #pragma comment (lib, "Bullet/bin/BulletCollision_Debug.lib")
@@ -51,7 +54,7 @@ bool ModulePhysics3D::Init()
 // ---------------------------------------------------------
 bool ModulePhysics3D::Start()
 {
-	LOG("Creating Physics environment");
+	console->LogConsole("Creating Physics environment\n");
 
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
 	world->setDebugDrawer(debug_draw);
@@ -333,7 +336,7 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 // Called before quitting
 bool ModulePhysics3D::CleanUp()
 {
-	LOG("Destroying 3D Physics simulation");
+	console->LogConsole("Destroying 3D Physics simulation\n");
 
 	// Free all the bodies ---
 	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)

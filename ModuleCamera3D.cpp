@@ -4,7 +4,7 @@
 #include "ModuleInput.h"
 #include "SDL\include\SDL.h"
 #include "PhysBody3D.h"
-
+#include "GUI_Console.h"
 // TEMPORAL
 #include "glmath.h"
 
@@ -29,7 +29,7 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	LOG("Setting up the camera");
+	console->LogConsole("Setting up the camera\n");
 	bool ret = true;
 
 	return ret;
@@ -38,7 +38,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	LOG("Cleaning camera");
+	console->LogConsole("Cleaning camera\n");
 
 	return true;
 }
