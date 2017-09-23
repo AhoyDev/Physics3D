@@ -89,7 +89,7 @@
     <ClInclude Include="imgui\stb_rect_pack.h" />
     <ClInclude Include="imgui\stb_textedit.h" />
     <ClInclude Include="imgui\stb_truetype.h" />
-    <ClInclude Include="JSONDataManager.h" />
+    <ClInclude Include="JSONNode.h" />
     <ClInclude Include="JSON\parson.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\GJK.h" />
@@ -181,7 +181,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Color.cpp" />
-    <ClCompile Include="JSONDataManager.cpp" />
+    <ClCompile Include="JSONNode.cpp" />
     <ClCompile Include="EditorMainMenu.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="GUI_Console.cpp" />

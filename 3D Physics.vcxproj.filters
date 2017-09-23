@@ -360,8 +360,8 @@
     <ClInclude Include="ModuleFS.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="JSONDataManager.h">
-      <Filter>Sources\Helpers</Filter>
+    <ClInclude Include="JSONNode.h">
+      <Filter>Sources\Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -578,8 +578,8 @@
     <ClCompile Include="ModuleFS.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="JSONDataManager.cpp">
-      <Filter>Sources\Helpers</Filter>
+    <ClCompile Include="JSONNode.cpp">
+      <Filter>Sources\Containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
