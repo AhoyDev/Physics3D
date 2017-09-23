@@ -2,19 +2,19 @@
 #define __GUICONFIG_H__
 
 #include "MathGeoLib\include\MathGeoLib.h"
-#include <deque>
-
-
+#include <vector>
 
 class GUI_Config
 {
 public:
 	GUI_Config();
+	~GUI_Config();
 
 	void ShowConfigMenu();
 
+public:
 
-	std::deque<float> fps_plot_values;
+	std::vector<float> fps_plot_values;
 };
 
 

@@ -2,16 +2,18 @@
 #include "imgui\imgui.h"
 #include "SDL\include\SDL.h"
 #include "Application.h"
-#include "ModuleTime.h"
-#include "Timer.h"
+#include "TimeManager.h"
 #include "Globals.h"
 
 #define MAX_BARS 25
 
 
 GUI_Config::GUI_Config()
-{
+{}
 
+GUI_Config::~GUI_Config()
+{
+	fps_plot_values.clear();
 }
 
 void GUI_Config::ShowConfigMenu()
@@ -92,30 +94,26 @@ void GUI_Config::ShowConfigMenu()
 		ImGui::Separator();
 
 		ImGui::Text("GPU:");
-		
-		char title[25] = "Framerate";
-	
 
-		Timer timer; 
-
-		timer.Start();
-
-		if (timer.Read()/60 >= 60)
+		if (ImGui::CollapsingHeader("App"))
 		{
-			fps_plot_values.push_back(App->time->GetLastFPS());
-			
-			if (ImGui::CollapsingHeader("App"))
+			// FPS Plotter
+			if (fps_plot_values.size() > 100)
 			{
-				ImGui::PlotHistogram("Frame Rate ", &fps_plot_values[0], MAX_BARS, 2, title, 0.0f, 60.0f, ImVec2(310, 100));
-			}
-			timer.Stop();
-		}
-		
+				for (int i = 1; i < fps_plot_values.size(); i++)
+					fps_plot_values[i - 1] = fps_plot_values[i];
 
-		
-		if(fps_plot_values.size() >= 24) {
-			fps_plot_values.pop_front();
+				fps_plot_values[fps_plot_values.size() - 1] = App->time->GetLastFPS();
+			}
+			else
+			{
+				fps_plot_values.push_back(App->time->GetLastFPS());
+			}
+
+			ImGui::PlotHistogram("Framerate", &fps_plot_values[0], fps_plot_values.size(), 0, NULL, 0.0f, 90.0f, ImVec2(310, 100));
 		}
+
+
 	}
 	
 	if (ImGui::CollapsingHeader("Window")){
