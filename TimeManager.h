@@ -1,27 +1,28 @@
-#ifndef __MODULETIME_H__
-#define __MODULETIME_H__
+#ifndef __TIMEMANAGER_H__
+#define __TIMEMANAGER_H__
 
-#include "Module.h"
 #include <list>
 #include "SDL\include\SDL.h"
 
 class Timer;
 
-class ModuleTime : public Module
+class TimeManager
 {
 public:
 
-	ModuleTime(const char* name, bool start_enabled = true);
-	~ModuleTime();
-	
-	bool CleanUp();
+	TimeManager();
+	~TimeManager();
 
 	Timer*	CreateTimer(bool start_active = true);
+	void	RemoveTimer(Timer* timer = nullptr);
+
+
 	void	ManageFrameTimers();
 	float	UpdateDeltaTime();
+
 	float	GetDeltaTime();
 	int		GetFpsCounter();
-	int		GetLastFrameMs();
+	float	GetLastFrameMs();
 	int		GetLastFPS();
 	int		GetCappedMS();
 
@@ -30,7 +31,7 @@ public:
 	Uint32	frames;
 	float	dt;
 	int		fps_counter;
-	int		last_frame_ms;
+	float	last_frame_ms;
 	int		last_fps;
 	int		capped_ms;
 
@@ -41,5 +42,26 @@ private:
 
 	std::list<Timer*> timers;
 };
+
+class Timer
+{
+public:
+
+	// Constructor
+	Timer(bool start_active = true);
+
+	void Start();
+	void Stop();
+
+	Uint32 Read();
+
+private:
+
+	bool	running;
+	Uint32	started_at;
+	Uint32	stopped_at;
+};
+
+//class Alarm;
 
 #endif
