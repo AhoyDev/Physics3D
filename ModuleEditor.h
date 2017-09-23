@@ -17,10 +17,10 @@ class ModuleEditor : public Module
 {
 public:
 
-	ModuleEditor(bool start_enabled = true);
+	ModuleEditor(const char* name, bool start_enabled = true);
 	~ModuleEditor();
 
-	bool Init();
+	bool Init(JSONNode config);
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	bool CleanUp();

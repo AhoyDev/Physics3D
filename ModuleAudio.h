@@ -11,10 +11,10 @@ class ModuleAudio : public Module
 {
 public:
 
-	ModuleAudio(bool start_enabled = true);
+	ModuleAudio(const char* name, bool start_enabled = true);
 	~ModuleAudio();
 
-	bool Init();
+	bool Init(JSONNode config);
 	bool CleanUp();
 
 	// Play a music file

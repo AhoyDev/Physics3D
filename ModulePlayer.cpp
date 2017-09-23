@@ -5,7 +5,7 @@
 #include "PhysBody3D.h"
 #include "Gui_Console.h"
 
-ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled), vehicle(NULL)
+ModulePlayer::ModulePlayer(const char* name, bool start_enabled) : Module(name, start_enabled), vehicle(NULL)
 {
 	turn = acceleration = brake = 0.0f;
 }

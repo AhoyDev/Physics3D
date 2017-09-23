@@ -5,7 +5,7 @@
 #include "Globals.h"
 
 class Module;
-class ModuleFS;
+class ModuleWindowsFS;
 class ModuleTime;
 class ModuleWindow;
 class ModuleInput;
@@ -37,7 +37,7 @@ private:
 
 public:
 
-	ModuleFS* fs;
+	ModuleWindowsFS* fs;
 	ModuleTime* time;
 	ModuleWindow* window;
 	ModuleInput* input;

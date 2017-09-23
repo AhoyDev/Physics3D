@@ -21,7 +21,7 @@
 #pragma comment (lib, "Bullet/bin/LinearMath.lib")
 #endif
 
-ModulePhysics3D::ModulePhysics3D(bool start_enabled) : Module(start_enabled)
+ModulePhysics3D::ModulePhysics3D(const char* name, bool start_enabled) : Module(name, start_enabled)
 {
 	debug = false;
 }
@@ -37,7 +37,7 @@ ModulePhysics3D::~ModulePhysics3D()
 }
 
 // Render not available yet----------------------------------
-bool ModulePhysics3D::Init()
+bool ModulePhysics3D::Init(JSONNode config)
 {
 	LOG("Creating 3D Physics simulation");
 	bool ret = true;

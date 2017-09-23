@@ -17,10 +17,10 @@ class ModuleInput : public Module
 {
 public:
 	
-	ModuleInput(bool start_enabled = true);
+	ModuleInput(const char* name, bool start_enabled = true);
 	~ModuleInput();
 
-	bool Init();
+	bool Init(JSONNode config);
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 

@@ -10,10 +10,10 @@ class ModuleWindow : public Module
 {
 public:
 
-	ModuleWindow(bool start_enabled = true);
+	ModuleWindow(const char* name, bool start_enabled = true);
 	~ModuleWindow();
 
-	bool Init();
+	bool Init(JSONNode config);
 	bool CleanUp();
 
 	void SetTitle(const char* title);

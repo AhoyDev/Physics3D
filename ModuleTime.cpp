@@ -2,7 +2,7 @@
 
 #include "Timer.h"
 
-ModuleTime::ModuleTime(bool start_enabled) : Module(start_enabled)
+ModuleTime::ModuleTime(const char* name, bool start_enabled) : Module(name, start_enabled)
 {
 	frames = 0;
 	last_frame_ms = -1;

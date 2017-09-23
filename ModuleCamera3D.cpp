@@ -9,7 +9,7 @@
 #include "glmath.h"
 
 
-ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
+ModuleCamera3D::ModuleCamera3D(const char* name, bool start_enabled) : Module(name, start_enabled)
 {
 	CalculateViewMatrix();
 

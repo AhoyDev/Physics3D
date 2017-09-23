@@ -24,7 +24,7 @@
 #include "glmath.h"
 
 
-ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
+ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(name, start_enabled)
 {}
 
 // Destructor
@@ -32,7 +32,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
 // Called before render is available
-bool ModuleRenderer3D::Init()
+bool ModuleRenderer3D::Init(JSONNode config)
 {
 	console->LogConsole("Creating 3D Renderer context\n");
 	bool ret = true;

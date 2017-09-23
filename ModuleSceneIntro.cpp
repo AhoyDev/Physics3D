@@ -4,7 +4,8 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 #include "GUI_Console.h"
-ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled),
+
+ModuleSceneIntro::ModuleSceneIntro(const char* name, bool start_enabled) : Module(name, start_enabled),
 graphics(NULL), ground(NULL)
 {}
 

@@ -15,7 +15,7 @@
 
 
 
-ModuleEditor::ModuleEditor(bool start_enabled) : Module(start_enabled)
+ModuleEditor::ModuleEditor(const char* name, bool start_enabled) : Module(name, start_enabled)
 {
 	main_menu = new EditorMainMenu();
 	
@@ -26,7 +26,7 @@ ModuleEditor::~ModuleEditor()
 
 }
 
-bool ModuleEditor::Init()
+bool ModuleEditor::Init(JSONNode config)
 {
 	
 	random_machine = new RandomGenerator();

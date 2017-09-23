@@ -6,7 +6,7 @@
 
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
-ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled), music(NULL)
+ModuleAudio::ModuleAudio(const char* name, bool start_enabled) : Module(name, start_enabled), music(NULL)
 {}
 
 // Destructor
@@ -14,7 +14,7 @@ ModuleAudio::~ModuleAudio()
 {}
 
 // Called before render is available
-bool ModuleAudio::Init()
+bool ModuleAudio::Init(JSONNode config)
 {
 	LOG("Loading Audio Mixer\n");
 	bool ret = true;

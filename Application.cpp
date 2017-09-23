@@ -14,20 +14,22 @@
 
 #include "GUI_Console.h"
 
+#include "JSONNode.h"
+
 #include "Brofiler/include/Brofiler.h"
 
 Application::Application()
 {
-	editor = new ModuleEditor();
-	fs = new ModuleFS();
-	time = new ModuleTime();
-	window = new ModuleWindow();
-	physics3D = new ModulePhysics3D();
-	input = new ModuleInput();
-	audio = new ModuleAudio();
-	scene_intro = new ModuleSceneIntro();
-	renderer3D = new ModuleRenderer3D();
-	camera = new ModuleCamera3D();
+	fs = new ModuleWindowsFS("File System");
+	time = new ModuleTime("Time");
+	editor = new ModuleEditor("Editor");
+	window = new ModuleWindow("Window");
+	input = new ModuleInput("Input");
+	audio = new ModuleAudio("Audio");
+	physics3D = new ModulePhysics3D("Physics");
+	camera = new ModuleCamera3D("Camera");
+	scene_intro = new ModuleSceneIntro("Scene Intro");
+	renderer3D = new ModuleRenderer3D("Render");
 	
 
 	// The order of calls is very important!
@@ -35,9 +37,9 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	//AddModule(fs);
-	AddModule(editor);
+	AddModule(fs);
 	AddModule(time);
+	AddModule(editor);
 	AddModule(window);
 	AddModule(input);
 	AddModule(audio);
@@ -46,7 +48,6 @@ Application::Application()
 
 	AddModule(scene_intro);
 
-	;
 	AddModule(renderer3D);
 }
 
@@ -63,14 +64,16 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	//char* buffer = nullptr;
-	//App->fs->LoadFileToBuffer(&buffer, "Configuration.json");
+	char* buffer = nullptr;
+	fs->LoadFileToBuffer(&buffer, "Configuration.json");
+	JSONNode config(buffer);
+	delete[] buffer;
 
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();
 	while (ret && item != list_modules.end())
 	{
-		ret = (*item)->Init();
+		ret = (*item)->Init(config.PullJObject((*item)->GetName()));
 		item++;
 	}
 

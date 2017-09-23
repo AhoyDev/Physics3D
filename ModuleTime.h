@@ -11,7 +11,7 @@ class ModuleTime : public Module
 {
 public:
 
-	ModuleTime(bool start_enabled = true);
+	ModuleTime(const char* name, bool start_enabled = true);
 	~ModuleTime();
 	
 	bool CleanUp();

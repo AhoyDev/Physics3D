@@ -2,17 +2,20 @@
 #define __MODULE_H__
 
 #include "Globals.h"
+#include "JSONNode.h"
 
 struct PhysBody3D;
 
 class Module
 {
 private :
+
 	bool enabled;
+	const char* name;
 
 public:
 
-	Module(bool start_enabled = true) : enabled(start_enabled)
+	Module(const char* name, bool start_enabled = true) : name(name), enabled(start_enabled)
 	{}
 
 	virtual ~Module()
@@ -41,7 +44,7 @@ public:
 		}
 	}
 
-	virtual bool Init() 
+	virtual bool Init(JSONNode config)
 	{
 		return true; 
 	}
@@ -71,8 +74,13 @@ public:
 		return true; 
 	}
 
+	const char* GetName()
+	{
+		return name;
+	}
+
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-	{ }
+	{}
 };
 
 #endif
