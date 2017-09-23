@@ -2,7 +2,7 @@
 
 #include "Timer.h"
 
-ModuleTime::ModuleTime(const char* name, bool start_enabled) : Module(name, start_enabled)
+ModuleTime::ModuleTime(const char* name,bool start_enabled) : Module(name, start_enabled)
 {
 	frames = 0;
 	last_frame_ms = -1;
@@ -72,5 +72,22 @@ float ModuleTime::GetDeltaTime()
 	return dt;
 }
 
+int		ModuleTime::GetFpsCounter()
+{
+	return fps_counter;
+}
 
+int		ModuleTime::GetLastFrameMs()
+{
+	return last_frame_ms;
+}
 
+int		ModuleTime::GetLastFPS()
+{
+	return last_fps;
+}
+
+int		ModuleTime::GetCappedMS()
+{
+	return capped_ms;
+}

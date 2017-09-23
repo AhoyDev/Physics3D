@@ -20,6 +20,10 @@ public:
 	void	ManageFrameTimers();
 	float	UpdateDeltaTime();
 	float	GetDeltaTime();
+	int		GetFpsCounter();
+	int		GetLastFrameMs();
+	int		GetLastFPS();
+	int		GetCappedMS();
 
 public:
 	

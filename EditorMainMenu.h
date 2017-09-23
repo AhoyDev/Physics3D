@@ -1,8 +1,12 @@
-#pragma once
+#ifndef __EDITORMAINMENU_H__
+#define __EDITORMAINMENU_H__
+
+#include "Globals.h"
 #include "imgui/imgui.h"
 #include "GUI_Hardware.h"
 #include "GUI_Tests.h"
 
+class GUI_Config;
 //TOP BAR MAIN MENU (FILE, VIEW ETC..)
 class EditorMainMenu 
 {
@@ -15,8 +19,9 @@ public:
 	void CleanUp();
 
 private:
-	GUI_Hardware* hardware_menu;
+	
 	GUI_Tests* tests_menu;
+	
 
 public:
 	bool demo = false;
@@ -24,8 +29,10 @@ public:
 	bool configuration = false;
 	bool tests = false;
 	bool about = false;
+	bool hardware = false;
+	GUI_Config* config;
 };
-
+#endif
 
 
 

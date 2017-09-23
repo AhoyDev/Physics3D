@@ -3,11 +3,14 @@
 #include "EditorMainMenu.h"
 #include "imgui/imgui.h"
 
+#include "GUI_Config.h"
 
 EditorMainMenu::EditorMainMenu()
 {
-	hardware_menu = new GUI_Hardware();
+	
 	tests_menu = new GUI_Tests();
+	config = new GUI_Config();
+	config->
 }
 
 update_status EditorMainMenu::ShowMainMenu()
@@ -25,12 +28,12 @@ update_status EditorMainMenu::ShowMainMenu()
 
 	if (ImGui::BeginMenu("View"))
 	{
-		if (ImGui::MenuItem("HardWare"))
-			configuration = !configuration;
-
 
 		if (ImGui::MenuItem("Tests"))
 			tests = !tests;
+
+		if (ImGui::MenuItem("Configuration"))
+			configuration = !configuration;
 
 
 		ImGui::EndMenu();
@@ -63,11 +66,13 @@ update_status EditorMainMenu::ShowMainMenu()
 
 
 	//Shows hardware if activated on the main menu
-	if (configuration)
-		hardware_menu->ShowHardwareMenu();
+
 
 	if (tests)
 		tests_menu->ShowIntersectionMenu();
+	if (configuration)
+		config->ShowConfigMenu();
+	
 	if(about)
 	{
 		if (ImGui::Begin("_About"))
@@ -100,5 +105,5 @@ update_status EditorMainMenu::ShowMainMenu()
 void EditorMainMenu::CleanUp()
 {
 	delete tests_menu;
-	delete hardware_menu;
+
 }
