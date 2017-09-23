@@ -52,6 +52,9 @@
     <Filter Include="3d Party\JSON">
       <UniqueIdentifier>{c0c6bb99-2331-44ff-ba42-ff651ed1d6e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Main">
+      <UniqueIdentifier>{e8d723fd-7b52-47c9-99ab-f6a906efda01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -74,12 +77,6 @@
     </ClInclude>
     <ClInclude Include="p2Point.h">
       <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="Primitive.h">
       <Filter>Sources\Helpers</Filter>
@@ -128,12 +125,6 @@
     </ClInclude>
     <ClInclude Include="imgui\stb_truetype.h">
       <Filter>3d Party\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTime.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Sources\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\include\MathBuildConfig.h">
       <Filter>3d Party\MathGeoLib</Filter>
@@ -357,14 +348,23 @@
     <ClInclude Include="JSON\parson.h">
       <Filter>3d Party\JSON</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFS.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="JSONNode.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
     <ClInclude Include="GUI_Config.h">
       <Filter>Sources\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Sources\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Sources\Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -385,12 +385,6 @@
     </ClCompile>
     <ClCompile Include="log.cpp">
       <Filter>Sources\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Primitive.cpp">
       <Filter>Sources\Helpers</Filter>
@@ -430,12 +424,6 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_sdl_gl3.cpp">
       <Filter>3d Party\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTime.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Sources\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Algorithm\GJK.cpp">
       <Filter>3d Party\MathGeoLib\Algorithm</Filter>
@@ -578,14 +566,23 @@
     <ClCompile Include="JSON\parson.c">
       <Filter>3d Party\JSON</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFS.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="JSONNode.cpp">
       <Filter>Sources\Containers</Filter>
     </ClCompile>
     <ClCompile Include="GUI_Config.cpp">
       <Filter>Sources\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Sources\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Sources\Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -609,6 +606,9 @@
     </None>
     <None Include="MathGeoLib\include\Math\Matrix.inl">
       <Filter>3d Party\MathGeoLib\Math</Filter>
+    </None>
+    <None Include="Game\Configuration.json">
+      <Filter>Sources\Main</Filter>
     </None>
   </ItemGroup>
 </Project>

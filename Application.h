@@ -5,7 +5,6 @@
 #include "Globals.h"
 
 class Module;
-class ModuleWindowsFS;
 class ModuleTime;
 class ModuleWindow;
 class ModuleInput;
@@ -16,7 +15,8 @@ class ModuleSceneIntro;
 class ModuleEditor;
 class ModuleRenderer3D;
 
-class Timer;
+class FileManager;
+class TimeManager;
 
 class Application
 {
@@ -29,16 +29,19 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void OpenURL(const char* url);
+
 private: 
 
 	void AddModule(Module* mod);
 	void FinishUpdate();
-	
 
 public:
 
-	ModuleWindowsFS* fs;
-	ModuleTime* time;
+	FileManager* fm;
+	TimeManager* time;
+
+	// Modules
 	ModuleWindow* window;
 	ModuleInput* input;
 	ModuleAudio* audio;
@@ -52,9 +55,8 @@ public:
 	ModuleGOManager* go_manager;
 	ModuleResourceManager* resource_manager;
 	ModuleLighting* lighting;
-	ModuleScripting* scripting;
-	*/
-	void OpenURL(const char* url);
+	ModuleScripting* scripting;*/
+
 private:
 	
 	std::list<Module*> list_modules;

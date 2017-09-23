@@ -1,8 +1,6 @@
 #include "Application.h"
 
 #include "Module.h"
-#include "ModuleFS.h"
-#include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
@@ -12,17 +10,19 @@
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
 
-
+#include "FileManager.h"
+#include "TimeManager.h"
 #include "GUI_Console.h"
-
 #include "JSONNode.h"
 
 #include "Brofiler/include/Brofiler.h"
 
 Application::Application()
 {
-	fs = new ModuleWindowsFS("File System");
-	time = new ModuleTime("Time");
+	fm = new WindowsFileManager();
+	time = new TimeManager();
+
+	// Modules
 	editor = new ModuleEditor("Editor");
 	window = new ModuleWindow("Window");
 	input = new ModuleInput("Input");
@@ -31,15 +31,12 @@ Application::Application()
 	camera = new ModuleCamera3D("Camera");
 	scene_intro = new ModuleSceneIntro("Scene Intro");
 	renderer3D = new ModuleRenderer3D("Render");
-	
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(fs);
-	AddModule(time);
 	AddModule(editor);
 	AddModule(window);
 	AddModule(input);
@@ -59,6 +56,8 @@ Application::~Application()
 	{
 		delete (*i);
 	}
+
+	delete fm;
 }
 
 bool Application::Init()
@@ -66,27 +65,24 @@ bool Application::Init()
 	bool ret = true;
 
 	char* buffer = nullptr;
-	fs->LoadFileToBuffer(&buffer, "Configuration.json");
+	fm->LoadFileToBuffer(&buffer, "Configuration.json");
 	JSONNode config(buffer);
 	delete[] buffer;
 
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();
-	while (ret && item != list_modules.end())
+	for (; ret && item != list_modules.end(); item++)
 	{
 		ret = (*item)->Init(config.PullJObject((*item)->GetName()));
-		item++;
 	}
 
 	// After all Init calls we call Start() in all modules
 	console->LogConsole("Application Start --------------\n");
 	item = list_modules.begin();
-	while (ret && item != list_modules.end())
+	for (; ret && item != list_modules.end(); item++)
 	{
 		if((*item)->IsEnabled())
 			ret = (*item)->Start();
-
-		item++;
 	}
 	
 	return ret;
