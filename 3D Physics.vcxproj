@@ -79,6 +79,7 @@
     <ClInclude Include="EditorMainMenu.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="GUI_Config.h" />
     <ClInclude Include="GUI_Console.h" />
     <ClInclude Include="GUI_Hardware.h" />
     <ClInclude Include="GUI_Tests.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="GUI_Config.cpp" />
     <ClCompile Include="JSONNode.cpp" />
     <ClCompile Include="EditorMainMenu.cpp" />
     <ClCompile Include="glmath.cpp" />

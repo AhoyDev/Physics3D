@@ -10,7 +10,7 @@ EditorMainMenu::EditorMainMenu()
 	
 	tests_menu = new GUI_Tests();
 	config = new GUI_Config();
-	config->
+	
 }
 
 update_status EditorMainMenu::ShowMainMenu()

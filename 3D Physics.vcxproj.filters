@@ -363,6 +363,9 @@
     <ClInclude Include="JSONNode.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="GUI_Config.h">
+      <Filter>Sources\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -580,6 +583,9 @@
     </ClCompile>
     <ClCompile Include="JSONNode.cpp">
       <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI_Config.cpp">
+      <Filter>Sources\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
