@@ -6,5 +6,7 @@ before_build:
   
 # package Web Application project for Web Deploy
 build:
+
+    project: 3D Physics.sln
     verbosity: minimal
     publish_wap: true
