@@ -52,6 +52,14 @@ update_status EditorMainMenu::ShowMainMenu()
 			about = !about;
 		}
 		
+		if (ImGui::MenuItem("Documentation"))
+		{
+			App->OpenURL("https://github.com/AhoyDev/Rubens-Engine/wiki");
+		}
+		if (ImGui::MenuItem("Download Latest"))
+		{
+			App->OpenURL("https://github.com/AhoyDev/Rubens-Engine/releases");
+		}
 
 		if (ImGui::MenuItem("Demo"))
 			demo = !demo;
