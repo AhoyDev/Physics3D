@@ -27,6 +27,8 @@ public:
 	void SetFullScreen(const bool flag_value);
 	void SetBorderless(const bool flag_value);
 	void SetFullDesktop(const bool flag_value);
+	void SetWindowSize(float, float);
+
 
 	void SwapFullScreen();
 	void SwapBorderless();

@@ -16,6 +16,15 @@ update_status EditorMainMenu::ShowMainMenu()
 
 	if (ImGui::BeginMenu("File"))
 	{
+		if (ImGui::MenuItem("New"))
+			return UPDATE_STOP;
+
+		if (ImGui::MenuItem("Open"))
+			return UPDATE_STOP;
+
+		if (ImGui::MenuItem("Save"))
+			return UPDATE_STOP;
+
 		if (ImGui::MenuItem("Quit"))
 			return UPDATE_STOP;
 

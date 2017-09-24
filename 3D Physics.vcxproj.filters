@@ -408,6 +408,7 @@
     <ClInclude Include="STriangle.h">
       <Filter>Sources\Math\SPrimitives</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -688,5 +689,11 @@
     <None Include="Game\Configuration.json">
       <Filter>Sources\Main</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="3D Physics.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
 </Project>

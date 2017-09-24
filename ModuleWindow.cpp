@@ -131,6 +131,11 @@ void ModuleWindow::SetFullDesktop(bool flag_value)
 	SDL_SetWindowFullscreen(window, flag);
 }
 
+void ModuleWindow::SetWindowSize(float _width, float _height)
+{
+	SDL_SetWindowSize(window, _width, _height);
+}
+
 
 
 void ModuleWindow::SwapFullScreen()

@@ -98,6 +98,20 @@ void GUI_Config::ShowWindow()
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
 		App->window->SetBrightness(brightness);
 
+	float width = App->window->GetWidth();
+	float widthPixels = App->window->GetWidth();
+	if (ImGui::SliderFloat("Width", &width, 0.0f, 1.0f))
+		App->window->SetWindowSize(width*widthPixels, App->window->GetHeight());
+
+	float height = App->window->GetHeight();
+	float heightPixels = App->window->GetHeight();
+	if (ImGui::SliderFloat("Height", &height, 0.0f, 1.0f))
+		App->window->SetWindowSize(App->window->GetWidth(),height*heightPixels);
+
+
+
+
+
 	// Window Flags
 	if (ImGui::RadioButton("FullScreen", App->window->CheckFlag(SDL_WINDOW_FULLSCREEN)))
 		App->window->SwapFullScreen();
