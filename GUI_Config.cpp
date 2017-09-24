@@ -12,7 +12,9 @@
 
 
 GUI_Config::GUI_Config()
-{}
+{
+
+}
 
 GUI_Config::~GUI_Config()
 {

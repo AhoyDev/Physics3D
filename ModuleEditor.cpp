@@ -1,12 +1,12 @@
 #include "Application.h"
-
+#include "Globals.h"
 #include "ModuleEditor.h"
 #include "SDL\include\SDL.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "imgui\imgui.h"
 #include "EditorMainMenu.h"
-
+#include "GUI_Config.h"
 #include "RandomGenerator.h"
 
 
@@ -18,6 +18,8 @@
 ModuleEditor::ModuleEditor(const char* name, bool start_enabled) : Module(name, start_enabled)
 {
 	main_menu = new EditorMainMenu();
+	tests_menu = new GUI_Tests();
+	config = new GUI_Config();
 	
 }
 
@@ -35,7 +37,33 @@ bool ModuleEditor::Init(JSONNode config)
 	console->LogConsole("------------ Initializing Console -----------------\n");
 	console->LogConsole("------------ Console Ready -----------------\n");
 
+	Colors colors;
+	
+	//ImGui Styling
+	style.WindowPadding = ImVec2(15, 15);
+	style.WindowRounding = 5.0f;
+	style.FramePadding = ImVec2(5, 5);
+	style.FrameRounding = 4.0f;
+	style.ItemSpacing = ImVec2(12, 8);
+	style.ItemInnerSpacing = ImVec2(8, 6);
+	style.IndentSpacing = 25.0f;
+	style.ScrollbarSize = 15.0f;
+	style.ScrollbarRounding = 9.0f;
+	style.GrabMinSize = 5.0f;
+	style.GrabRounding = 3.0f;
+	
 
+	style.Colors[ImGuiCol_Text] = colors.white;
+	//style.Colors[ImGuiCol_FrameBg] = colors.darkBlue;
+	style.Colors[ImGuiCol_WindowBg] = colors.Black;
+	style.Colors[ImGuiCol_MenuBarBg] = colors.DarkerGreen;
+	style.Colors[ImGuiCol_ScrollbarGrab] = colors.DarkerGreen;
+	style.Colors[ImGuiCol_ScrollbarGrabHovered] = colors.LighterGreen;
+	style.Colors[ImGuiCol_SliderGrab] = colors.LighterGreen;
+	style.Colors[ImGuiCol_PlotHistogram] = colors.LighterGreen;
+	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_Header] = colors.DarkerGreen; 
+	style.Colors[ImGuiCol_CloseButton] = colors.pink;
 
 	return true;
 }
@@ -58,6 +86,12 @@ update_status ModuleEditor::Update(float dt)
 	if(main_menu->show)
 		status = main_menu->ShowMainMenu();
 
+	if (tests)
+		tests_menu->ShowIntersectionMenu();
+
+	if (configuration)
+		config->ShowConfigMenu();
+
 
 	//Pressing M hides the main menu for focused work
 
@@ -67,6 +101,12 @@ update_status ModuleEditor::Update(float dt)
 			main_menu->show = false;
 		else
 			main_menu->show = true;
+
+		if (tests)
+			tests = !tests;
+
+		if (configuration)
+			configuration = !configuration;
 		
 	}
 

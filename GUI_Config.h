@@ -3,6 +3,8 @@
 
 #include "MathGeoLib\include\MathGeoLib.h"
 #include <vector>
+#include "imgui\imgui.h"
+#include "Globals.h"
 
 class GUI_Config
 {
@@ -22,6 +24,8 @@ public:
 
 	std::vector<float> fps;
 	std::vector<float> ms;
+
+	Colors colors;
 };
 
 

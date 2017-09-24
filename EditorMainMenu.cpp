@@ -2,14 +2,11 @@
 #include "Application.h"
 #include "EditorMainMenu.h"
 #include "imgui/imgui.h"
-
+#include "ModuleEditor.h"
 #include "GUI_Config.h"
 
 EditorMainMenu::EditorMainMenu()
 {
-	
-	tests_menu = new GUI_Tests();
-	config = new GUI_Config();
 	
 }
 
@@ -30,10 +27,10 @@ update_status EditorMainMenu::ShowMainMenu()
 	{
 
 		if (ImGui::MenuItem("Tests"))
-			tests = !tests;
+			App->editor->tests = !App->editor->tests;
 
 		if (ImGui::MenuItem("Configuration"))
-			configuration = !configuration;
+			App->editor->configuration = !App->editor->configuration;
 
 
 		ImGui::EndMenu();
@@ -64,14 +61,6 @@ update_status EditorMainMenu::ShowMainMenu()
 
 	ImGui::EndMainMenuBar();
 
-
-	//Shows hardware if activated on the main menu
-
-
-	if (tests)
-		tests_menu->ShowIntersectionMenu();
-	if (configuration)
-		config->ShowConfigMenu();
 	
 	if(about)
 	{
@@ -83,9 +72,11 @@ update_status EditorMainMenu::ShowMainMenu()
 			ImGui::TextColored(ImVec4(230, 250, 240, 255), "About: ");
 			ImGui::Text("Engine made in CITM (UPC) to develop an RPG game");
 
-			ImGui::TextColored(ImVec4(230, 250, 240, 255), "Core Developers: ");
-			ImGui::Text("Ruben Sardon");
-			ImGui::Text("Ruben Idigora");
+			
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "Core Developers");
+			ImGui::TextColored(colors.Green, "Ruben Sardon");
+			ImGui::TextColored(colors.yellow, "Ruben Idigora");
+	
 
 			ImGui::TextColored(ImVec4(230, 250, 240, 255), "Libraries used");
 
@@ -104,6 +95,5 @@ update_status EditorMainMenu::ShowMainMenu()
 
 void EditorMainMenu::CleanUp()
 {
-	delete tests_menu;
-
+	
 }

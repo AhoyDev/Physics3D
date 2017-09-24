@@ -26,11 +26,11 @@ private:
 public:
 	bool demo = false;
 	bool show = true;
-	bool configuration = false;
-	bool tests = false;
 	bool about = false;
 	bool hardware = false;
+	
 	GUI_Config* config;
+	Colors colors;
 };
 #endif
 
