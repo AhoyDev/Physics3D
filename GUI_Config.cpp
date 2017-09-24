@@ -68,7 +68,7 @@ void GUI_Config::ShowApp()
 	}
 	
 	title += std::to_string(lastFPS);
-	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title.c_str(), 0.0f, 90.0f, ImVec2(310, 100));
+	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title.c_str(), 0.f, 90.f, ImVec2(310, 100));
 
 	// MS Plotter
 	title = "Miliseconds: ";
@@ -86,7 +86,7 @@ void GUI_Config::ShowApp()
 	}
 
 	title += std::to_string(miliseconds);
-	ImGui::PlotHistogram("##Miliseconds", &fps[0], fps.size(), 0, title.c_str(), 0.0f, 90.0f, ImVec2(310, 100));
+	ImGui::PlotHistogram("##Miliseconds", &ms[0], ms.size(), 0, title.c_str(), 10.f, 30.f, ImVec2(310, 100));
 }
 
 void GUI_Config::ShowWindow()
