@@ -292,7 +292,10 @@
     <ResourceCompile Include="3D Physics.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\Desktop\iconEngine.png" />
     <Image Include="icon1.ico" />
+    <Image Include="Icon\iconEngine.ico" />
+    <Image Include="Icon\iconEngine.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

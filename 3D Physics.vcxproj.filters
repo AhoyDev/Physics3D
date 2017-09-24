@@ -695,5 +695,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />
+    <Image Include="..\..\..\Desktop\iconEngine.png" />
+    <Image Include="Icon\iconEngine.png" />
+    <Image Include="Icon\iconEngine.ico" />
   </ItemGroup>
 </Project>
