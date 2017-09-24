@@ -71,7 +71,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalDependencies>Bullet/bin/BulletCollision.lib;Bullet/bin/BulletDynamics.lib;Bullet/bin/LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Bullet/libx86/BulletCollision.lib;Bullet/libx86/BulletDynamics.lib;Bullet/libx86/LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
