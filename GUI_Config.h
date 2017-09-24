@@ -12,9 +12,16 @@ public:
 
 	void ShowConfigMenu();
 
+private:
+
+	void ShowApp();
+	void ShowWindow();
+	void ShowHardware();
+
 public:
 
-	std::vector<float> fps_plot_values;
+	std::vector<float> fps;
+	std::vector<float> ms;
 };
 
 

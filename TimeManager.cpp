@@ -6,7 +6,7 @@ TimeManager::TimeManager()
 	last_frame_ms = -1;
 	last_fps = -1;
 	capped_ms = 1000 / 60;
-	fps_counter = 0;
+	max_fps = fps_counter = 0;
 
 	ms_timer = CreateTimer();
 	fps_timer = CreateTimer();
@@ -53,7 +53,7 @@ void TimeManager::ManageFrameTimers()
 	last_frame_ms = (float)ms_timer->Read();
 
 	// cap fps
-	if (last_frame_ms < capped_ms)
+	if (capped_ms > 0 && last_frame_ms < capped_ms)
 		SDL_Delay(capped_ms - last_frame_ms);
 }
 
@@ -65,31 +65,46 @@ float TimeManager::UpdateDeltaTime()
 	return dt;
 }
 
-float TimeManager::GetDeltaTime()
+void TimeManager::SetMaxFPS(int max)
+{
+	max_fps = max;
+
+	if (max_fps == 0)
+		capped_ms = 0;
+	else
+		capped_ms = 1.0f / (double)max_fps;
+}
+
+
+float TimeManager::GetDeltaTime() const
 {
 	return dt;
 }
 
-int TimeManager::GetFpsCounter()
+int TimeManager::GetFpsCounter() const
 {
 	return fps_counter;
 }
 
-float TimeManager::GetLastFrameMs()
+float TimeManager::GetLastFrameMs() const
 {
 	return last_frame_ms;
 }
 
-int TimeManager::GetLastFPS()
+int TimeManager::GetLastFPS() const
 {
 	return last_fps;
 }
 
-int TimeManager::GetCappedMS()
+int TimeManager::GetCappedMS() const
 {
 	return capped_ms;
 }
 
+int TimeManager::GetMaxFPS() const
+{
+	return max_fps;
+}
 
 
 // TIME =======================================================================================

@@ -16,15 +16,16 @@ public:
 	Timer*	CreateTimer(bool start_active = true);
 	void	RemoveTimer(Timer* timer = nullptr);
 
-
 	void	ManageFrameTimers();
 	float	UpdateDeltaTime();
+	void	SetMaxFPS(int max);
 
-	float	GetDeltaTime();
-	int		GetFpsCounter();
-	float	GetLastFrameMs();
-	int		GetLastFPS();
-	int		GetCappedMS();
+	float	GetDeltaTime() const;
+	int		GetFpsCounter() const;
+	float	GetLastFrameMs() const;
+	int		GetLastFPS() const;
+	int		GetCappedMS() const;
+	int		GetMaxFPS() const;
 
 public:
 	
@@ -34,6 +35,7 @@ public:
 	float	last_frame_ms;
 	int		last_fps;
 	int		capped_ms;
+	int		max_fps;
 
 private:
 

@@ -35,6 +35,9 @@ void log(const char file[], int line, const char* format, ...);
 #define KILOBYTE 1024
 #define MEGABYTE 1048576
 #define GIGABYTE 1073741824
+#define KILOBYTE_F 1024.0
+#define MEGABYTE_F 1048576.0
+#define GIGABYTE_F 1073741824.0
 
 typedef unsigned int uint;
 
