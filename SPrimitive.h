@@ -18,6 +18,8 @@
 #include "MathGeoLib\include\Geometry\Sphere.h"
 //#include "MathGeoLib\include\Geometry\Triangle.h"*/
 
+#include "MathGeoLib\include\Geometry\GeometryAll.h"
+
 enum ShapeType
 {
 	DOT = 0,
@@ -37,8 +39,22 @@ enum ShapeType
 };
 
 class SSegment;
+class SLine;
+class SRay;
+class SPlane;
+class STriangle;
+class SCircle;
+class SPolygon;
+class SCube;
+class SFrustum;
 class SSphere;
+class SCylinder;
 class SCapsule;
+class SPolyhedron;
+//class SCylinder ?
+
+template<class s> class SPrimitive;
+typedef SPrimitive<vec> SPoint;
 
 template<class s>
 class SPrimitive
@@ -68,8 +84,8 @@ public:
 	}
 
 	// RENDERS ============================================
-	//virtual void	Render() const;
-	//virtual void	InnerRender() const;
+	virtual void Render() const {}
+	//virtual void InnerRender() const {}
 
 	// SETTERS & TRANSFORMS ===============================
 	virtual void SetPos(const float x, const float y, const float z)
@@ -127,142 +143,20 @@ public:
 	}
 
 	// INTERSECTS ==========================================
-	virtual bool Intersects(const Sphere* other = nullptr) const
-	{
-		bool ret = false;
+	virtual bool Intersects(const SPoint* other = nullptr) const { return false; }
+	virtual bool Intersects(const SSegment* other = nullptr) const { return false; }
+	virtual bool Intersects(const SLine* other = nullptr) const { return false; }
+	virtual bool Intersects(const SRay* other = nullptr) const { return false; }
+	virtual bool Intersects(const SPlane* other = nullptr) const { return false; }
+	virtual bool Intersects(const STriangle* other = nullptr) const { return false; }
+	virtual bool Intersects(const SCircle* other = nullptr) const { return false; }
+	virtual bool Intersects(const SPolygon* other = nullptr) const { return false; }
+	//virtual bool Intersects(const SCube* other = nullptr) const { return false; }
+	virtual bool Intersects(const SFrustum* other = nullptr) const { return false; }
+	virtual bool Intersects(const SSphere* other = nullptr) const { return false; }
+	virtual bool Intersects(const SCapsule* other = nullptr) const { return false; }
+	virtual bool Intersects(const SPolyhedron* other = nullptr) const { return false; }
 
-		if (other != nullptr)
-			other->Contains(GetPos());
-
-		return ret;
-	}
-	virtual bool Intersects(const Capsule* other = nullptr) const
-	{
-		bool ret = false;
-
-		if (other != nullptr)
-			other->Contains(GetPos());
-
-		return ret;
-	}
 };
-
-class SSegment : public SPrimitive<LineSegment>
-{
-public:
-	SSegment();
-	SSegment(vec begin, vec end);
-};
-
-/*class SLine : public Shape
-{
-public:
-	SLine();
-};
-
-class SRay : public Shape
-{
-public:
-	SRay();
-};
-
-class SPlane : public Shape
-{
-public:
-	SPlane();
-};*/
-
-/*class STriangle : public Shape
-{
-public:
-	STriangle();
-};
-
-class SCircle : public Shape
-{
-public:
-	SCircle();
-	SCircle(float radius);
-	void InnerRender() const;
-public:
-	float radius;
-};
-
-class SPolygon : public Shape
-{
-public:
-	SPolygon();
-};
-
-class SCube : public Shape
-{
-public:
-	SCube();
-	SCube(float sizeX, float sizeY, float sizeZ);
-	void InnerRender() const;
-public:
-	float radius;
-};
-
-class SFustrum : public Shape
-{
-public:
-	SFustrum();
-};*/
-
-class SSphere : public SPrimitive<Sphere>
-{
-public:
-	SSphere(float radius = 1.f);
-	SSphere(vec center, float radius = 1.f);
-
-	bool Intersects(const Sphere* other = nullptr) const;
-	bool Intersects(const Capsule* other = nullptr) const;
-};
-
-/*class SCylinder : public Shape
-{
-public:
-	SCylinder();
-};*/
-
-class SCapsule : public SPrimitive<Capsule>
-{
-public:
-	SCapsule(float radius = 1.f);
-	SCapsule(const SSegment endPoints, float radius = 1.f);
-
-	bool Intersects(const Sphere* other = nullptr) const;
-	bool Intersects(const Capsule* other = nullptr) const;
-};
-
-/*class SPolyhedron : public Shape
-{
-public:
-	SPolyhedron();
-};*/
-
-
-typedef SPrimitive<vec> SPoint;
-
-SPoint::SPrimitive(vec pos, ShapeType type) : type(type), transform(float4x4::identity)
-{
-	SetPos(pos);
-	shape = new vec(pos);
-}
-/*
-bool Contains(const vec &point) const;
-int Intersects(const LineSegment &lineSegment, vec *intersectionPoint = 0, vec *intersectionNormal = 0, float *d = 0, float *d2 = 0) const;
-int Intersects(const Line &line, vec *intersectionPoint = 0, vec *intersectionNormal = 0, float *d = 0, float *d2 = 0) const;
-int Intersects(const Ray &ray, vec *intersectionPoint = 0, vec *intersectionNormal = 0, float *d = 0, float *d2 = 0) const;
-bool Intersects(const Plane &plane) const;
-bool Intersects(const AABB &aabb, vec *closestPointOnAABB = 0) const;
-bool Intersects(const OBB &obb, vec *closestPointOnOBB = 0) const;
-bool Intersects(const Triangle &triangle, vec *closestPointOnTriangle = 0) const;
-bool Intersects(const Capsule &capsule) const;
-bool Intersects(const Polygon &polygon) const;
-bool Intersects(const Frustum &frustum) const;
-bool Intersects(const Polyhedron &polyhedron) const;
-bool Intersects(const Sphere &sphere) const;*/
 
 #endif

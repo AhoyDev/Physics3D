@@ -55,6 +55,12 @@
     <Filter Include="Sources\Main">
       <UniqueIdentifier>{e8d723fd-7b52-47c9-99ab-f6a906efda01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Math\SPrimitives">
+      <UniqueIdentifier>{2a03178d-7356-4429-86ee-08fd9632c5e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Outdated">
+      <UniqueIdentifier>{750c7ba3-dfd5-4d4f-aafc-600838908036}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -78,14 +84,8 @@
     <ClInclude Include="p2Point.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>Sources\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Sources\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="ModuleSceneIntro.h">
       <Filter>Sources\Modules\Game</Filter>
@@ -95,12 +95,6 @@
     </ClInclude>
     <ClInclude Include="ModulePhysics3D.h">
       <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysBody3D.h">
-      <Filter>Sources\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysVehicle3D.h">
-      <Filter>Sources\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">
       <Filter>Sources\Modules</Filter>
@@ -321,16 +315,7 @@
     <ClInclude Include="GUI_Hardware.h">
       <Filter>Sources\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="glmath.h">
-      <Filter>Sources\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitives.h">
-      <Filter>Sources\Math</Filter>
-    </ClInclude>
     <ClInclude Include="RandomGenerator.h">
-      <Filter>Sources\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="R_Sphere.h">
       <Filter>Sources\Math</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
@@ -342,14 +327,8 @@
     <ClInclude Include="GUI_Console.h">
       <Filter>Sources\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="SPrimitive.h">
-      <Filter>Sources\Math</Filter>
-    </ClInclude>
     <ClInclude Include="JSON\parson.h">
       <Filter>3d Party\JSON</Filter>
-    </ClInclude>
-    <ClInclude Include="JSONNode.h">
-      <Filter>Sources\Containers</Filter>
     </ClInclude>
     <ClInclude Include="GUI_Config.h">
       <Filter>Sources\GUI</Filter>
@@ -365,6 +344,69 @@
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Sources\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitives.h">
+      <Filter>Sources\Outdated</Filter>
+    </ClInclude>
+    <ClInclude Include="R_Sphere.h">
+      <Filter>Sources\Outdated</Filter>
+    </ClInclude>
+    <ClInclude Include="SPrimitive.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="glmath.h">
+      <Filter>Sources\Outdated</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>Sources\Outdated</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Sources\Outdated</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysVehicle3D.h">
+      <Filter>Sources\Outdated</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysBody3D.h">
+      <Filter>Sources\Outdated</Filter>
+    </ClInclude>
+    <ClInclude Include="JSONNode.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SCapsule.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SCircle.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SCube.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SFrustum.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SLine.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SPlane.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SPolygon.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SPolyhedron.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SRay.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SSegment.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SSphere.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="STriangle.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -386,14 +428,8 @@
     <ClCompile Include="log.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>Sources\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Sources\Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Sources\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="ModulePhysics3D.cpp">
       <Filter>Sources\Modules</Filter>
@@ -403,12 +439,6 @@
     </ClCompile>
     <ClCompile Include="ModulePlayer.cpp">
       <Filter>Sources\Modules\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysBody3D.cpp">
-      <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysVehicle3D.cpp">
-      <Filter>Sources\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Sources\Modules</Filter>
@@ -533,12 +563,6 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp">
       <Filter>3d Party\MathGeoLib\Time</Filter>
     </ClCompile>
-    <ClCompile Include="glmath.cpp">
-      <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Primitives.cpp">
-      <Filter>Sources\Math</Filter>
-    </ClCompile>
     <ClCompile Include="GUI_Hardware.cpp">
       <Filter>Sources\GUI</Filter>
     </ClCompile>
@@ -554,20 +578,11 @@
     <ClCompile Include="GUI_Tests.cpp">
       <Filter>Sources\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="R_Sphere.cpp">
-      <Filter>Sources\Math</Filter>
-    </ClCompile>
     <ClCompile Include="GUI_Console.cpp">
       <Filter>Sources\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="SPrimitive.cpp">
-      <Filter>Sources\Math</Filter>
-    </ClCompile>
     <ClCompile Include="JSON\parson.c">
       <Filter>3d Party\JSON</Filter>
-    </ClCompile>
-    <ClCompile Include="JSONNode.cpp">
-      <Filter>Sources\Containers</Filter>
     </ClCompile>
     <ClCompile Include="GUI_Config.cpp">
       <Filter>Sources\GUI</Filter>
@@ -583,6 +598,69 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Sources\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitives.cpp">
+      <Filter>Sources\Outdated</Filter>
+    </ClCompile>
+    <ClCompile Include="R_Sphere.cpp">
+      <Filter>Sources\Outdated</Filter>
+    </ClCompile>
+    <ClCompile Include="SPrimitive.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="glmath.cpp">
+      <Filter>Sources\Outdated</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>Sources\Outdated</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Sources\Outdated</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysBody3D.cpp">
+      <Filter>Sources\Outdated</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysVehicle3D.cpp">
+      <Filter>Sources\Outdated</Filter>
+    </ClCompile>
+    <ClCompile Include="JSONNode.cpp">
+      <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="SCapsule.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SCircle.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SCube.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SFrustum.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SLine.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SPlane.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SPolygon.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SPolyhedron.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SRay.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SSegment.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="SSphere.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="STriangle.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

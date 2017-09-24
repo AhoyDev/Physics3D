@@ -1,0 +1,12 @@
+#include "SRay.h"
+
+#include "SSegment.h"
+#include "SLine.h"
+#include "SPlane.h"
+#include "STriangle.h"
+#include "SCircle.h"
+#include "SPolygon.h"
+#include "SFrustum.h"
+#include "SSphere.h"
+#include "SCapsule.h"
+#include "SPolyhedron.h"
