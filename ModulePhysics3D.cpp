@@ -12,13 +12,13 @@
 
 
 #ifdef _DEBUG
-#pragma comment (lib, "Bullet/bin/BulletDynamics_Debug.lib")
-#pragma comment (lib, "Bullet/bin/BulletCollision_Debug.lib")
-#pragma comment (lib, "Bullet/bin/LinearMath_Debug.lib")
+#pragma comment (lib, "Bullet/libx86/BulletDynamics_Debug.lib")
+#pragma comment (lib, "Bullet/libx86/BulletCollision_Debug.lib")
+#pragma comment (lib, "Bullet/libx86/LinearMath_Debug.lib")
 #else
-#pragma comment (lib, "Bullet/bin/BulletDynamics.lib")
-#pragma comment (lib, "Bullet/bin/BulletCollision.lib")
-#pragma comment (lib, "Bullet/bin/LinearMath.lib")
+#pragma comment (lib, "Bullet/libx86/BulletDynamics.lib")
+#pragma comment (lib, "Bullet/libx86/BulletCollision.lib")
+#pragma comment (lib, "Bullet/libx86/LinearMath.lib")
 #endif
 
 ModulePhysics3D::ModulePhysics3D(const char* name, bool start_enabled) : Module(name, start_enabled)
