@@ -91,7 +91,7 @@ update_status ModuleCamera3D::Update(float dt)
 	Right *= Distance;
 	Forward *= Distance;
 
-	float3 Movement;
+	float3 Movement(0,0,0);
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) Movement += Forward;
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) Movement -= Forward;

@@ -5,15 +5,17 @@
 #include "ModuleCamera3D.h"
 
 #include "Glew\include\glew.h"
+#include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "SDL\include\SDL_opengl.h"
+
 
 #include "GUI_Console.h"
 
+
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-#pragma comment (lib, "Glew/libx86/glew32.lib") 
+#pragma comment (lib, "Glew/libx86/32bits/glew32.lib") 
 
 #include "Imgui\imgui.h"
 #include "Imgui\imgui_impl_sdl_gl3.h"
@@ -37,6 +39,22 @@ bool ModuleRenderer3D::Init(JSONNode config)
 	console->LogConsole("Creating 3D Renderer context\n");
 	bool ret = true;
 	
+	//Set attributes for SDL_GL
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+
+	
+	/*LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	*/
+
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
 	if(context == NULL)
@@ -48,8 +66,9 @@ bool ModuleRenderer3D::Init(JSONNode config)
 	if (GLEW_OK != glewInit())
 	{
 		console->LogConsole("Glew failed\n");
+		LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	}
-	
+
 	if(ret == true)
 	{
 
@@ -115,10 +134,13 @@ bool ModuleRenderer3D::Init(JSONNode config)
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+
 
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	
@@ -131,6 +153,8 @@ bool ModuleRenderer3D::Init(JSONNode config)
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::LightBlue);
+
+	//Color c = App->camera->back
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -160,6 +184,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::MediumBlue);
 
+	DrawGeometry();
 	ImGui::Render();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
@@ -196,12 +221,82 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	Therefore, for now trashy code will have to suffice.*/
 
 	mat4x4 tmp = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+
 	for (int row = 0; row < 4; row++)
 		for (int col = 0; col < 4; col++)
 			ProjectionMatrix[row][col] = tmp[(row * 4) + col];
 
-	glLoadMatrixf((GLfloat*)ProjectionMatrix.v);
+	//ProjectionMatrix = (GLfloat*)ProjectionMatrix.v;
+	GLfloat* tmp_GLFLoat = new GLfloat[16]();
+
+	tmp_GLFLoat[0] = tmp.M[0];
+	tmp_GLFLoat[1] = tmp.M[1];
+	tmp_GLFLoat[2] = tmp.M[2];
+	tmp_GLFLoat[3] = tmp.M[3];
+	tmp_GLFLoat[4] = tmp.M[4];
+	tmp_GLFLoat[5] = tmp.M[5];
+	tmp_GLFLoat[6] = tmp.M[6];
+	tmp_GLFLoat[7] = tmp.M[7];
+	tmp_GLFLoat[8] = tmp.M[8];
+	tmp_GLFLoat[9] = tmp.M[9];
+	tmp_GLFLoat[10] = tmp.M[10];
+	tmp_GLFLoat[11] = tmp.M[11];
+	tmp_GLFLoat[12] = tmp.M[12];
+	tmp_GLFLoat[13] = tmp.M[13];
+	tmp_GLFLoat[14] = tmp.M[14];
+	tmp_GLFLoat[15] = tmp.M[15];
+
+
+	glLoadMatrixf(tmp_GLFLoat);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::DrawGeometry()
+{
+	// Render a cube
+	glBegin(GL_QUADS);
+	// Top face
+	glColor3f(0.0f, 1.0f, 0.0f);  // Green
+	glVertex3f(1.0f, 1.0f, -1.0f);  // Top-right of top face
+	glVertex3f(-1.0f, 1.0f, -1.0f);  // Top-left of top face
+	glVertex3f(-1.0f, 1.0f, 1.0f);  // Bottom-left of top face
+	glVertex3f(1.0f, 1.0f, 1.0f);  // Bottom-right of top face
+
+								   // Bottom face
+	glColor3f(1.0f, 0.5f, 0.0f); // Orange
+	glVertex3f(1.0f, -1.0f, -1.0f); // Top-right of bottom face
+	glVertex3f(-1.0f, -1.0f, -1.0f); // Top-left of bottom face
+	glVertex3f(-1.0f, -1.0f, 1.0f); // Bottom-left of bottom face
+	glVertex3f(1.0f, -1.0f, 1.0f); // Bottom-right of bottom face
+
+								   // Front face
+	glColor3f(1.0f, 0.0f, 0.0f);  // Red
+	glVertex3f(1.0f, 1.0f, 1.0f);  // Top-Right of front face
+	glVertex3f(-1.0f, 1.0f, 1.0f);  // Top-left of front face
+	glVertex3f(-1.0f, -1.0f, 1.0f);  // Bottom-left of front face
+	glVertex3f(1.0f, -1.0f, 1.0f);  // Bottom-right of front face
+
+									// Back face
+	glColor3f(1.0f, 1.0f, 0.0f); // Yellow
+	glVertex3f(1.0f, -1.0f, -1.0f); // Bottom-Left of back face
+	glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom-Right of back face
+	glVertex3f(-1.0f, 1.0f, -1.0f); // Top-Right of back face
+	glVertex3f(1.0f, 1.0f, -1.0f); // Top-Left of back face
+
+								   // Left face
+	glColor3f(0.0f, 0.0f, 1.0f);  // Blue
+	glVertex3f(-1.0f, 1.0f, 1.0f);  // Top-Right of left face
+	glVertex3f(-1.0f, 1.0f, -1.0f);  // Top-Left of left face
+	glVertex3f(-1.0f, -1.0f, -1.0f);  // Bottom-Left of left face
+	glVertex3f(-1.0f, -1.0f, 1.0f);  // Bottom-Right of left face
+
+									 // Right face
+	glColor3f(1.0f, 0.0f, 1.0f);  // Violet
+	glVertex3f(1.0f, 1.0f, 1.0f);  // Top-Right of left face
+	glVertex3f(1.0f, 1.0f, -1.0f);  // Top-Left of left face
+	glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom-Left of left face
+	glVertex3f(1.0f, -1.0f, 1.0f);  // Bottom-Right of left face
+	glEnd();
 }

@@ -35,6 +35,8 @@ private:
 	float min_following_dist;
 	float max_following_dist;
 	float following_height;
+
+	//Frustrum* frustrum;
 };
 
 #endif
