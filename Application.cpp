@@ -76,11 +76,12 @@ bool Application::Init()
 		
 		JSONNode json_node;
 
-		std::list<Module*>::reverse_iterator i = list_modules.rbegin();
-		for (; i != list_modules.rend(); ++i)
+		std::list<Module*>::iterator i = list_modules.begin();
+		for (; i != list_modules.end(); ++i)
 			json_node.PushJObject((*i)->GetName());
 
-		json_node.Serialize(&buffer);
+		uint size = json_node.Serialize(&buffer);
+		fm->Save("Configuration.json", buffer);
 	}
 	JSONNode config(buffer);
 	delete[] buffer;

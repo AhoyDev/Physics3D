@@ -8,9 +8,6 @@
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 
-#include <fstream>
-#include <sstream>
-
 FileManager::FileManager()
 {
 	char* path = SDL_GetBasePath();
@@ -88,7 +85,7 @@ bool FileManager::LoadFileToBuffer(char** buffer, const char* file) const
 	return ret;
 }
 
-bool FileManager::Save(const char* file, const void* buffer, unsigned int size) const
+bool FileManager::Save(const char* file, const char* buffer, unsigned int size) const
 {
 	bool ret = false;
 
@@ -119,6 +116,12 @@ bool FileManager::Save(const char* file, const void* buffer, unsigned int size) 
 
 	return ret;
 }
+
+
+#include <Windows.h>
+#include <fstream>
+#include <sstream>
+#include "SDL\include\SDL_assert.h"
 
 WindowsFileManager::WindowsFileManager()
 {}
@@ -162,12 +165,47 @@ bool WindowsFileManager::LoadFileToBuffer(char** buffer, const char* file) const
 	return ret;
 }
 
-bool WindowsFileManager::Save(const char* file, const void* buffer, unsigned int size) const
+bool WindowsFileManager::Save(const char* file, const char* buffer, unsigned int size) const
 {
-	return false;
+	bool ret = false;
+
+	HANDLE handle = CreateFile(
+		file,    // name of the file
+		GENERIC_WRITE, // open for writing
+		0,             // sharing mode, none in this case
+		0,             // use default security descriptor
+		OPEN_ALWAYS, // open if file already exists
+		FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (!handle)
+	{
+		LOG("WindowsFS Error - could't OPEN/CREATE file %s\n", file);
+	}
+	else
+	{
+		DWORD dwBytesWritten = 0;
+		BOOL bErrorFlag = WriteFile(
+			handle,                // open file handle
+			buffer,      // start of data to write
+			strlen(buffer),  // number of bytes to write
+			&dwBytesWritten, // number of bytes that were written
+			NULL);            // no overlapped structure
+
+		if (bErrorFlag == FALSE)
+		{
+			LOG("WindowsFS Error - could't WRITE to file %s\n", file);
+		}
+		else if (dwBytesWritten != strlen(buffer))
+		{
+			LOG("WindowsFS Error - couldn't WROTE %d bytes from %d to %s\n", dwBytesWritten, strlen(buffer), file);
+		}
+		else
+		{
+			ret = true;
+		}
+
+		CloseHandle(handle);
+	}
+
+	return ret;
 }
-
-
-
-
-

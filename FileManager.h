@@ -10,7 +10,7 @@ public:
 	~FileManager();
 
 	virtual bool LoadFileToBuffer(char** buffer, const char* file = nullptr) const;
-	virtual bool Save(const char* file, const void* buffer, unsigned int size) const;
+	virtual bool Save(const char* file, const char* buffer, unsigned int size = 0) const;
 
 	bool AddPath(const char* path, const char* mount_point = nullptr);
 };
@@ -22,7 +22,7 @@ public:
 	~WindowsFileManager();
 
 	bool LoadFileToBuffer(char** buffer, const char* file = nullptr) const;
-	bool Save(const char* file, const void* buffer, unsigned int size) const;
+	bool Save(const char* file, const char* buffer, unsigned int size = 0) const;
 };
 
 #endif
