@@ -69,8 +69,9 @@ bool FileManager::LoadFileToBuffer(char** buffer, const char* file) const
 			{
 				LOG("FS Error - coun't READ %s: %s\n", file, PHYSFS_getLastError());
 
-				if (buffer)
-					delete[] buffer;
+				if (buffer) delete[] buffer;
+
+				buffer = nullptr;
 			}
 			else
 			{

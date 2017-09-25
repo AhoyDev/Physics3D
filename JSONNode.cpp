@@ -118,3 +118,24 @@ bool JSONNode::isValid() const
 {
 	return validNode;
 }
+
+uint JSONNode::Serialize(char** buffer, bool pretty)
+{
+	uint size_ret = 0;
+
+	if (pretty)
+	{
+		size_ret = json_serialization_size_pretty(value);
+		*buffer = new char[size_ret];
+		json_serialize_to_buffer_pretty(value, *buffer, size_ret);
+		
+	}
+	else
+	{
+		size_ret = json_serialization_size(value);
+		*buffer = new char[size_ret];
+		json_serialize_to_buffer(value, *buffer, size_ret);
+	}
+	
+	return size_ret;
+}

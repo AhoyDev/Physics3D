@@ -30,6 +30,7 @@ public:
 	JSONNode	PullJObject(const char* name) const;
 
 	bool isValid() const;
+	uint Serialize(char** buffer, bool pretty = true);
 
 public:
 
