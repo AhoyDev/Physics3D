@@ -25,7 +25,7 @@ bool ModuleSceneIntro::Start()
 // Load assets
 bool ModuleSceneIntro::CleanUp()
 {
-	console->LogConsole("Unloading Intro scene\n");
+	//console->LogConsole("Unloading Intro scene\n");
 
 	return true;
 }

@@ -49,7 +49,7 @@ bool ModuleAudio::Init(JSONNode config)
 // Called before quitting
 bool ModuleAudio::CleanUp()
 {
-	console->LogConsole("Freeing sound FX, closing Mixer and Audio subsystem\n");
+	//console->LogConsole("Freeing sound FX, closing Mixer and Audio subsystem\n");
 
 	if(music != NULL)
 	{

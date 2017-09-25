@@ -21,7 +21,8 @@
 #pragma comment (lib, "Bullet/libx86/LinearMath.lib")
 #endif
 
-ModulePhysics3D::ModulePhysics3D(const char* name, bool start_enabled) : Module(name, start_enabled)
+ModulePhysics3D::ModulePhysics3D(const char* name, bool start_enabled) : Module(name, start_enabled),
+debug_draw(nullptr), solver(nullptr), broad_phase(nullptr), dispatcher(nullptr), collision_conf(nullptr)
 {
 	debug = false;
 }
@@ -29,11 +30,11 @@ ModulePhysics3D::ModulePhysics3D(const char* name, bool start_enabled) : Module(
 // Destructor
 ModulePhysics3D::~ModulePhysics3D()
 {
-	delete debug_draw;
-	delete solver;
-	delete broad_phase;
-	delete dispatcher;
-	delete collision_conf;
+	if (debug_draw)		delete debug_draw;
+	if (solver)			delete solver;
+	if (broad_phase)	delete broad_phase;
+	if (dispatcher)		delete dispatcher;
+	if (collision_conf)	delete collision_conf;
 }
 
 // Render not available yet----------------------------------
@@ -336,7 +337,7 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 // Called before quitting
 bool ModulePhysics3D::CleanUp()
 {
-	console->LogConsole("Destroying 3D Physics simulation\n");
+	//console->LogConsole("Destroying 3D Physics simulation\n");
 
 	// Free all the bodies ---
 	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)

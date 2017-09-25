@@ -66,7 +66,7 @@ bool ModuleWindow::Init(JSONNode config)
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
-	console->LogConsole("Destroying SDL window and quitting all SDL systems\n");
+	//console->LogConsole("Destroying SDL window and quitting all SDL systems\n");
 
 	if(window)
 		SDL_DestroyWindow(window);

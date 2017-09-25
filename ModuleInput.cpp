@@ -126,7 +126,7 @@ update_status ModuleInput::PreUpdate(float dt)
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
-	console->LogConsole("Quitting SDL input event subsystem\n");
+	//console->LogConsole("Quitting SDL input event subsystem\n");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

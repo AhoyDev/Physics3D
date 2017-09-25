@@ -14,22 +14,26 @@
 #include "TimeManager.h"
 #include "GUI_Console.h"
 #include "JSONNode.h"
+#include "Globals.h"
 
 #include "Brofiler/include/Brofiler.h"
 
-Application::Application()
+Application::Application() :
+	fm(nullptr), time(nullptr),
+	window(nullptr), input(nullptr), audio(nullptr), physics3D(nullptr),
+	camera(nullptr), scene_intro(nullptr), editor(nullptr), renderer3D(nullptr)
 {
 	fm = new WindowsFileManager();
 	time = new TimeManager();
 
 	// Modules
-	editor = new ModuleEditor("Editor");
 	window = new ModuleWindow("Window");
 	input = new ModuleInput("Input");
 	audio = new ModuleAudio("Audio");
 	physics3D = new ModulePhysics3D("Physics");
 	camera = new ModuleCamera3D("Camera");
 	scene_intro = new ModuleSceneIntro("Scene Intro");
+	editor = new ModuleEditor("Editor");
 	renderer3D = new ModuleRenderer3D("Render");
 
 	// The order of calls is very important!
@@ -37,7 +41,6 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(editor);
 	AddModule(window);
 	AddModule(input);
 	AddModule(audio);
@@ -46,6 +49,7 @@ Application::Application()
 
 	AddModule(scene_intro);
 
+	AddModule(editor);
 	AddModule(renderer3D);
 }
 
@@ -57,7 +61,8 @@ Application::~Application()
 		delete (*i);
 	}
 
-	delete fm;
+	if (fm) delete fm;
+	if (time) delete time;
 }
 
 bool Application::Init()
@@ -65,7 +70,18 @@ bool Application::Init()
 	bool ret = true;
 
 	char* buffer = nullptr;
-	fm->LoadFileToBuffer(&buffer, "Configuration.json");
+	if (!fm->LoadFileToBuffer(&buffer, "Configuration.json")) // couldn't load config
+	{
+		LOG("Error while loading Configuration file. Creating new JSON stream\n");
+		
+		JSONNode json_node;
+
+		std::list<Module*>::reverse_iterator i = list_modules.rbegin();
+		for (; i != list_modules.rend(); ++i)
+			json_node.PushJObject((*i)->GetName());
+
+		json_node.Serialize(&buffer);
+	}
 	JSONNode config(buffer);
 	delete[] buffer;
 
@@ -77,7 +93,7 @@ bool Application::Init()
 	}
 
 	// After all Init calls we call Start() in all modules
-	console->LogConsole("Application Start --------------\n");
+	LOG("Application Start --------------\n");
 	item = list_modules.begin();
 	for (; ret && item != list_modules.end(); item++)
 	{
@@ -139,6 +155,7 @@ bool Application::CleanUp()
 	std::list<Module*>::reverse_iterator rit = list_modules.rbegin();
 	for (; rit != list_modules.rend() && ret; ++rit)
 	{
+		LOG((*rit)->GetName());
 		ret = (*rit)->CleanUp();
 	}
 

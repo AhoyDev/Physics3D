@@ -5,6 +5,7 @@
 #include "SDL\include\SDL.h"
 #include "PhysBody3D.h"
 #include "GUI_Console.h"
+
 // TEMPORAL
 #include "glmath.h"
 
@@ -38,7 +39,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	console->LogConsole("Cleaning camera\n");
+	//LOG("Cleaning camera\n");
 
 	return true;
 }
