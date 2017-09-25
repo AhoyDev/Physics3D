@@ -71,7 +71,9 @@ protected:
 
 public:
 	SPrimitive(ShapeType type = DOT) : type(type), transform(float4x4::identity)
-	{}
+	{
+		SetPos(0.f, 0.f, 0.f); // set to origin
+	}
 
 	SPrimitive(vec pos, ShapeType type = DOT) : type(type), transform(float4x4::identity)
 	{
@@ -85,7 +87,7 @@ public:
 
 	// RENDERS ============================================
 	virtual void Render() const {}
-	//virtual void InnerRender() const {}
+	virtual void InnerRender() const {}
 
 	// SETTERS & TRANSFORMS ===============================
 	virtual void SetPos(const float x, const float y, const float z)

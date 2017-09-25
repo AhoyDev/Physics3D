@@ -9,8 +9,10 @@ class Cube;
 class SCube : public SPrimitive<Cube>
 {
 public:
-	SCube() {}
-	SCube(float sizeX, float sizeY, float sizeZ) {}
+	SCube();
+	SCube(vec size);
+
+	void InnerRender() const;
 
 	/*bool Intersects(const SPoint* other = nullptr) const;
 	bool Intersects(const SSegment* other = nullptr) const;
@@ -26,6 +28,18 @@ public:
 	bool Intersects(const SCapsule* other = nullptr) const;
 	bool Intersects(const SPolyhedron* other = nullptr) const;*/
 
+};
+
+class Cube
+{
+public:
+	Cube();
+	Cube(vec size);
+	~Cube();
+
+public:
+
+	vec size;
 };
 
 #endif
