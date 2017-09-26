@@ -17,7 +17,7 @@ ModuleAudio::~ModuleAudio()
 bool ModuleAudio::Init(JSONNode config)
 {
 	LOG("Loading Audio Mixer\n");
-	bool ret = true;
+	bool ret = mix_loaded = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
@@ -33,7 +33,7 @@ bool ModuleAudio::Init(JSONNode config)
 	if((init & flags) != flags)
 	{
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
-		ret = false;
+		mix_loaded = false;
 	}
 
 	//Initialize SDL_mixer
@@ -51,20 +51,22 @@ bool ModuleAudio::CleanUp()
 {
 	//console->LogConsole("Freeing sound FX, closing Mixer and Audio subsystem\n");
 
-	if(music != NULL)
+	if (mix_loaded)
 	{
-		Mix_FreeMusic(music);
-	}
+		if (music != NULL)
+			Mix_FreeMusic(music);
 
-	std::list<Mix_Chunk*>::iterator item = fx.begin();
-	for (; item != fx.end(); item++)
-	{
-		Mix_FreeChunk(*item);
-	}
+		std::list<Mix_Chunk*>::iterator item = fx.begin();
+		for (; item != fx.end(); item++)
+		{
+			Mix_FreeChunk(*item);
+		}
 
-	fx.clear();
-	Mix_CloseAudio();
-	Mix_Quit();
+		fx.clear();
+		Mix_CloseAudio();
+		Mix_Quit();
+	}
+	
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 	return true;
 }

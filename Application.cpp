@@ -51,13 +51,15 @@ Application::Application() :
 
 	AddModule(editor);
 	AddModule(renderer3D);
+
+	SetConfig();
 }
 
 Application::~Application()
 {
-	delete fm;
+	/*delete fm;
 	delete time;
-	delete config;
+	delete config;*/
 
 	std::list<Module*>::reverse_iterator i = list_modules.rbegin();
 	for (; i != list_modules.rend(); ++i)
@@ -70,12 +72,11 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	SetConfig();
-
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();
 	for (; ret && item != list_modules.end(); item++)
 	{
+		LOG((*item)->GetName());
 		ret = (*item)->Init(config->PullJObject((*item)->GetName()));
 	}
 
@@ -84,6 +85,7 @@ bool Application::Init()
 	item = list_modules.begin();
 	for (; ret && item != list_modules.end(); item++)
 	{
+		LOG((*item)->GetName());
 		if((*item)->IsEnabled())
 			ret = (*item)->Start();
 	}
@@ -134,7 +136,6 @@ bool Application::CleanUp()
 	std::list<Module*>::reverse_iterator rit = list_modules.rbegin();
 	for (; rit != list_modules.rend() && ret; ++rit)
 	{
-		LOG((*rit)->GetName());
 		ret = (*rit)->CleanUp();
 	}
 
@@ -154,19 +155,22 @@ void Application::SetConfig()
 	{
 		LOG("Error while loading Configuration file. Creating new JSON stream\n");
 
-		JSONNode json_node;
+		config = new JSONNode();
 
 		std::list<Module*>::iterator i = list_modules.begin();
 		for (; i != list_modules.end(); ++i)
-			json_node.PushJObject((*i)->GetName());
+			config->PushJObject((*i)->GetName());
 
 		Save();
 
-		uint size = json_node.Serialize(&buffer);
+		uint size = config->Serialize(&buffer);
 		fm->Save("Configuration.json", buffer);
 	}
+	else
+	{
+		config = new JSONNode(buffer);
+	}
 
-	config = new JSONNode(buffer);
 	delete[] buffer;
 }
 

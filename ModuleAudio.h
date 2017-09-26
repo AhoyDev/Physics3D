@@ -30,6 +30,8 @@ private:
 
 	Mix_Music*			music;
 	std::list<Mix_Chunk*>	fx;
+
+	bool mix_loaded;
 };
 
 #endif // __ModuleAudio_H__
