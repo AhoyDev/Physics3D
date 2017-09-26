@@ -10,7 +10,7 @@
 #include <gl/GL.h>
 #include <string>
 #include "mmgr\mmgr.h"
-
+#include "gpudetect\DeviceId.h"
 
 #define PLOTING_BARS 100
 
@@ -33,6 +33,7 @@ GUI_Config::GUI_Config()
 
 GUI_Config::~GUI_Config()
 {
+
 	fps.clear();
 	ms.clear();
 }
@@ -199,13 +200,25 @@ void GUI_Config::ShowHardware()
 	ImGui::Text("Version: %s", glGetString(GL_VERSION));
 	ImGui::Text("GLSL: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+	unsigned __int64	video_memory_total;
+	unsigned __int64	video_memory_use;
+	unsigned __int64	video_mem_available;
+	unsigned __int64	video_mem_reserved;
+
+	getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &video_memory_total, &video_memory_use, &video_mem_available, &video_mem_reserved);
+
+	
 
 
-	//getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &video_mem_budget, &video_mem_usage, &video_mem_available, &video_mem_reserved);
-	//VRAM Budget
-	//VRAM Usage
-	//VRAM Available
-	//VRAM Reserved
+
+	//ImGui::Separator();
+
+	ImGui::Text("Total VRAM: %f", (float(video_memory_total)/ MEGABYTE_F));
+	ImGui::Text("VRAM used: %f", (float(video_memory_use)/ MEGABYTE_F));
+	ImGui::Text("VRAM available: %f", (float(video_mem_available)/ MEGABYTE_F));
+	ImGui::Text("VRAM reserved: %f", (float(video_mem_reserved)/ MEGABYTE_F));
+
+	
 }
 
 void GUI_Config::ShowMemory()

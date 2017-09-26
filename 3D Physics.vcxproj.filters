@@ -64,6 +64,9 @@
     <Filter Include="3d Party\mmgr">
       <UniqueIdentifier>{bdc55154-9179-4860-9fca-016bf370c467}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3d Party\gpuDetect">
+      <UniqueIdentifier>{a855a489-8b53-493d-8557-5d38c5ecb264}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -418,6 +421,12 @@
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>3d Party\mmgr</Filter>
     </ClInclude>
+    <ClInclude Include="gpudetect\DeviceId.h">
+      <Filter>3d Party\gpuDetect</Filter>
+    </ClInclude>
+    <ClInclude Include="gpudetect\dxgi1_4.h">
+      <Filter>3d Party\gpuDetect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -674,6 +683,9 @@
     </ClCompile>
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>3d Party\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="gpudetect\DeviceId.cpp">
+      <Filter>3d Party\gpuDetect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

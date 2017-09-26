@@ -28,6 +28,11 @@ public:
 	std::vector<float> memory;
 
 	Colors colors;
+
+
+
+
+
 };
 
 
