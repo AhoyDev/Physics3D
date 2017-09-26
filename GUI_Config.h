@@ -19,11 +19,13 @@ private:
 	void ShowApp();
 	void ShowWindow();
 	void ShowHardware();
+	void ShowMemory();
 
 public:
 
 	std::vector<float> fps;
 	std::vector<float> ms;
+	std::vector<float> memory;
 
 	Colors colors;
 };

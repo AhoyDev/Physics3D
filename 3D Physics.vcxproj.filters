@@ -409,6 +409,12 @@
       <Filter>Sources\Math\SPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>3d Party</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>3d Party</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -662,6 +668,9 @@
     </ClCompile>
     <ClCompile Include="STriangle.cpp">
       <Filter>Sources\Math\SPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>3d Party</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

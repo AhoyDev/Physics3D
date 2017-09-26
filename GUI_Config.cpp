@@ -7,6 +7,8 @@
 #include "Globals.h"
 #include <gl/GL.h>
 #include <string>
+#include "mmgr\mmgr.h"
+
 
 #define PLOTING_BARS 100
 
@@ -36,6 +38,9 @@ void GUI_Config::ShowConfigMenu()
 		
 	if (ImGui::CollapsingHeader("Hardware"))
 		ShowHardware();
+
+	if (ImGui::CollapsingHeader("Memory"))
+		ShowMemory();
 
 	ImGui::End();
 }
@@ -196,4 +201,46 @@ void GUI_Config::ShowHardware()
 	//VRAM Usage
 	//VRAM Available
 	//VRAM Reserved
+}
+
+void GUI_Config::ShowMemory()
+{
+	sMStats stats = m_getMemoryStatistics();
+
+
+	// FPS Plotter
+	std::string title = "Memory Usage: ";
+	unsigned int lastMemoryUsage = stats.totalReportedMemory;
+	if (memory.size() > PLOTING_BARS)
+	{
+		for (int i = 1; i < memory.size(); i++)
+		{
+			memory[i - 1] = memory[i];
+		}
+
+		memory[memory.size() - 1] = lastMemoryUsage;
+	}
+	else
+	{
+		memory.push_back(lastMemoryUsage);
+	}
+
+
+
+	
+	ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+	ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+	ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+	ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+	ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+	ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+	ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+	ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+	ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+
+
+
+	ImGui::PlotHistogram("##Memory Usage", &memory[0], (int)memory.size(), 0, title.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
+
+	//ImGui::PlotHistogram("##Framerate", &fps[0], (int)fps.size(), 0, title.c_str(), 0.f, fps_max_value, ImVec2(310, 100));
 }

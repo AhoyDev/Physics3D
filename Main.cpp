@@ -8,9 +8,9 @@
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
-/*#ifdef _DEBUG
+#ifdef _DEBUG
 #include "mmgr/mmgr.h"
-#endif*/
+#endif
 
 
 enum main_states
@@ -29,7 +29,7 @@ int main(int argc, char ** argv)
 {
 	LOG("Starting game '%s'...", TITLE);
 
-
+	
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
