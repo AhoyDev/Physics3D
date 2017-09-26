@@ -18,6 +18,8 @@ class ModuleRenderer3D;
 class FileManager;
 class TimeManager;
 
+class JSONNode;
+
 class Application
 {
 public:
@@ -33,8 +35,13 @@ public:
 
 private: 
 
-	void AddModule(Module* mod);
+	void SetConfig();
 	void FinishUpdate();
+
+	void Save() const;
+	void Load() const;
+
+	void AddModule(Module* mod);
 
 public:
 
@@ -59,8 +66,8 @@ public:
 
 private:
 	
+	JSONNode* config;
 	std::list<Module*> list_modules;
-
 	
 };
 

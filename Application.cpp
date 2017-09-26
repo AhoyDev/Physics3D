@@ -55,41 +55,28 @@ Application::Application() :
 
 Application::~Application()
 {
+	delete fm;
+	delete time;
+	delete config;
+
 	std::list<Module*>::reverse_iterator i = list_modules.rbegin();
 	for (; i != list_modules.rend(); ++i)
 	{
 		delete (*i);
 	}
-
 }
 
 bool Application::Init()
 {
 	bool ret = true;
-	
 
-	char* buffer = nullptr;
-	if (!fm->LoadFileToBuffer(&buffer, "Configuration.json")) // couldn't load config
-	{
-		LOG("Error while loading Configuration file. Creating new JSON stream\n");
-		
-		JSONNode json_node;
-
-		std::list<Module*>::iterator i = list_modules.begin();
-		for (; i != list_modules.end(); ++i)
-			json_node.PushJObject((*i)->GetName());
-
-		uint size = json_node.Serialize(&buffer);
-		fm->Save("Configuration.json", buffer);
-	}
-	JSONNode config(buffer);
-	delete[] buffer;
+	SetConfig();
 
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();
 	for (; ret && item != list_modules.end(); item++)
 	{
-		ret = (*item)->Init(config.PullJObject((*item)->GetName()));
+		ret = (*item)->Init(config->PullJObject((*item)->GetName()));
 	}
 
 	// After all Init calls we call Start() in all modules
@@ -103,18 +90,6 @@ bool Application::Init()
 	
 	return ret;
 }
-
-// ---------------------------------------------
-void Application::FinishUpdate()
-{
-	
-	time->ManageFrameTimers();
-	// manage events
-	// check if needed resources must load for next frame
-
-}
-
-
 
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
@@ -156,9 +131,6 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	if (fm) delete fm;
-	if (time) delete time;
-
 	std::list<Module*>::reverse_iterator rit = list_modules.rbegin();
 	for (; rit != list_modules.rend() && ret; ++rit)
 	{
@@ -169,13 +141,60 @@ bool Application::CleanUp()
 	return ret;
 }
 
+void Application::OpenURL(const char* url)
+{
+	ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+}
+
+void Application::SetConfig()
+{
+	char* buffer = nullptr;
+
+	if (!fm->LoadFileToBuffer(&buffer, "Configuration.json")) // couldn't load config
+	{
+		LOG("Error while loading Configuration file. Creating new JSON stream\n");
+
+		JSONNode json_node;
+
+		std::list<Module*>::iterator i = list_modules.begin();
+		for (; i != list_modules.end(); ++i)
+			json_node.PushJObject((*i)->GetName());
+
+		Save();
+
+		uint size = json_node.Serialize(&buffer);
+		fm->Save("Configuration.json", buffer);
+	}
+
+	config = new JSONNode(buffer);
+	delete[] buffer;
+}
+
+void Application::FinishUpdate()
+{
+	time->ManageFrameTimers();
+	// manage events
+	// check if needed resources must load for next frame
+}
+
+void Application::Save() const
+{
+	std::list<Module*>::const_iterator item = list_modules.begin();
+	for (; item != list_modules.end(); item++)
+	{
+		(*item)->Save(&config->PullJObject((*item)->GetName()));
+	}
+
+	char* buffer = nullptr;
+	uint size = config->Serialize(&buffer);
+	fm->Save("Configuration.json", buffer);
+	delete[] buffer;
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
 }
 
 
-void Application::OpenURL(const char* url)
-{
-	ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
-}
+
