@@ -99,9 +99,9 @@ int main(int argc, char ** argv)
 	delete App;
 	LOG("Exiting game '%s'...\n", TITLE);
 
-/*#ifdef _DEBUG
+#ifdef _DEBUG
 	int leaks = MAX(0, m_getMemoryStatistics().totalAllocUnitCount - 23);
 	LOG("With %d memory leaks!\n", (leaks>0) ? leaks : 0);
-#endif*/
+#endif
 	return main_return;
 }
