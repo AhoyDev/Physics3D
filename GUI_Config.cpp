@@ -14,6 +14,17 @@
 
 #define PLOTING_BARS 100
 
+struct AppInfo
+{
+	std::string title = "Framerate: ";
+	std::string renderDrivers = "Render Drivers: ";
+	std::string caps = "Caps: ";
+	std::string memory_usage = "Memory Usage: ";
+
+}; AppInfo info_app;
+
+
+
 
 GUI_Config::GUI_Config()
 {
@@ -53,7 +64,7 @@ void GUI_Config::ShowConfigMenu()
 
 void GUI_Config::ShowApp()
 {
-
+	info_app.title = "FrameRate: ";
 
 	// FPS Cap
 	int max_fps = App->time->GetMaxFPS();
@@ -61,7 +72,7 @@ void GUI_Config::ShowApp()
 		App->time->SetMaxFPS(max_fps);
 	
 	// FPS Plotter
-	std::string title = "Framerate: ";
+	
 	float lastFPS = App->time->GetLastFPS();
 	float fps_max_value = 0.0f;
 	if (fps.size() > PLOTING_BARS)
@@ -81,11 +92,11 @@ void GUI_Config::ShowApp()
 		fps.push_back(lastFPS);
 	}
 	
-	title += std::to_string(lastFPS);
-	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title.c_str(), 0.f, fps_max_value, ImVec2(310, 100));
+	info_app.title += std::to_string(lastFPS);
+	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, info_app.title.c_str(), 0.f, fps_max_value, ImVec2(310, 100));
 
 	// MS Plotter
-	title = "Miliseconds: ";
+	info_app.title = "Miliseconds: ";
 	float miliseconds = App->time->GetLastFrameMs();
 	if (ms.size() > PLOTING_BARS)
 	{
@@ -99,8 +110,8 @@ void GUI_Config::ShowApp()
 		ms.push_back(miliseconds);
 	}
 
-	title += std::to_string(miliseconds);
-	ImGui::PlotHistogram("##Miliseconds", &ms[0], ms.size(), 0, title.c_str(), 0.0f, 30.0f, ImVec2(310, 100));
+	info_app.title += std::to_string(miliseconds);
+	ImGui::PlotHistogram("##Miliseconds", &ms[0], ms.size(), 0, info_app.title.c_str(), 0.0f, 30.0f, ImVec2(310, 100));
 }
 
 void GUI_Config::ShowWindow()
@@ -152,34 +163,34 @@ void GUI_Config::ShowHardware()
 		ImGui::Text("System RAM: %d Mb/s", ram);
 
 	// Caps
-	std::string caps = "Caps: ";
-	if (SDL_Has3DNow()) caps += "3DNow, ";
-	if (SDL_HasAVX()) caps += "AVX, ";
-	if (SDL_HasAltiVec()) caps += "AltiVec, ";
-	if (SDL_HasMMX()) caps += "MMX, ";
-	if (SDL_HasRDTSC()) caps += "RDTSC, ";
-	ImGui::Text(caps.c_str());
+	
+	if (SDL_Has3DNow()) info_app.caps += "3DNow, ";
+	if (SDL_HasAVX()) info_app.caps += "AVX, ";
+	if (SDL_HasAltiVec()) info_app.caps += "AltiVec, ";
+	if (SDL_HasMMX()) info_app.caps += "MMX, ";
+	if (SDL_HasRDTSC()) info_app.caps += "RDTSC, ";
+	ImGui::Text(info_app.caps.c_str());
 
-	caps = "";
-	if (SDL_HasSSE()) caps += "SSE, ";
-	if (SDL_HasSSE2()) caps += "SSE2, ";
-	if (SDL_HasSSE3()) caps += "SSE3, ";
-	if (SDL_HasSSE41()) caps += "SSE41, ";
-	if (SDL_HasSSE42()) caps += "SSE42, ";
-	ImGui::Text(caps.c_str());
+	info_app.caps = "";
+	if (SDL_HasSSE()) info_app.caps += "SSE, ";
+	if (SDL_HasSSE2()) info_app.caps += "SSE2, ";
+	if (SDL_HasSSE3()) info_app.caps += "SSE3, ";
+	if (SDL_HasSSE41()) info_app.caps += "SSE41, ";
+	if (SDL_HasSSE42()) info_app.caps += "SSE42, ";
+	ImGui::Text(info_app.caps.c_str());
 	ImGui::Separator();
 
 	// Render Drivers
-	std::string renderDrivers = "Render Drivers: ";
+	info_app.renderDrivers = "Render Drivers: ";
 	SDL_RendererInfo info;
 	for (int i = 0; i < SDL_GetNumRenderDrivers() - 1 && SDL_GetRenderDriverInfo(i, &info) == 0; i++)
 	{
-		renderDrivers += info.name;
-		renderDrivers += ", ";
+		info_app.renderDrivers += info.name;
+		info_app.renderDrivers += ", ";
 	}
 	SDL_GetRenderDriverInfo(SDL_GetNumRenderDrivers(), &info);
-	renderDrivers += info.name;
-	ImGui::Text(renderDrivers.c_str());
+	info_app.renderDrivers += info.name;
+	ImGui::Text(info_app.renderDrivers.c_str());
 	ImGui::Separator();
 
 	// GPU
@@ -203,7 +214,7 @@ void GUI_Config::ShowMemory()
 
 
 	// FPS Plotter
-	std::string title = "Memory Usage: ";
+	
 	unsigned int lastMemoryUsage = stats.totalReportedMemory;
 	if (memory.size() > PLOTING_BARS)
 	{
@@ -232,7 +243,7 @@ void GUI_Config::ShowMemory()
 
 
 
-	ImGui::PlotHistogram("##Memory Usage", &memory[0], (int)memory.size(), 0, title.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
+	ImGui::PlotHistogram("##Memory Usage", &memory[0], (int)memory.size(), 0, info_app.memory_usage.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
 
 }
 
