@@ -73,8 +73,14 @@ bool ModuleRenderer3D::Init(JSONNode config)
 	{
 
 		//Use Vsync
-		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
-			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+	//	if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
+			//LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+		
+		SDL_GL_SetSwapInterval(0);
+
+		int swap_interval = SDL_GL_GetSwapInterval();
+
+		
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);

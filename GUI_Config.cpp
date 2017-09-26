@@ -49,16 +49,22 @@ void GUI_Config::ShowApp()
 
 	// FPS Cap
 	int max_fps = App->time->GetMaxFPS();
-	if (ImGui::SliderInt("Max FPS", &max_fps, -1, 200, NULL))
+	if (ImGui::SliderInt("Max FPS", &max_fps, 0, 200, NULL))
 		App->time->SetMaxFPS(max_fps);
 	
 	// FPS Plotter
 	std::string title = "Framerate: ";
 	float lastFPS = App->time->GetLastFPS();
+	float fps_max_value = 0.0f;
 	if (fps.size() > PLOTING_BARS)
 	{
 		for (int i = 1; i < fps.size(); i++)
+		{
 			fps[i - 1] = fps[i];
+			if (fps[i] > fps_max_value)
+				fps_max_value = fps[i];
+		}
+		fps_max_value += fps_max_value * 0.20f;
 
 		fps[fps.size() - 1] = lastFPS;
 	}
@@ -68,7 +74,7 @@ void GUI_Config::ShowApp()
 	}
 	
 	title += std::to_string(lastFPS);
-	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title.c_str(), 0.f, 90.f, ImVec2(310, 100));
+	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title.c_str(), 0.f, fps_max_value, ImVec2(310, 100));
 
 	// MS Plotter
 	title = "Miliseconds: ";
@@ -86,7 +92,7 @@ void GUI_Config::ShowApp()
 	}
 
 	title += std::to_string(miliseconds);
-	ImGui::PlotHistogram("##Miliseconds", &ms[0], ms.size(), 0, title.c_str(), 10.f, 30.f, ImVec2(310, 100));
+	ImGui::PlotHistogram("##Miliseconds", &ms[0], ms.size(), 0, title.c_str(), 0.0f, 30.0f, ImVec2(310, 100));
 }
 
 void GUI_Config::ShowWindow()

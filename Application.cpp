@@ -61,13 +61,12 @@ Application::~Application()
 		delete (*i);
 	}
 
-	if (fm) delete fm;
-	if (time) delete time;
 }
 
 bool Application::Init()
 {
 	bool ret = true;
+	
 
 	char* buffer = nullptr;
 	if (!fm->LoadFileToBuffer(&buffer, "Configuration.json")) // couldn't load config
@@ -108,9 +107,11 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	
 	time->ManageFrameTimers();
 	// manage events
 	// check if needed resources must load for next frame
+
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -152,6 +153,9 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
+
+	if (fm) delete fm;
+	if (time) delete time;
 
 	std::list<Module*>::reverse_iterator rit = list_modules.rbegin();
 	for (; rit != list_modules.rend() && ret; ++rit)

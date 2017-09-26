@@ -27,6 +27,7 @@ public:
 	int		GetCappedMS() const;
 	int		GetMaxFPS() const;
 
+
 public:
 	
 	Uint32	frames;
@@ -34,8 +35,8 @@ public:
 	int		fps_counter;
 	float	last_frame_ms;
 	int		last_fps;
-	int		capped_ms;
-	int		max_fps;
+	float	capped_ms;
+	int		max_fps = 60;
 
 private:
 
@@ -62,6 +63,7 @@ private:
 	bool	running;
 	Uint32	started_at;
 	Uint32	stopped_at;
+
 };
 
 //class Alarm;

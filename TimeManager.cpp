@@ -72,7 +72,7 @@ void TimeManager::SetMaxFPS(int max)
 	if (max_fps == 0)
 		capped_ms = 0;
 	else
-		capped_ms = 1.0f / (double)max_fps;
+		capped_ms = 1000.0f / (double)max_fps;
 }
 
 
@@ -132,9 +132,6 @@ Uint32 Timer::Read()
 {
 	return running ? SDL_GetTicks() - started_at : stopped_at - started_at;
 }
-
-
-
 
 
 

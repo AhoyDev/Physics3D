@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 
-
+#include "TimeManager.h"
 
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
@@ -11,6 +11,7 @@
 /*#ifdef _DEBUG
 #include "mmgr/mmgr.h"
 #endif*/
+
 
 enum main_states
 {
@@ -28,17 +29,22 @@ int main(int argc, char ** argv)
 {
 	LOG("Starting game '%s'...", TITLE);
 
+
+
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
 
 	while (state != MAIN_EXIT)
 	{
+		
+
 		switch (state)
 		{
 		case MAIN_CREATION:
 
 			LOG("-------------- Application Creation --------------");
 			App = new Application();
+			App->time->SetMaxFPS(60);
 			state = MAIN_START;
 			break;
 
