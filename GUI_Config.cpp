@@ -53,10 +53,7 @@ void GUI_Config::ShowConfigMenu()
 
 void GUI_Config::ShowApp()
 {
-	/*static char app_name[120];
-	strcpy_s(app_name, 120, App->GetAppName());
-	if (ImGui::InputText("App Name", app_name, 120, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-	App->SetAppName(app_name);*/
+
 
 	// FPS Cap
 	int max_fps = App->time->GetMaxFPS();
@@ -108,7 +105,6 @@ void GUI_Config::ShowApp()
 
 void GUI_Config::ShowWindow()
 {
-	//static char buf[19] = ""; ImGui::InputText("default", buf, 19);
 
 	//Brightness
 	float brightness = App->window->GetBrightness();
@@ -124,9 +120,6 @@ void GUI_Config::ShowWindow()
 	float heightPixels = App->window->GetHeight();
 	if (ImGui::SliderFloat("Height", &height, 0.0f, 1.0f))
 		App->window->SetWindowSize(App->window->GetWidth(),height*heightPixels);
-
-
-
 
 
 	// Window Flags
@@ -196,10 +189,6 @@ void GUI_Config::ShowHardware()
 	ImGui::Text("GLSL: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 
-	LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	//getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &video_mem_budget, &video_mem_usage, &video_mem_available, &video_mem_reserved);
 	//VRAM Budget
@@ -245,7 +234,6 @@ void GUI_Config::ShowMemory()
 
 	ImGui::PlotHistogram("##Memory Usage", &memory[0], (int)memory.size(), 0, title.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
 
-	//ImGui::PlotHistogram("##Framerate", &fps[0], (int)fps.size(), 0, title.c_str(), 0.f, fps_max_value, ImVec2(310, 100));
 }
 
 void GUI_Config::ShowGLOptions()
@@ -267,5 +255,8 @@ void GUI_Config::ShowGLOptions()
 
 	if (ImGui::RadioButton("GL Texture 2D", App->renderer3D->getGLTexture2D()))
 		App->renderer3D->setGLTexture2D();
+
+	if (ImGui::RadioButton("WireFrame mode", App->renderer3D->getWireFrame()))
+		App->renderer3D->setWireFrame();
 
 }

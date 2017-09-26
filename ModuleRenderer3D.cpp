@@ -347,7 +347,13 @@ void ModuleRenderer3D::OnResize(int width, int height)
 void ModuleRenderer3D::DrawGeometry()
 {
 	// Render a cube
-	glBegin(GL_QUADS);
+	//glBegin(GL_QUADS);
+	
+	if(isWireFramed)
+		glBegin(GL_LINE_STRIP);
+	else
+		glBegin(GL_QUADS);
+	
 	// Top face
 	glColor3f(0.0f, 1.0f, 0.0f);  // Green
 	glVertex3f(1.0f, 1.0f, -1.0f);  // Top-right of top face
@@ -389,6 +395,7 @@ void ModuleRenderer3D::DrawGeometry()
 	glVertex3f(1.0f, 1.0f, -1.0f);  // Top-Left of left face
 	glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom-Left of left face
 	glVertex3f(1.0f, -1.0f, 1.0f);  // Bottom-Right of left face
+	
 	glEnd();
 }
 
@@ -441,4 +448,14 @@ bool ModuleRenderer3D::getGLTexture2D()
 void ModuleRenderer3D::setGLTexture2D()
 {
 	isGLTexture2D = !isGLTexture2D;
+}
+
+bool ModuleRenderer3D::getWireFrame()
+{
+	return isWireFramed;
+}
+
+void ModuleRenderer3D::setWireFrame()
+{
+	isWireFramed = !isWireFramed;
 }

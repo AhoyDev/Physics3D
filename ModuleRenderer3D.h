@@ -39,6 +39,10 @@ public:
 	bool getGLTexture2D();
 	void setGLTexture2D();
 
+	bool getWireFrame();
+	void setWireFrame();
+
+
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -66,6 +70,9 @@ private:
 	bool isGLTexture2D = false;
 	bool isGLTexture2DOnce = false;
 	bool isGLTexture2DDOnce = false;
+
+	bool isWireFramed = false;
+	
 
 };
 
