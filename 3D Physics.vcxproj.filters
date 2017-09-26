@@ -61,6 +61,9 @@
     <Filter Include="Sources\Outdated">
       <UniqueIdentifier>{750c7ba3-dfd5-4d4f-aafc-600838908036}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3d Party\mmgr">
+      <UniqueIdentifier>{bdc55154-9179-4860-9fca-016bf370c467}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -410,10 +413,10 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="mmgr\mmgr.h">
-      <Filter>3d Party</Filter>
+      <Filter>3d Party\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="mmgr\nommgr.h">
-      <Filter>3d Party</Filter>
+      <Filter>3d Party\mmgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -670,7 +673,7 @@
       <Filter>Sources\Math\SPrimitives</Filter>
     </ClCompile>
     <ClCompile Include="mmgr\mmgr.cpp">
-      <Filter>3d Party</Filter>
+      <Filter>3d Party\mmgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
