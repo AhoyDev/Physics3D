@@ -31,23 +31,8 @@ bool ModuleWindow::Init(JSONNode config)
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 		//Create window
-		width = config.PullInt("window_width");
-		height = config.PullInt("window_height");
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-
-		if (config.PullBool("win_fullscreen"))
-			flags |= SDL_WINDOW_FULLSCREEN;
-
-		if (config.PullBool("win_resizable"))
-			flags |= SDL_WINDOW_RESIZABLE;
-
-		if (config.PullBool("win_borderless"))
-			flags |= SDL_WINDOW_BORDERLESS;
-
-		if (config.PullBool("win_fullscreen_desktop"))
-			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		Load(&config);
+		window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(!window)
 		{
@@ -75,6 +60,30 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+void ModuleWindow::Save(JSONNode* config)
+{
+
+}
+
+void ModuleWindow::Load(JSONNode* config)
+{
+	title = config->PullString("window_title", "RubensEngine");
+	width = config->PullInt("window_width", 1280);
+	height = config->PullInt("window_height", 1024);
+	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+
+	if (config->PullBool("win_fullscreen", false))
+		flags |= SDL_WINDOW_FULLSCREEN;
+
+	if (config->PullBool("win_resizable", true))
+		flags |= SDL_WINDOW_RESIZABLE;
+
+	if (config->PullBool("win_borderless", false))
+		flags |= SDL_WINDOW_BORDERLESS;
+
+	if (config->PullBool("win_fullscreen_desktop", false))
+		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
 
 
 int ModuleWindow::GetWidth() const
@@ -92,14 +101,9 @@ float ModuleWindow::GetBrightness()const
 	return SDL_GetWindowBrightness(window);
 }
 
-uint ModuleWindow::GetWindowFlags() const
-{
-	return SDL_GetWindowFlags(window);
-}
-
 bool ModuleWindow::CheckFlag(uint flag) const
 {
-	return SDL_GetWindowFlags(window) & flag;
+	return flags & flag;
 }
 
 
@@ -108,50 +112,106 @@ void ModuleWindow::SetBrightness(const float brightness)
 	SDL_SetWindowBrightness(window, brightness);
 }
 
-void ModuleWindow::SetTitle(const char* title)
+void ModuleWindow::SetTitle(const char* new_title)
 {
-	SDL_SetWindowTitle(window, title);
+	if (new_title != nullptr)
+	{
+		SDL_SetWindowTitle(window, title);
+		title = SDL_GetWindowTitle(window);
+	}
 }
 
 void ModuleWindow::SetFullScreen(bool flag_value)
 {
-	Uint32 flag = flag_value ? SDL_WINDOW_FULLSCREEN : SDL_FALSE;
-	SDL_SetWindowFullscreen(window, flag);
+	if ((flags & SDL_WINDOW_FULLSCREEN) != flag_value)
+	{
+		Uint32 flag;
+		
+		if (flag_value)
+		{
+			flag = SDL_WINDOW_FULLSCREEN;
+			flags |= SDL_WINDOW_FULLSCREEN;
+		}
+		else
+		{
+			flag = SDL_FALSE;
+			flags -= SDL_WINDOW_FULLSCREEN;
+		}
+
+		SDL_SetWindowFullscreen(window, flag);
+	}
 }
 
 void ModuleWindow::SetBorderless(bool flag_value)
 {
-	SDL_bool flag = flag_value ? SDL_TRUE : SDL_FALSE;
-	SDL_SetWindowBordered(window, flag);
+	if ((flags & SDL_WINDOW_BORDERLESS) != flag_value)
+	{
+		SDL_bool flag;
+
+		if (flag_value)
+		{
+			flag = SDL_TRUE;
+			flags |= SDL_WINDOW_BORDERLESS;
+		}
+		else
+		{
+			flag = SDL_FALSE;
+			flags -= SDL_WINDOW_BORDERLESS;
+		}
+
+		SDL_SetWindowBordered(window, flag);
+	}
 }
 
 void ModuleWindow::SetFullDesktop(bool flag_value)
 {
-	Uint32 flag = flag_value ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_FALSE;
-	SDL_SetWindowFullscreen(window, flag);
+	if ((flags & SDL_WINDOW_FULLSCREEN) != flag_value)
+	{
+		Uint32 flag;
+
+		if (flag_value)
+		{
+			flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
+			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		}
+		else
+		{
+			flag = SDL_FALSE;
+			flags -= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		}
+
+		SDL_SetWindowFullscreen(window, flag);
+	}
 }
 
 void ModuleWindow::SetWindowSize(float _width, float _height)
 {
-	SDL_SetWindowSize(window, _width, _height);
+	//SDL_SetWindowSize(window, _width, _height);
+}
+
+void ModuleWindow::SetWindowSizei(int new_width, int new_height)
+{
+	if (new_width >= 0 && new_height >= 0)
+	{
+		width = new_width;
+		height = new_height;
+		SDL_SetWindowSize(window, width, height);
+	}
 }
 
 
 
 void ModuleWindow::SwapFullScreen()
 {
-	bool flag_value = SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN;
-	SetFullScreen(!flag_value);
+	SetFullScreen(!(CheckFlag(SDL_WINDOW_FULLSCREEN)));
 }
 
 void ModuleWindow::SwapBorderless()
 {
-	bool flag_value = SDL_GetWindowFlags(window) & SDL_WINDOW_BORDERLESS;
-	SetBorderless(!flag_value);
+	SetBorderless(!(CheckFlag(SDL_WINDOW_BORDERLESS)));
 }
 
 void ModuleWindow::SwapFullDesktop()
 {
-	bool flag_value = SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
-	SetFullDesktop(!flag_value);
+	SetFullDesktop(!(CheckFlag(SDL_WINDOW_FULLSCREEN_DESKTOP)));
 }

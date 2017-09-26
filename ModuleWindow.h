@@ -15,24 +15,27 @@ public:
 
 	bool Init(JSONNode config);
 	bool CleanUp();
+	void Save(JSONNode* config);
+	void Load(JSONNode* config);
 
 	int GetWidth() const;
 	int GetHeight() const;
 	float GetBrightness()const;
-	uint GetWindowFlags() const;
 	bool CheckFlag(uint flag) const;
 
 	void SetBrightness(const float brightness);
-	void SetTitle(const char* title);
+	void SetTitle(const char* new_title = nullptr);
 	void SetFullScreen(const bool flag_value);
 	void SetBorderless(const bool flag_value);
 	void SetFullDesktop(const bool flag_value);
-	void SetWindowSize(float, float);
-
+	void SetWindowSizei(int new_width, int new_height);
 
 	void SwapFullScreen();
 	void SwapBorderless();
 	void SwapFullDesktop();
+
+	//Outdated
+	void SetWindowSize(float, float);
 
 public:
 
@@ -41,9 +44,10 @@ public:
 
 private:
 
-	char*	title;
-	int		width;
-	int		height;
+	const char*	title;
+	int			width;
+	int			height;
+	uint		flags;
 
 };
 
