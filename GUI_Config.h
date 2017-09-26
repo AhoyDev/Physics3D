@@ -20,7 +20,7 @@ private:
 	void ShowWindow();
 	void ShowHardware();
 	void ShowMemory();
-
+	void ShowGLOptions();
 public:
 
 	std::vector<float> fps;

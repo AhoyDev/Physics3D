@@ -4,6 +4,7 @@
 #include "imgui/imgui.h"
 #include "ModuleEditor.h"
 #include "GUI_Config.h"
+#include "SDL\include\SDL.h"
 
 EditorMainMenu::EditorMainMenu()
 {
@@ -60,7 +61,7 @@ update_status EditorMainMenu::ShowMainMenu()
 		{
 			about = !about;
 		}
-		
+
 		if (ImGui::MenuItem("Documentation"))
 		{
 			App->OpenURL("https://github.com/AhoyDev/Rubens-Engine/wiki");
@@ -94,10 +95,21 @@ update_status EditorMainMenu::ShowMainMenu()
 			ImGui::TextColored(colors.Green, "Ruben Sardon");
 			ImGui::TextColored(colors.yellow, "Ruben Idigora");
 	
-
+			ImGui::Separator();
 			ImGui::TextColored(ImVec4(230, 250, 240, 255), "Libraries used");
 
 			ImGui::Text("SDL");
+			
+			// SDL Versions
+			SDL_version ver;
+			SDL_VERSION(&ver);
+			ImGui::Text("Compiled SDL version: %d.%d.%d", ver.major, ver.minor, ver.patch);
+			SDL_GetVersion(&ver);
+			ImGui::Text("Linked SDL version: %d.%d.%d", ver.major, ver.minor, ver.patch);
+			ImGui::Text("SDL Revision: %s", SDL_GetRevision());
+			ImGui::Separator();
+
+
 			ImGui::Text("OpenGL");
 			ImGui::Text("Imgui");
 			ImGui::Text("MathGeoLib");

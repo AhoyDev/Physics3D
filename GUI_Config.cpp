@@ -2,9 +2,11 @@
 #include "imgui\imgui.h"
 #include "SDL\include\SDL.h"
 #include "Application.h"
+#include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "TimeManager.h"
 #include "Globals.h"
+#include "Glew\include\glew.h"
 #include <gl/GL.h>
 #include <string>
 #include "mmgr\mmgr.h"
@@ -41,6 +43,10 @@ void GUI_Config::ShowConfigMenu()
 
 	if (ImGui::CollapsingHeader("Memory"))
 		ShowMemory();
+
+	if (ImGui::CollapsingHeader("OpenGL"))
+		ShowGLOptions();
+
 
 	ImGui::End();
 }
@@ -142,15 +148,6 @@ void GUI_Config::ShowWindow()
 
 void GUI_Config::ShowHardware()
 {
-	// SDL Versions
-	SDL_version ver;
-	SDL_VERSION(&ver);
-	ImGui::Text("Compiled SDL version: %d.%d.%d", ver.major, ver.minor, ver.patch);
-	SDL_GetVersion(&ver);
-	ImGui::Text("Linked SDL version: %d.%d.%d", ver.major, ver.minor, ver.patch);
-	ImGui::Text("SDL Revision: %s", SDL_GetRevision());
-	ImGui::Separator();
-
 	// CPU
 	ImGui::Text("CPUs: %d cores", SDL_GetCPUCount());
 
@@ -196,7 +193,15 @@ void GUI_Config::ShowHardware()
 	ImGui::Text("GPU: %s", glGetString(GL_RENDERER));
 	ImGui::Text("Brand: %s", glGetString(GL_VENDOR));
 	ImGui::Text("Version: %s", glGetString(GL_VERSION));
+	ImGui::Text("GLSL: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+	//getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &video_mem_budget, &video_mem_usage, &video_mem_available, &video_mem_reserved);
 	//VRAM Budget
 	//VRAM Usage
 	//VRAM Available
@@ -224,9 +229,7 @@ void GUI_Config::ShowMemory()
 	{
 		memory.push_back(lastMemoryUsage);
 	}
-
-
-
+	
 	
 	ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
 	ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
@@ -243,4 +246,26 @@ void GUI_Config::ShowMemory()
 	ImGui::PlotHistogram("##Memory Usage", &memory[0], (int)memory.size(), 0, title.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
 
 	//ImGui::PlotHistogram("##Framerate", &fps[0], (int)fps.size(), 0, title.c_str(), 0.f, fps_max_value, ImVec2(310, 100));
+}
+
+void GUI_Config::ShowGLOptions()
+{
+	/*GL_DEPTH_TEST, GL_CULL_FACE, GL_LIGHTING GL_COLOR_MATERIAL, GL_TEXTURE_2D + two other
+		Add options to draw in wireframe mode*/
+
+	if (ImGui::RadioButton("GL Depth Test", App->renderer3D->getDepthTest()))
+		App->renderer3D->setDepthTest();
+
+	if (ImGui::RadioButton("GL Cull Face", App->renderer3D->getCullFace()))
+		App->renderer3D->setCullFace();
+
+	if (ImGui::RadioButton("GL Lightning", App->renderer3D->getGLLightning()))
+		App->renderer3D->setGLLightning();
+
+	if (ImGui::RadioButton("GL Color Material", App->renderer3D->getGLColorMaterial()))
+		App->renderer3D->setGLColorMaterial();
+
+	if (ImGui::RadioButton("GL Texture 2D", App->renderer3D->getGLTexture2D()))
+		App->renderer3D->setGLTexture2D();
+
 }

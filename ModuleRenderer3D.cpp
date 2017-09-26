@@ -46,14 +46,7 @@ bool ModuleRenderer3D::Init(JSONNode config)
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
-
 	
-	/*LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-	*/
 
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
@@ -63,11 +56,21 @@ bool ModuleRenderer3D::Init(JSONNode config)
 		ret = false;
 	}
 
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+
+
 	if (GLEW_OK != glewInit())
 	{
 		console->LogConsole("Glew failed\n");
 		LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	}
+
+
+
 
 	if(ret == true)
 	{
@@ -182,7 +185,89 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // Update: debug camera
 update_status ModuleRenderer3D::Update(float dt)
 {
+	
+
+	//Depth Test Enabling/Disabling
+	if (isDepthTest && !isDepthTestOnce)
+	{ 
+		glEnable(GL_DEPTH_TEST);
+		isDepthTestOnce = true;
+		isDepthTestDOnce = false;
+		console->LogConsole("DepthTest Enabled\n");
+	}
+	else if(!isDepthTest && !isDepthTestDOnce)
+	{
+		glDisable(GL_DEPTH_TEST);
+		isDepthTestOnce = false;
+		isDepthTestDOnce = true;
+		console->LogConsole("DepthTest Disabled\n");
+	}
+	//Cull Face Enabling/Disabling
+	if (isCullFace && !isCullFaceOnce)
+	{
+		glEnable(GL_CULL_FACE);
+		isCullFaceOnce = true;
+		isCullFaceDOnce = false;
+		console->LogConsole("Cullface Enabled\n");
+	}
+	else if (!isCullFaceOnce && !isCullFaceDOnce)
+	{
+		glDisable(GL_CULL_FACE);
+		isCullFaceOnce = false;
+		isCullFaceDOnce = true;
+		console->LogConsole("Cullface Disabled\n");
+	}
+	
+	//Lightning Enabling/Disabling
+	if (isGLLightning && !isGLLightningOnce)
+	{
+		glEnable(GL_LIGHTING);
+		isGLLightningOnce = true;
+		isGLLightningDOnce = false;
+		console->LogConsole("Lightning Enabled\n");
+	}
+	else if (!isGLLightning && !isGLLightningDOnce)
+	{
+		glDisable(GL_LIGHTING);
+		isGLLightningOnce = false;
+		isGLLightningDOnce = true;
+		console->LogConsole("Lightning Disabled\n");
+	}
+	
+	//Color Material Enabling/Disabling
+	if (isGLColorMaterial && !isGLColorMaterialOnce)
+	{
+		glEnable(GL_COLOR_MATERIAL);
+		isGLColorMaterialOnce = true;
+		isGLColorMaterialDOnce = false;
+		console->LogConsole("GL Color Material Enabled\n");
+	}
+	else if (!isGLColorMaterial && !isGLColorMaterialDOnce)
+	{
+		glDisable(GL_COLOR_MATERIAL);
+		isGLColorMaterialOnce = false;
+		isGLColorMaterialDOnce = true;
+		console->LogConsole("GL Color Material Disabled\n");
+	}
+
+	//GL Texture 2D Enabling/Disabling
+	if (isGLTexture2D && !isGLTexture2DOnce)
+	{
+		glEnable(GL_TEXTURE_2D);
+		isGLTexture2DOnce = true;
+		isGLTexture2DDOnce = false;
+		console->LogConsole("GL Texture 2D Enabled\n");
+	}
+	else if (!isGLTexture2D && !isGLTexture2DDOnce)
+	{
+		glDisable(GL_TEXTURE_2D);
+		isGLTexture2DOnce = false;
+		isGLTexture2DDOnce = true;
+		console->LogConsole("GL Texture 2D Disabled\n");
+	}
+
 	return UPDATE_CONTINUE;
+
 }
 
 // PostUpdate present buffer to screen
@@ -305,4 +390,55 @@ void ModuleRenderer3D::DrawGeometry()
 	glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom-Left of left face
 	glVertex3f(1.0f, -1.0f, 1.0f);  // Bottom-Right of left face
 	glEnd();
+}
+
+
+bool ModuleRenderer3D::getDepthTest()
+{
+	return isDepthTest;
+}
+
+void ModuleRenderer3D::setDepthTest()
+{
+	isDepthTest = !isDepthTest;
+}
+
+bool ModuleRenderer3D::getCullFace()
+{
+	return isCullFace;
+}
+
+void ModuleRenderer3D::setCullFace()
+{
+	isCullFace = !isCullFace;
+}
+
+bool ModuleRenderer3D::getGLLightning()
+{
+	return isGLLightning;
+}
+
+void ModuleRenderer3D::setGLLightning()
+{
+	isGLLightning = !isGLLightning;
+}
+
+bool ModuleRenderer3D::getGLColorMaterial()
+{
+	return isGLColorMaterial;
+}
+
+void ModuleRenderer3D::setGLColorMaterial()
+{
+	isGLColorMaterial = !isGLColorMaterial;
+}
+
+bool ModuleRenderer3D::getGLTexture2D()
+{
+	return isGLTexture2D;
+}
+
+void ModuleRenderer3D::setGLTexture2D()
+{
+	isGLTexture2D = !isGLTexture2D;
 }

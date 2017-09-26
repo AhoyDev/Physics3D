@@ -10,7 +10,10 @@ GUI_Console::GUI_Console()
 void GUI_Console::LogConsole(const char* file)
 {
 	if (file)
+	{
 		buf.append(file);
+		scroll_bot = true;
+	}
 	else
 		LOG("message to be displayed NULL");
 }

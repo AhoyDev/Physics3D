@@ -24,12 +24,49 @@ public:
 	void OnResize(int width, int height);
 	void DrawGeometry();
 
+	bool getDepthTest();
+	void setDepthTest();
+
+	bool getCullFace();
+	void setCullFace();
+
+	bool getGLLightning();
+	void setGLLightning();
+
+	bool getGLColorMaterial();
+	void setGLColorMaterial();
+
+	bool getGLTexture2D();
+	void setGLTexture2D();
+
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+
+private:
+	bool isDepthTest = false;
+	bool isDepthTestOnce = false;
+	bool isDepthTestDOnce = false;
+
+	bool isCullFace = false;
+	bool isCullFaceOnce = false;
+	bool isCullFaceDOnce = false;
+
+	bool isGLLightning = false;
+	bool isGLLightningOnce = false;
+	bool isGLLightningDOnce = false;
+
+	bool isGLColorMaterial = false;
+	bool isGLColorMaterialOnce = false;
+	bool isGLColorMaterialDOnce = false;
+
+	bool isGLTexture2D = false;
+	bool isGLTexture2DOnce = false;
+	bool isGLTexture2DDOnce = false;
+
 };
 
 #endif
