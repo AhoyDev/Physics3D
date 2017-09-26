@@ -12,32 +12,31 @@ public:
 	~JSONNode();
 
 	// Push
-	json_result_t	PushBool(const char* name, const bool value);
-	json_result_t	PushInt(const char* name, const int value);
-	json_result_t	PushUInt(const char* name, const uint value);
-	json_result_t	PushFloat(const char* name, const float value);
-	json_result_t	PushDouble(const char* name, const double value);
-	json_result_t	PushString(const char* name, const char* value);
-	JSONNode		PushJObject(const char* name);
+	bool		PushBool(const char* name, const bool value);
+	bool		PushInt(const char* name, const int value);
+	bool		PushUInt(const char* name, const uint value);
+	bool		PushFloat(const char* name, const float value);
+	bool		PushDouble(const char* name, const double value);
+	bool		PushString(const char* name, const char* value);
+	JSONNode	PushJObject(const char* name);
 
 	// Pull
-	bool		PullBool(const char* name) const;
-	int			PullInt(const char* name) const;
-	uint		PullUInt(const char* name) const;
-	float		PullFloat(const char* name) const;
-	double		PullDouble(const char* name) const;
-	const char*	PullString(const char* name) const;
+	bool		PullBool(const char* name, bool deflt) const;
+	int			PullInt(const char* name, int deflt) const;
+	uint		PullUInt(const char* name, uint deflt) const;
+	float		PullFloat(const char* name, float deflt) const;
+	double		PullDouble(const char* name, double deflt) const;
+	const char*	PullString(const char* name, const char* deflt) const;
 	JSONNode	PullJObject(const char* name) const;
 
-	bool isValid() const;
+	// Utility
 	uint Serialize(char** buffer, bool pretty = true);
+	inline bool operator!() const;
 
 public:
 
 	JSON_Value*		value;
 	JSON_Object*	object;
-
-	bool validNode;
 };
 
 #endif

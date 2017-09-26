@@ -2,17 +2,12 @@
 
 #include "SDL\include\SDL_assert.h"
 
-JSONNode::JSONNode(const char* file)
+JSONNode::JSONNode(const char* file) : value(nullptr), object(nullptr)
 {
-	validNode = false;
-
 	if (file != nullptr)
 	{
 		value = json_parse_string(file);
 		object = json_value_get_object(value);
-
-		if (value && object)
-			validNode = true;
 	}
 	else
 	{
@@ -30,40 +25,34 @@ JSONNode::JSONNode(JSON_Object* root) : value(nullptr), object(root)
 {}
 
 // Push ================================================================================
-json_result_t JSONNode::PushBool(const char* name, const bool value)
+bool JSONNode::PushBool(const char* name, const bool value)
 {
-	SDL_assert(name != nullptr);
-	return json_result_t(json_object_set_boolean(object, name, (int)value));
+	return json_object_set_boolean(object, name, (int)value) == JSONSuccess;
 }
 
-json_result_t JSONNode::PushInt(const char* name, const int value)
+bool JSONNode::PushInt(const char* name, const int value)
 {
-	SDL_assert(name != nullptr);
-	return json_result_t(json_object_set_number(object, name, (double)value));
+	return json_object_set_number(object, name, (double)value) == JSONSuccess;
 }
 
-json_result_t JSONNode::PushUInt(const char* name, const uint value)
+bool JSONNode::PushUInt(const char* name, const uint value)
 {
-	SDL_assert(name != nullptr);
-	return json_result_t(json_object_set_number(object, name, (double)value));
+	return json_object_set_number(object, name, (double)value) == JSONSuccess;
 }
 
-json_result_t JSONNode::PushFloat(const char* name, const float value)
+bool JSONNode::PushFloat(const char* name, const float value)
 {
-	SDL_assert(name != nullptr);
-	return json_result_t(json_object_set_number(object, name, (double)value));
+	return json_object_set_number(object, name, (double)value) == JSONSuccess;
 }
 
-json_result_t JSONNode::PushDouble(const char* name, const double value)
+bool JSONNode::PushDouble(const char* name, const double value)
 {
-	SDL_assert(name != nullptr);
-	return json_result_t(json_object_set_number(object, name, value));
+	return json_object_set_number(object, name, value) == JSONSuccess;
 }
 
-json_result_t JSONNode::PushString(const char* name, const char* value)
+bool JSONNode::PushString(const char* name, const char* value)
 {
-	SDL_assert(name != nullptr && value != nullptr);
-	return json_result_t(json_object_set_string(object, name, value));
+	return json_object_set_string(object, name, value) == JSONSuccess;
 }
 
 JSONNode JSONNode::PushJObject(const char * name)
@@ -73,50 +62,69 @@ JSONNode JSONNode::PushJObject(const char * name)
 }
 
 // Pull ================================================================================
-bool JSONNode::PullBool(const char* name)const
+bool JSONNode::PullBool(const char* name, bool deflt)const
 {
 	SDL_assert(name != nullptr);
-	return json_object_get_boolean(object, name) > 0;
+	bool ret = deflt;
+	JSON_Value* value = json_object_get_value(object, name);
+	if (value && json_value_get_type(value) == JSONBoolean)
+		ret = json_value_get_boolean(value) != 0;
+	return ret;
 }
 
-int JSONNode::PullInt(const char* name)const
+int JSONNode::PullInt(const char* name, int deflt)const
 {
 	SDL_assert(name != nullptr);
-	return (int)json_object_get_number(object, name);
+	int ret = deflt;
+	JSON_Value* value = json_object_get_value(object, name);
+	if (value && json_value_get_type(value) == JSONNumber)
+		ret = (int)json_value_get_number(value);
+	return ret;
 }
 
-uint JSONNode::PullUInt(const char* name)const
+uint JSONNode::PullUInt(const char* name, uint deflt)const
 {
 	SDL_assert(name != nullptr);
-	return (uint)json_object_get_number(object, name);
+	uint ret = deflt;
+	JSON_Value* value = json_object_get_value(object, name);
+	if (value && json_value_get_type(value) == JSONNumber)
+		ret = (uint)json_value_get_number(value);
+	return ret;
 }
 
-float JSONNode::PullFloat(const char* name)const
+float JSONNode::PullFloat(const char* name, float deflt)const
 {
 	SDL_assert(name != nullptr);
-	return (float)json_object_get_number(object, name);
+	float ret = deflt;
+	JSON_Value* value = json_object_get_value(object, name);
+	if (value && json_value_get_type(value) == JSONNumber)
+		ret = (float)json_value_get_number(value);
+	return ret;
 }
 
-double JSONNode::PullDouble(const char* name)const
+double JSONNode::PullDouble(const char* name, double deflt)const
 {
 	SDL_assert(name != nullptr);
-	return json_object_get_number(object, name);
+	double ret = deflt;
+	JSON_Value* value = json_object_get_value(object, name);
+	if (value && json_value_get_type(value) == JSONNumber)
+		ret = json_value_get_number(value);
+	return ret;
 }
 
-const char* JSONNode::PullString(const char* name)const
+const char* JSONNode::PullString(const char* name, const char* deflt)const
 {
 	SDL_assert(name != nullptr);
-	return json_object_get_string(object, name);
+	const char* ret = NULL;
+	JSON_Value* value = json_object_get_value(object, name);
+	if (value && json_value_get_type(value) == JSONString)
+		ret = json_value_get_string(value);
+	return ret != NULL? ret : deflt;
 }
 
 JSONNode JSONNode::PullJObject(const char* name)const
 {
 	return JSONNode(json_object_get_object(object, name));
-}
-
-bool JSONNode::isValid() const
-{
-	return validNode;
 }
 
 uint JSONNode::Serialize(char** buffer, bool pretty)
@@ -138,4 +146,9 @@ uint JSONNode::Serialize(char** buffer, bool pretty)
 	}
 	
 	return size_ret;
+}
+
+inline bool JSONNode::operator!() const
+{
+	return object != nullptr;
 }
