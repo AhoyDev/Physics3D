@@ -11,5 +11,5 @@ build:
     verbosity: minimal
     publish_wap: true
 
-image: Visual Studio 2015
+image: Visual Studio 2017
 
