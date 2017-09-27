@@ -23,27 +23,50 @@ struct AppInfo
 
 }; AppInfo info_app;
 
-
-
-
-GUI_Config::GUI_Config()
+bool ConfigValues::NeedSaving()
 {
-
+	return (config_max_fps != max_fps ||
+		config_width != width ||
+		config_height != height ||
+		config_vsync != vsync ||
+		config_fullScreen != fullScreen ||
+		config_resizable != resizable ||
+		config_borderless != borderless ||
+		config_fullscreenDesktop != fullscreenDesktop);
 }
+
+bool ConfigValues::NeedRestart()
+{
+	return false;
+}
+
+GUI_Config::GUI_Config(const bool active) : GUI_Window(active)
+{}
 
 GUI_Config::~GUI_Config()
 {
-
 	fps.clear();
 	ms.clear();
+	mem.clear();
 }
 
-void GUI_Config::ShowConfigMenu()
+void GUI_Config::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(500, 440));
 	
 	ImGui::Begin("Config");
 	
+	if (values.NeedSaving()) // if changes only have to be saved
+	{
+		if (ImGui::Button("Save Changes"))
+			App->RequestSave();
+	}
+	else if (values.NeedRestart()) // if changes need restart to change
+	{
+		if (ImGui::Button("Restart and Save Changes"))
+			App->RequestRestart();
+	}
+
 	if (ImGui::CollapsingHeader("Application"))
 		ShowApp();
 	
@@ -63,14 +86,25 @@ void GUI_Config::ShowConfigMenu()
 	ImGui::End();
 }
 
+void GUI_Config::SetConfigValues()
+{
+	values.config_max_fps = values.max_fps = App->time->GetMaxFPS();
+	values.config_width = values.width = App->window->GetWidth();
+	values.config_height = values.height = App->window->GetHeight();
+	values.config_vsync = values.vsync = (SDL_GL_GetSwapInterval() == 1);
+	values.config_fullScreen = values.fullScreen = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN);
+	values.config_resizable = values.resizable = App->window->CheckFlag(SDL_WINDOW_RESIZABLE);
+	values.config_borderless = values.borderless = App->window->CheckFlag(SDL_WINDOW_BORDERLESS);
+	values.config_fullscreenDesktop = values.fullscreenDesktop = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
 void GUI_Config::ShowApp()
 {
 	info_app.title = "FrameRate: ";
 
 	// FPS Cap
-	int max_fps = App->time->GetMaxFPS();
-	if (ImGui::SliderInt("Max FPS", &max_fps, 0, 200, NULL))
-		App->time->SetMaxFPS(max_fps);
+	if (ImGui::SliderInt("Max FPS", &values.max_fps, 0, 200, NULL))
+		App->time->SetMaxFPS(values.max_fps);
 	
 	// FPS Plotter
 	
@@ -117,38 +151,61 @@ void GUI_Config::ShowApp()
 
 void GUI_Config::ShowWindow()
 {
-
 	//Brightness
 	float brightness = App->window->GetBrightness();
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
 		App->window->SetBrightness(brightness);
+	
+	// Window Dimensions
+	if (values.resizable)
+	{
+		values.width = App->window->GetWidth();
+		if (ImGui::SliderInt("Width", &values.width, 0, App->window->GetMaxWidth()))
+			App->window->SetWindowSize(values.width, App->window->GetHeight());
 
-	float width = App->window->GetWidth();
-	float widthPixels = App->window->GetWidth();
-	if (ImGui::SliderFloat("Width", &width, 0.0f, 1.0f))
-		App->window->SetWindowSize(width*widthPixels, App->window->GetHeight());
+		values.height = App->window->GetHeight();
+		if (ImGui::SliderInt("Height", &values.height, 0, App->window->GetMaxHeigth()))
+			App->window->SetWindowSize(App->window->GetHeight(), values.height);
+	}
+	else
+	{
+		ImGui::Text("Width: %d", values.width);
+		ImGui::Text("Height: %d", values.height);
+	}
 
-	float height = App->window->GetHeight();
-	float heightPixels = App->window->GetHeight();
-	if (ImGui::SliderFloat("Height", &height, 0.0f, 1.0f))
-		App->window->SetWindowSize(App->window->GetWidth(),height*heightPixels);
-
+	// VSYNC
+	if (ImGui::RadioButton("VSYNC", values.vsync))
+	{
+		values.vsync = !values.vsync;
+		SDL_GL_SetSwapInterval(values.vsync ? 1 : 0);
+	}
 
 	// Window Flags
-	if (ImGui::RadioButton("FullScreen", App->window->CheckFlag(SDL_WINDOW_FULLSCREEN)))
+	if (ImGui::RadioButton("FullScreen", values.fullScreen))
+	{
+		values.fullScreen = !values.fullScreen;
 		App->window->SwapFullScreen();
+	}
 
 	ImGui::SameLine();
 
-	if (ImGui::RadioButton("Resizable", App->window->CheckFlag(SDL_WINDOW_RESIZABLE))) {}
+	
+	if (ImGui::RadioButton("Resizable", values.resizable))
+		values.resizable = !values.resizable;
 
-	if (ImGui::RadioButton("Borderless", App->window->CheckFlag(SDL_WINDOW_BORDERLESS)))
+	if (ImGui::RadioButton("Borderless", values.borderless))
+	{
+		values.borderless = !values.borderless;
 		App->window->SwapBorderless();
+	}
 
 	ImGui::SameLine();
-
-	if (ImGui::RadioButton("FullscreenDesktop", App->window->CheckFlag(SDL_WINDOW_FULLSCREEN_DESKTOP)))
+	
+	if (ImGui::RadioButton("FullscreenDesktop", values.fullscreenDesktop))
+	{
+		values.fullscreenDesktop = !values.fullscreenDesktop;
 		App->window->SwapFullDesktop();
+	}
 }
 
 void GUI_Config::ShowHardware()
@@ -200,19 +257,12 @@ void GUI_Config::ShowHardware()
 	ImGui::Text("Version: %s", glGetString(GL_VERSION));
 	ImGui::Text("GLSL: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+	// VRAM
 	unsigned __int64	video_memory_total;
 	unsigned __int64	video_memory_use;
 	unsigned __int64	video_mem_available;
 	unsigned __int64	video_mem_reserved;
-
 	getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &video_memory_total, &video_memory_use, &video_mem_available, &video_mem_reserved);
-
-	
-
-
-
-	//ImGui::Separator();
-
 	ImGui::Text("Total VRAM: %f", (float(video_memory_total)/ MEGABYTE_F));
 	ImGui::Text("VRAM used: %f", (float(video_memory_use)/ MEGABYTE_F));
 	ImGui::Text("VRAM available: %f", (float(video_mem_available)/ MEGABYTE_F));
@@ -224,25 +274,22 @@ void GUI_Config::ShowHardware()
 void GUI_Config::ShowMemory()
 {
 	sMStats stats = m_getMemoryStatistics();
-
-
-	// FPS Plotter
-	
 	unsigned int lastMemoryUsage = stats.totalReportedMemory;
-	if (memory.size() > PLOTING_BARS)
+	if (mem.size() > PLOTING_BARS)
 	{
-		for (int i = 1; i < memory.size(); i++)
+		for (int i = 1; i < mem.size(); i++)
 		{
-			memory[i - 1] = memory[i];
+			mem[i - 1] = mem[i];
 		}
 
-		memory[memory.size() - 1] = lastMemoryUsage;
+		mem[mem.size() - 1] = lastMemoryUsage;
 	}
 	else
 	{
-		memory.push_back(lastMemoryUsage);
+		mem.push_back(lastMemoryUsage);
 	}
-	
+
+	ImGui::PlotHistogram("##Memory Usage", &mem[0], (int)mem.size(), 0, info_app.memory_usage.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
 	
 	ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
 	ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
@@ -253,11 +300,6 @@ void GUI_Config::ShowMemory()
 	ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
 	ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
 	ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
-
-
-
-	ImGui::PlotHistogram("##Memory Usage", &memory[0], (int)memory.size(), 0, info_app.memory_usage.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
-
 }
 
 void GUI_Config::ShowGLOptions()

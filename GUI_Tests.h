@@ -1,41 +1,18 @@
 #ifndef __GUITESTS_H__
 #define __GUITESTS_H__
 
-#include "imgui/imgui.h"
+#include "GUI_Window.h"
 
-#include "RandomGenerator.h"
-#include "Primitives.h"
-#include "R_Sphere.h"
-
-class GUI_Tests
+class GUI_Tests : public GUI_Window
 {
-	//Methods
 public:
 
-	GUI_Tests();
+	GUI_Tests(const bool active = false);
+	~GUI_Tests();
 
-	//Individual Tests
-	void Test1();
-	void Test2();
-	void Test3();
-	void Test4();
+	void Draw();
 
-private:
-	
-	//Attributes
-public:
-	void ShowIntersectionMenu();
-
-private:
-	ImGuiWindowFlags flags;
-
-	R_Sphere* sphere;
-	R_Capsule* capsule;
-
-	RandomGenerator* random_machine;
+	void Test();
 };
-
-
-
 
 #endif // __GUI_Tests_H__

@@ -1,29 +1,26 @@
 #ifndef __GUICONSOLE_H__
 #define __GUICONSOLE_H__
 
-#include "imgui\imgui.h"
+#include "GUI_Window.h"
 
-class GUI_Console
+class ImGuiTextBuffer;
+
+class GUI_Console : public GUI_Window
 {
 public:
-	GUI_Console();
+	GUI_Console(const bool active = false);
+	~GUI_Console();
 
-
-private:
-	
-
-public:
+	void Draw();
 	void LogConsole(const char* file);
-	void DrawLineConsole();
-
-	ImGuiTextBuffer		buf;
-	ImGuiTextFilter		filter;
-
+	void Log(const char* format, ...);
 
 private:
+
+	ImGuiTextBuffer*	buf;
 	bool scroll_bot;
 };
-extern GUI_Console* console;
 
+extern GUI_Console* console;
 
 #endif

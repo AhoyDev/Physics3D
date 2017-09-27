@@ -1,18 +1,32 @@
 #ifndef __GUICONFIG_H__
 #define __GUICONFIG_H__
 
-#include "MathGeoLib\include\MathGeoLib.h"
+#include "GUI_Window.h"
 #include <vector>
-#include "imgui\imgui.h"
-#include "Globals.h"
 
-class GUI_Config
+struct ConfigValues
+{
+	int config_max_fps, max_fps;
+	int config_width, width;
+	int config_height, height;
+	bool config_vsync, vsync;
+	bool config_fullScreen, fullScreen;
+	bool config_resizable, resizable;
+	bool config_borderless, borderless;
+	bool config_fullscreenDesktop, fullscreenDesktop;
+
+	bool NeedSaving();
+	bool NeedRestart();
+};
+
+class GUI_Config : public GUI_Window
 {
 public:
-	GUI_Config();
+	GUI_Config(const bool active = false);
 	~GUI_Config();
 
-	void ShowConfigMenu();
+	void Draw();
+	void SetConfigValues();
 
 private:
 
@@ -21,21 +35,15 @@ private:
 	void ShowHardware();
 	void ShowMemory();
 	void ShowGLOptions();
-public:
+
+private:
+
+	ConfigValues values;
 
 	std::vector<float> fps;
 	std::vector<float> ms;
-	std::vector<float> memory;
-
-	Colors colors;
-
-
-
-
-
+	std::vector<float> mem;
 };
-
-
 
 
 #endif
