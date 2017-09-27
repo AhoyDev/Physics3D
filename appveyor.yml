@@ -10,3 +10,6 @@ build:
     project: 3D Physics.sln
     verbosity: minimal
     publish_wap: true
+
+image: Visual Studio 2015
+
