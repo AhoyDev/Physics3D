@@ -315,12 +315,6 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h">
       <Filter>3d Party\MathGeoLib\Time</Filter>
     </ClInclude>
-    <ClInclude Include="EditorMainMenu.h">
-      <Filter>Sources\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI_Hardware.h">
-      <Filter>Sources\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="RandomGenerator.h">
       <Filter>Sources\Math</Filter>
     </ClInclude>
@@ -426,6 +420,9 @@
     </ClInclude>
     <ClInclude Include="gpudetect\dxgi1_4.h">
       <Filter>3d Party\gpuDetect</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI_Window.h">
+      <Filter>Sources\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -581,12 +578,6 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp">
       <Filter>3d Party\MathGeoLib\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI_Hardware.cpp">
-      <Filter>Sources\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorMainMenu.cpp">
-      <Filter>Sources\GUI</Filter>
     </ClCompile>
     <ClCompile Include="RandomGenerator.cpp">
       <Filter>Sources\Math</Filter>

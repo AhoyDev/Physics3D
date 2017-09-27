@@ -78,15 +78,14 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="EditorMainMenu.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="gpudetect\DeviceId.h" />
     <ClInclude Include="gpudetect\dxgi1_4.h" />
     <ClInclude Include="GUI_Config.h" />
     <ClInclude Include="GUI_Console.h" />
-    <ClInclude Include="GUI_Hardware.h" />
     <ClInclude Include="GUI_Tests.h" />
+    <ClInclude Include="GUI_Window.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_sdl_gl3.h" />
@@ -203,10 +202,8 @@
     <ClCompile Include="gpudetect\DeviceId.cpp" />
     <ClCompile Include="GUI_Config.cpp" />
     <ClCompile Include="JSONNode.cpp" />
-    <ClCompile Include="EditorMainMenu.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="GUI_Console.cpp" />
-    <ClCompile Include="GUI_Hardware.cpp" />
     <ClCompile Include="GUI_Tests.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
