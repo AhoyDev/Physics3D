@@ -31,6 +31,7 @@ bool ModuleWindow::Init(JSONNode config)
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 		//Create window
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 		Load(&config);
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
@@ -60,9 +61,15 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::Save(JSONNode* config)
+void ModuleWindow::Save(JSONNode* config) const
 {
-
+	config->PushString("window_title", title);
+	config->PushInt("window_width", width);
+	config->PushInt("window_height", height);
+	config->PushBool("win_fullscreen", false);
+	config->PushBool("win_resizable", true);
+	config->PushBool("win_borderless", false);
+	config->PushBool("win_fullscreen_desktop", false);
 }
 
 void ModuleWindow::Load(JSONNode* config)
@@ -70,7 +77,6 @@ void ModuleWindow::Load(JSONNode* config)
 	title = config->PullString("window_title", "RubensEngine");
 	width = config->PullInt("window_width", 1280);
 	height = config->PullInt("window_height", 1024);
-	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 	if (config->PullBool("win_fullscreen", false))
 		flags |= SDL_WINDOW_FULLSCREEN;
@@ -88,12 +94,40 @@ void ModuleWindow::Load(JSONNode* config)
 
 int ModuleWindow::GetWidth() const
 {
-	return width;
+	return (flags & SDL_WINDOW_FULLSCREEN) ? GetMaxWidth() : width;
 }
 
 int ModuleWindow::GetHeight() const
 {
-	return height;
+	return (flags & SDL_WINDOW_FULLSCREEN) ? GetMaxHeigth() : height;
+}
+
+int ModuleWindow::GetMaxWidth() const
+{
+	int ret = -1;
+
+	SDL_DisplayMode mode;
+	for (int i = 0; i < SDL_GetNumVideoDisplays(); ++i)
+	{
+		if (SDL_GetCurrentDisplayMode(i, &mode) == 0)
+			ret = mode.w;
+	}
+
+	return ret;
+}
+
+int ModuleWindow::GetMaxHeigth() const
+{
+	int ret = -1;
+
+	SDL_DisplayMode mode;
+	for (int i = 0; i < SDL_GetNumVideoDisplays(); ++i)
+	{
+		if (SDL_GetCurrentDisplayMode(i, &mode) == 0)
+			ret = mode.h;
+	}
+
+	return ret;
 }
 
 float ModuleWindow::GetBrightness()const
@@ -142,6 +176,17 @@ void ModuleWindow::SetFullScreen(bool flag_value)
 	}
 }
 
+void ModuleWindow::SetResizeable(const bool flag_value)
+{
+	if ((flags & SDL_WINDOW_RESIZABLE) != flag_value)
+	{
+		if (flag_value)
+			flags |= SDL_WINDOW_RESIZABLE;
+		else
+			flags -= SDL_WINDOW_RESIZABLE;
+	}
+}
+
 void ModuleWindow::SetBorderless(bool flag_value)
 {
 	if ((flags & SDL_WINDOW_BORDERLESS) != flag_value)
@@ -184,21 +229,15 @@ void ModuleWindow::SetFullDesktop(bool flag_value)
 	}
 }
 
-void ModuleWindow::SetWindowSize(float _width, float _height)
+void ModuleWindow::SetWindowSize(int new_width, int new_height)
 {
-	//SDL_SetWindowSize(window, _width, _height);
-}
-
-void ModuleWindow::SetWindowSizei(int new_width, int new_height)
-{
-	if (new_width >= 0 && new_height >= 0)
+	if (flags & SDL_WINDOW_RESIZABLE)
 	{
 		width = new_width;
 		height = new_height;
-		SDL_SetWindowSize(window, width, height);
+		SDL_SetWindowSize(window, new_width, new_height);
 	}
 }
-
 
 
 void ModuleWindow::SwapFullScreen()

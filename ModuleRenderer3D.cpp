@@ -3,15 +3,12 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
-
+#include "ModuleEditor.h"
+#include "GUI_Console.h"
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-
-
-#include "GUI_Console.h"
-
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -46,7 +43,6 @@ bool ModuleRenderer3D::Init(JSONNode config)
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	
 
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
@@ -56,34 +52,20 @@ bool ModuleRenderer3D::Init(JSONNode config)
 		ret = false;
 	}
 
-	LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-
-
 	if (GLEW_OK != glewInit())
 	{
 		console->LogConsole("Glew failed\n");
 		LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	}
 
-
-
-
 	if(ret == true)
 	{
+		Load(&config);
+
 
 		//Use Vsync
 	//	if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 			//LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
-		
-		SDL_GL_SetSwapInterval(0);
-
-		int swap_interval = SDL_GL_GetSwapInterval();
-
-		
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -147,12 +129,12 @@ bool ModuleRenderer3D::Init(JSONNode config)
 	}
 
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	OnResize(App->window->GetWidth(), App->window->GetHeight());
 
-
-
+	// Initialize ImGui w/ SdlGL3
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	
+	// Set camera initial pos
 	App->camera->Look(float3(1.75f, 1.75f, 5.0f), float3(0.0f, 0.0f, 0.0f));
 
 	return ret;
@@ -185,8 +167,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // Update: debug camera
 update_status ModuleRenderer3D::Update(float dt)
 {
-	
-
 	//Depth Test Enabling/Disabling
 	if (isDepthTest && !isDepthTestOnce)
 	{ 
@@ -276,7 +256,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::MediumBlue);
 
 	DrawGeometry();
-	ImGui::Render();
+	App->editor->Draw();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -287,8 +267,18 @@ bool ModuleRenderer3D::CleanUp()
 	console->LogConsole("Destroying 3D Renderer\n");
 	ImGui_ImplSdlGL3_Shutdown();
 	SDL_GL_DeleteContext(context);
-
 	return true;
+}
+
+void ModuleRenderer3D::Save(JSONNode* config) const
+{
+	config->PushBool("VSYNC", vsync);
+}
+
+void ModuleRenderer3D::Load(JSONNode* config)
+{
+	vsync = config->PullBool("VSYNC", false);
+	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
 }
 
 

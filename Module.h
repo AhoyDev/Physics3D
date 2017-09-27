@@ -82,7 +82,7 @@ public:
 	virtual void Save(JSONNode* config) const
 	{}
 
-	virtual void Load(JSONNode* config) const
+	virtual void Load(JSONNode* config)
 	{}
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)

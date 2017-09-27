@@ -20,6 +20,8 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+	void Save(JSONNode* config) const;
+	void Load(JSONNode* config);
 
 	void OnResize(int width, int height);
 	void DrawGeometry();
@@ -73,7 +75,7 @@ private:
 
 	bool isWireFramed = false;
 	
-
+	bool vsync;
 };
 
 #endif
