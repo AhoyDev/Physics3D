@@ -1,7 +1,6 @@
 #pragma once
 #include <windows.h>
 #include <stdio.h>
-#include "imgui\imgui.h"
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
@@ -45,36 +44,7 @@ typedef unsigned int uint;
 enum update_status
 {
 	UPDATE_CONTINUE = 1,
+	UPDATE_RESTART,
 	UPDATE_STOP,
 	UPDATE_ERROR
-};
-
-// Configuration -----------
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 1024
-#define SCREEN_SIZE 1
-#define WIN_FULLSCREEN false
-#define WIN_RESIZABLE true
-#define WIN_BORDERLESS false
-#define WIN_FULLSCREEN_DESKTOP false
-#define VSYNC false
-#define TITLE "3D Physics Playground"
-
-
-
-struct Colors
-{
-	ImVec4 white = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-	ImVec4 Black = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-	ImVec4 yellow = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
-	ImVec4 skyBlue = ImVec4(0.10f, 0.10f, 1.00f, 1.0f);
-	ImVec4 blue = ImVec4(0.3f, 0.0f, 0.0f, 1.0f);
-	ImVec4 darkBlue = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-	ImVec4 pink = ImVec4(1.0f, 0.0f, 1.0f, 1.0f);
-	ImVec4 Green = ImVec4(0, 0.88f, 0.73f, 1.00f);
-	ImVec4 LighterGreen = ImVec4(0.5f, 1.0f, 0.5f, 1.0f);
-	ImVec4 DarkerGreen = ImVec4(0.05f, 0.4f, 0.05f, 1.0f);
-	ImVec4 AlphaGreen = ImVec4(0.05f, 1.0f, 0.05f, 1.0f);
-	ImVec4 red = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-
 };
