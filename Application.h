@@ -17,6 +17,7 @@ class ModuleRenderer3D;
 
 class FileManager;
 class TimeManager;
+class RandomGenerator;
 
 class JSONNode;
 
@@ -30,16 +31,18 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	update_status Restart();
 
+	void RequestRestart();
+	void RequestSave();
 	void OpenURL(const char* url);
 
 private: 
 
 	void SetConfig();
-	void FinishUpdate();
-
 	void Save() const;
-	void Load() const;
+	void Load();
+	void FinishUpdate();
 
 	void AddModule(Module* mod);
 
@@ -47,6 +50,7 @@ public:
 
 	FileManager* fm;
 	TimeManager* time;
+	RandomGenerator* rnd;
 
 	// Modules
 	ModuleWindow* window;
@@ -65,7 +69,9 @@ public:
 	ModuleScripting* scripting;*/
 
 private:
-	
+
+	bool request_restart;
+	bool request_save;
 	JSONNode* config;
 	std::list<Module*> list_modules;
 	

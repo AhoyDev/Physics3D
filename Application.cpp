@@ -12,9 +12,11 @@
 
 #include "FileManager.h"
 #include "TimeManager.h"
+#include "RandomGenerator.h"
 #include "GUI_Console.h"
 #include "JSONNode.h"
 #include "Globals.h"
+#include "GUI_Config.h"
 
 #include "Brofiler/include/Brofiler.h"
 
@@ -23,8 +25,11 @@ Application::Application() :
 	window(nullptr), input(nullptr), audio(nullptr), physics3D(nullptr),
 	camera(nullptr), scene_intro(nullptr), editor(nullptr), renderer3D(nullptr)
 {
+	request_restart = request_save = false;
+
 	fm = new WindowsFileManager();
 	time = new TimeManager();
+	rnd = new RandomGenerator();
 
 	// Modules
 	window = new ModuleWindow("Window");
@@ -76,7 +81,6 @@ bool Application::Init()
 	std::list<Module*>::iterator item = list_modules.begin();
 	for (; ret && item != list_modules.end(); item++)
 	{
-		LOG((*item)->GetName());
 		ret = (*item)->Init(config->PullJObject((*item)->GetName()));
 	}
 
@@ -85,9 +89,7 @@ bool Application::Init()
 	item = list_modules.begin();
 	for (; ret && item != list_modules.end(); item++)
 	{
-		LOG((*item)->GetName());
-		if((*item)->IsEnabled())
-			ret = (*item)->Start();
+		if((*item)->IsEnabled()) ret = (*item)->Start();
 	}
 	
 	return ret;
@@ -99,33 +101,39 @@ update_status Application::Update()
 	//BROFILER_FRAME("GameLoop")
 	update_status ret = UPDATE_CONTINUE;
 
-	float dt = time->UpdateDeltaTime();
-
-	std::list<Module*>::iterator item = list_modules.begin();
-	while (ret == UPDATE_CONTINUE && item != list_modules.end())
+	if (request_restart)
 	{
-		if ((*item)->IsEnabled())
-			ret = (*item)->PreUpdate(dt);
-		item++;
+		request_restart = false;
+		ret = UPDATE_RESTART;
 	}
-
-	item = list_modules.begin();
-	while (ret == UPDATE_CONTINUE && item != list_modules.end())
+	else
 	{
-		if ((*item)->IsEnabled())
-			ret = (*item)->Update(dt);
-		item++;
-	}
+		float dt = time->UpdateDeltaTime();
 
-	item = list_modules.begin();
-	while (ret == UPDATE_CONTINUE && item != list_modules.end())
-	{
-		if ((*item)->IsEnabled())
-			ret = (*item)->PostUpdate(dt);
-		item++;
-	}
+		std::list<Module*>::iterator item = list_modules.begin();
+		for (; ret == UPDATE_CONTINUE && item != list_modules.end(); item++)
+		{
+			if ((*item)->IsEnabled())
+				ret = (*item)->PreUpdate(dt);
+		}
 
-	FinishUpdate();
+		item = list_modules.begin();
+		for (; ret == UPDATE_CONTINUE && item != list_modules.end(); item++)
+		{
+			if ((*item)->IsEnabled())
+				ret = (*item)->Update(dt);
+		}
+
+		item = list_modules.begin();
+		for (; ret == UPDATE_CONTINUE && item != list_modules.end(); item++)
+		{
+			if ((*item)->IsEnabled())
+				ret = (*item)->PostUpdate(dt);
+		}
+
+		FinishUpdate();
+	}
+	
 	return ret;
 }
 
@@ -140,6 +148,26 @@ bool Application::CleanUp()
 	}
 
 	return ret;
+}
+
+update_status Application::Restart()
+{
+	update_status ret = UPDATE_STOP;
+
+	if(CleanUp() && Init())
+		ret = UPDATE_CONTINUE;
+
+	return ret;
+}
+
+void Application::RequestRestart()
+{
+	request_restart = true;
+}
+
+void Application::RequestSave()
+{
+	request_save = true;
 }
 
 void Application::OpenURL(const char* url)
@@ -161,8 +189,6 @@ void Application::SetConfig()
 		for (; i != list_modules.end(); ++i)
 			config->PushJObject((*i)->GetName());
 
-		Save();
-
 		uint size = config->Serialize(&buffer);
 		fm->Save("Configuration.json", buffer);
 	}
@@ -177,6 +203,15 @@ void Application::SetConfig()
 void Application::FinishUpdate()
 {
 	time->ManageFrameTimers();
+
+	if (request_save)
+	{
+		request_save = false;
+		Save();
+		Load();
+		editor->config_menu->SetConfigValues();
+	}
+
 	// manage events
 	// check if needed resources must load for next frame
 }
@@ -193,6 +228,15 @@ void Application::Save() const
 	uint size = config->Serialize(&buffer);
 	fm->Save("Configuration.json", buffer);
 	delete[] buffer;
+}
+
+void Application::Load()
+{
+	std::list<Module*>::const_iterator item = list_modules.begin();
+	for (; item != list_modules.end(); item++)
+	{
+		(*item)->Load(&config->PullJObject((*item)->GetName()));
+	}
 }
 
 void Application::AddModule(Module* mod)
