@@ -421,7 +421,7 @@
     <ClInclude Include="gpudetect\dxgi1_4.h">
       <Filter>3d Party\gpuDetect</Filter>
     </ClInclude>
-    <ClInclude Include="GUI_Window.h">
+    <ClInclude Include="GUI_Hardware.h">
       <Filter>Sources\GUI</Filter>
     </ClInclude>
   </ItemGroup>
