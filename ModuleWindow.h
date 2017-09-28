@@ -13,7 +13,7 @@ public:
 	ModuleWindow(const char* name, bool start_enabled = true);
 	~ModuleWindow();
 
-	bool Init(JSONNode config);
+	bool Init();
 	bool CleanUp();
 	void Save(JSONNode* config)const;
 	void Load(JSONNode* config);

@@ -15,7 +15,7 @@ public:
 	ModuleRenderer3D(const char* name, bool start_enabled = true);
 	~ModuleRenderer3D();
 
-	bool Init(JSONNode config);
+	bool Init();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);

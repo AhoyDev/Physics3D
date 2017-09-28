@@ -20,7 +20,7 @@ public:
 	ModuleInput(const char* name, bool start_enabled = true);
 	~ModuleInput();
 
-	bool Init(JSONNode config);
+	bool Init();
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 

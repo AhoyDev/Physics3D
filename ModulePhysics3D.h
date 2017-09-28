@@ -21,7 +21,7 @@ public:
 	ModulePhysics3D(const char* name, bool start_enabled = true);
 	~ModulePhysics3D();
 
-	bool Init(JSONNode config);
+	bool Init();
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);

@@ -5,6 +5,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
 #include "GUI_Console.h"
+#include "JSONNode.h"
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
@@ -31,7 +32,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
 // Called before render is available
-bool ModuleRenderer3D::Init(JSONNode config)
+bool ModuleRenderer3D::Init()
 {
 	console->LogConsole("Creating 3D Renderer context\n");
 	bool ret = true;

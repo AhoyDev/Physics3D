@@ -2,7 +2,7 @@
 
 #include "Application.h"
 #include "SDL/include/SDL.h"
-
+#include "JSONNode.h"
 #include "GUI_Console.h"
 
 #define BORDER_HEIGHT 20
@@ -16,7 +16,7 @@ ModuleWindow::~ModuleWindow()
 {}
 
 // Called before render is available
-bool ModuleWindow::Init(JSONNode config)
+bool ModuleWindow::Init()
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;

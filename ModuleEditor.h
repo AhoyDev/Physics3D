@@ -18,7 +18,7 @@ public:
 	ModuleEditor(const char* name, bool start_enabled = true);
 	~ModuleEditor();
 
-	bool Init(JSONNode config);
+	bool Init();
 	update_status Update(float dt);
 	bool CleanUp();
 

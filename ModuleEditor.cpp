@@ -70,7 +70,7 @@ ModuleEditor::~ModuleEditor()
 	delete colors;
 }
 
-bool ModuleEditor::Init(JSONNode config)
+bool ModuleEditor::Init()
 {
 	AddWindow(tests_menu);
 	AddWindow(config_menu);

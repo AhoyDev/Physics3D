@@ -83,7 +83,7 @@ bool Application::Init()
 	std::list<Module*>::iterator item = list_modules.begin();
 	for (; ret && item != list_modules.end(); item++)
 	{
-		ret = (*item)->Init(config->PullJObject((*item)->GetName()));
+		ret = (*item)->Init();
 	}
 
 	// After all Init calls we call Start() in all modules

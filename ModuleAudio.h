@@ -14,7 +14,7 @@ public:
 	ModuleAudio(const char* name, bool start_enabled = true);
 	~ModuleAudio();
 
-	bool Init(JSONNode config);
+	bool Init();
 	bool CleanUp();
 
 	// Play a music file

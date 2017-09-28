@@ -2,10 +2,9 @@
 #define __MODULE_H__
 
 #include "Globals.h"
-#include "JSONNode.h"
 
+class JSONNode;
 struct PhysBody3D;
-
 
 class Module
 {
@@ -45,7 +44,7 @@ public:
 		}
 	}
 
-	virtual bool Init(JSONNode config)
+	virtual bool Init()
 	{
 		return true; 
 	}
