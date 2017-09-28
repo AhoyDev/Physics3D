@@ -55,11 +55,27 @@ ModuleEditor::ModuleEditor(const char* name, bool start_enabled) : Module(name, 
 	console->LogConsole("------------ Initializing Console -----------------\n");
 	console->LogConsole("------------ Console Ready -----------------\n");
 
+	colors = new Colors();
+	
+}
+
+ModuleEditor::~ModuleEditor()
+{
+	std::list<GUI_Window*>::reverse_iterator i = editor_windows.rbegin();
+	for (; i != editor_windows.rend(); ++i)
+	{
+		delete (*i);
+	}
+
+	delete colors;
+}
+
+bool ModuleEditor::Init(JSONNode config)
+{
 	AddWindow(tests_menu);
 	AddWindow(config_menu);
 	AddWindow(console);
 
-	colors = new Colors();
 	colors->white = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	colors->Black = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 	colors->yellow = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
@@ -72,13 +88,7 @@ ModuleEditor::ModuleEditor(const char* name, bool start_enabled) : Module(name, 
 	colors->DarkerGreen = ImVec4(0.05f, 0.4f, 0.05f, 1.0f);
 	colors->AlphaGreen = ImVec4(0.05f, 1.0f, 0.05f, 1.0f);
 	colors->red = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-}
 
-ModuleEditor::~ModuleEditor()
-{}
-
-bool ModuleEditor::Init(JSONNode config)
-{
 	style = &ImGui::GetStyle();
 	
 	//ImGui Styling
@@ -107,17 +117,6 @@ bool ModuleEditor::Init(JSONNode config)
 	style->Colors[ImGuiCol_CloseButton] = colors->pink;
 
 	return true;
-}
-
-bool ModuleEditor::Start()
-{
-	config_menu->SetConfigValues();
-	return true;
-}
-
-update_status ModuleEditor::PreUpdate(float dt)
-{
-	return UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::Update(float dt)
@@ -191,16 +190,7 @@ update_status ModuleEditor::Update(float dt)
 
 bool ModuleEditor::CleanUp()
 {
-	std::list<GUI_Window*>::reverse_iterator i = editor_windows.rbegin();
-	for (; i != editor_windows.rend(); ++i)
-	{
-		delete (*i);
-	}
-
-	delete colors;
-
-	
-
+	editor_windows.clear();
 	return true;
 }
 
