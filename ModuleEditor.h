@@ -19,6 +19,7 @@ public:
 	~ModuleEditor();
 
 	bool Init();
+	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
 

@@ -12,16 +12,7 @@
 #include "mmgr\mmgr.h"
 #include "gpudetect\DeviceId.h"
 
-#define PLOTING_BARS 50
-
-struct AppInfo
-{
-	std::string title = "Framerate: ";
-	std::string renderDrivers = "Render Drivers: ";
-	std::string caps = "Caps: ";
-	std::string memory_usage = "Memory Usage: ";
-
-}; AppInfo info_app;
+#define PLOTING_BARS 49
 
 GUI_Config::GUI_Config(const bool active) : GUI_Window(active)
 {}
@@ -71,53 +62,21 @@ void GUI_Config::Draw()
 
 void GUI_Config::ShowApp()
 {
-	info_app.title = "FrameRate: ";
-
 	// FPS Cap
 	if (ImGui::SliderInt("Max FPS", &App->config_values.max_fps, 0, 200, NULL))
 		App->time->SetMaxFPS(App->config_values.max_fps);
 	
-	// FPS Plotter
-	
-	float lastFPS = App->time->GetLastFPS();
-	float fps_max_value = 0.0f;
-	if (fps.size() > PLOTING_BARS)
-	{
-		for (int i = 1; i < fps.size(); i++)
-		{
-			fps[i - 1] = fps[i];
-			if (fps[i] > fps_max_value)
-				fps_max_value = fps[i];
-		}
-		fps_max_value += fps_max_value * 0.20f;
+	char title[25];
 
-		fps[fps.size() - 1] = lastFPS;
-	}
-	else
-	{
-		fps.push_back(lastFPS);
-	}
-	
-	info_app.title += std::to_string(lastFPS);
-	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, info_app.title.c_str(), 0.f, fps_max_value, ImVec2(310, 100));
+	// FPS Plotter
+	float max = AddPlotValue(fps, App->time->GetLastFPS());
+	sprintf_s(title, 25, "Framerate %d", App->time->GetLastFPS());
+	ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title, 0.f, 1.2f * App->config_values.max_fps, ImVec2(310, 100));
 
 	// MS Plotter
-	info_app.title = "Miliseconds: ";
-	float miliseconds = App->time->GetLastFrameMs();
-	if (ms.size() > PLOTING_BARS)
-	{
-		for (int i = 1; i < ms.size(); i++)
-			ms[i - 1] = ms[i];
-
-		ms[ms.size() - 1] = miliseconds;
-	}
-	else
-	{
-		ms.push_back(miliseconds);
-	}
-
-	info_app.title += std::to_string(miliseconds);
-	ImGui::PlotHistogram("##Miliseconds", &ms[0], ms.size(), 0, info_app.title.c_str(), 0.0f, 30.0f, ImVec2(310, 100));
+	max = AddPlotValue(ms, App->time->GetLastFrameMs());
+	sprintf_s(title, 25, "Miliseconds %0.1f", App->time->GetLastFrameMs());
+	ImGui::PlotHistogram("##Miliseconds", &ms[0], ms.size(), 0, title, 0.0f, 30.0f, ImVec2(310, 100));
 }
 
 void GUI_Config::ShowWindow()
@@ -128,7 +87,7 @@ void GUI_Config::ShowWindow()
 		App->window->SetBrightness(brightness);
 	
 	// Window Dimensions
-	if (App->config_values.resizable)
+	if (App->config_values.resizable || !App->config_values.fullScreen || !App->config_values.fullscreenDesktop)
 	{
 		App->config_values.width = App->window->GetWidth();
 		if (ImGui::SliderInt("Width", &App->config_values.width, 0, App->window->GetMaxWidth()))
@@ -182,86 +141,41 @@ void GUI_Config::ShowWindow()
 void GUI_Config::ShowHardware()
 {
 	// CPU
-	ImGui::Text("CPUs: %d cores", SDL_GetCPUCount());
+	ImGui::Text(cpus.c_str());
 
 	// RAM
-	int ram = SDL_GetSystemRAM();
-	if (ram > KILOBYTE)
-		ImGui::Text("System RAM: %f Gb/s", ram/KILOBYTE_F);
-	else
-		ImGui::Text("System RAM: %d Mb/s", ram);
+	ImGui::Text(ram.c_str());
 
 	// Caps
-	
-	if (SDL_Has3DNow()) info_app.caps += "3DNow, ";
-	if (SDL_HasAVX()) info_app.caps += "AVX, ";
-	if (SDL_HasAltiVec()) info_app.caps += "AltiVec, ";
-	if (SDL_HasMMX()) info_app.caps += "MMX, ";
-	if (SDL_HasRDTSC()) info_app.caps += "RDTSC, ";
-	ImGui::Text(info_app.caps.c_str());
-
-	info_app.caps = "";
-	if (SDL_HasSSE()) info_app.caps += "SSE, ";
-	if (SDL_HasSSE2()) info_app.caps += "SSE2, ";
-	if (SDL_HasSSE3()) info_app.caps += "SSE3, ";
-	if (SDL_HasSSE41()) info_app.caps += "SSE41, ";
-	if (SDL_HasSSE42()) info_app.caps += "SSE42, ";
-	ImGui::Text(info_app.caps.c_str());
-	ImGui::Separator();
+	ImGui::Text(caps1.c_str());
+	ImGui::Text(caps2.c_str());
 
 	// Render Drivers
-	info_app.renderDrivers = "Render Drivers: ";
-	SDL_RendererInfo info;
-	for (int i = 0; i < SDL_GetNumRenderDrivers() - 1 && SDL_GetRenderDriverInfo(i, &info) == 0; i++)
-	{
-		info_app.renderDrivers += info.name;
-		info_app.renderDrivers += ", ";
-	}
-	SDL_GetRenderDriverInfo(SDL_GetNumRenderDrivers(), &info);
-	info_app.renderDrivers += info.name;
-	ImGui::Text(info_app.renderDrivers.c_str());
+	ImGui::Text(drivers.c_str());
 	ImGui::Separator();
 
 	// GPU
-	ImGui::Text("GPU: %s", glGetString(GL_RENDERER));
-	ImGui::Text("Brand: %s", glGetString(GL_VENDOR));
-	ImGui::Text("Version: %s", glGetString(GL_VERSION));
-	ImGui::Text("GLSL: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	ImGui::Text(gpu_renderer.c_str());
+	ImGui::Text(gpu_vendor.c_str());
+	ImGui::Text(gpu_version.c_str());
+	ImGui::Text(gpu_shading.c_str());
 
 	// VRAM
-	unsigned __int64	video_memory_total;
-	unsigned __int64	video_memory_use;
-	unsigned __int64	video_mem_available;
-	unsigned __int64	video_mem_reserved;
-	getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &video_memory_total, &video_memory_use, &video_mem_available, &video_mem_reserved);
-	ImGui::Text("Total VRAM: %f", (float(video_memory_total)/ MEGABYTE_F));
-	ImGui::Text("VRAM used: %f", (float(video_memory_use)/ MEGABYTE_F));
-	ImGui::Text("VRAM available: %f", (float(video_mem_available)/ MEGABYTE_F));
-	ImGui::Text("VRAM reserved: %f", (float(video_mem_reserved)/ MEGABYTE_F));
-
-	
+	ImGui::Text(vram_total.c_str());
+	ImGui::Text(vram_used.c_str());
+	ImGui::Text(vram_available.c_str());
+	ImGui::Text(vram_reserved.c_str());
 }
 
 void GUI_Config::ShowMemory()
 {
+	// Mem Plotter
+	char title[25];
 	sMStats stats = m_getMemoryStatistics();
-	unsigned int lastMemoryUsage = stats.totalReportedMemory;
-	if (mem.size() > PLOTING_BARS)
-	{
-		for (int i = 1; i < mem.size(); i++)
-		{
-			mem[i - 1] = mem[i];
-		}
+	int max = AddPlotValue(mem, stats.totalReportedMemory);
+	sprintf_s(title, 25, "Memory Usage %d", stats.totalReportedMemory);
+	ImGui::PlotHistogram("##Memory Usage", &mem[0], mem.size(), 0, title, 0.f, 1.2f * max, ImVec2(310, 100));
 
-		mem[mem.size() - 1] = lastMemoryUsage;
-	}
-	else
-	{
-		mem.push_back(lastMemoryUsage);
-	}
-
-	ImGui::PlotHistogram("##Memory Usage", &mem[0], (int)mem.size(), 0, info_app.memory_usage.c_str(), 0.f, (float)stats.totalActualMemory, ImVec2(310, 100));
-	
 	ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
 	ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
 	ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
@@ -296,4 +210,171 @@ void GUI_Config::ShowGLOptions()
 	if (ImGui::RadioButton("WireFrame mode", App->renderer3D->getWireFrame()))
 		App->renderer3D->setWireFrame();
 
+}
+
+void GUI_Config::UpdateHardware()
+{
+	// CPU
+	cpus = "CPUs: ";
+	cpus += std::to_string(SDL_GetCPUCount());
+	cpus += " cores";
+
+	// RAM
+	char ram_s[25];
+	float system_ram = SDL_GetSystemRAM();
+	if (system_ram > KILOBYTE)
+		sprintf_s(ram_s, 25, "System RAM %0.1f Gb/s", system_ram / KILOBYTE_F);
+	else
+		sprintf_s(ram_s, 25, "System RAM %0.1f Mb/s", system_ram);
+	ram = ram_s;
+
+	// Caps
+	if (SDL_Has3DNow()) caps1 += " 3DNow";
+	if (SDL_HasAVX()) caps1 += " AVX";
+	if (SDL_HasAltiVec()) caps1 += " AltiVec";
+	if (SDL_HasMMX()) caps1 += " MMX";
+	if (SDL_HasRDTSC()) caps1 += " RDTSC";
+
+	if (SDL_HasSSE()) caps2 += " SSE";
+	if (SDL_HasSSE2()) caps2 += " SSE2";
+	if (SDL_HasSSE3()) caps2 += " SSE3";
+	if (SDL_HasSSE41()) caps2 += " SSE41";
+	if (SDL_HasSSE42()) caps2 += " SSE42";
+
+	// Render Drivers
+	drivers = "Render Drivers: ";
+	SDL_RendererInfo info;
+	if (SDL_GetRenderDriverInfo(0, &info) != -1) drivers += info.name;
+	for (int i = 1; i < SDL_GetNumRenderDrivers() && SDL_GetRenderDriverInfo(i, &info) == 0; i++)
+	{
+		drivers += ", ";
+		drivers += info.name;
+	}
+
+	// GPU
+	gpu_renderer = "GPU: ";
+	gpu_renderer += (char*)glGetString(GL_RENDERER);
+	gpu_vendor = "Brand: ";
+	gpu_vendor += (char*)glGetString(GL_VENDOR);
+	gpu_version = "Version:: ";
+	gpu_version += (char*)glGetString(GL_VERSION);
+	gpu_shading = "GLSL: ";
+	gpu_shading += (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+	// VRAM
+	UpdateVRAM();
+}
+
+void GUI_Config::UpdateVRAM()
+{
+	unsigned __int64 total, used, available, reserved;
+	getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &total, &used, &available, &reserved);
+
+	// Total
+	vram_total = "Total VRAM: ";
+	if (total > GIGABYTE)
+	{
+		vram_total += std::to_string(total / GIGABYTE_F);
+		vram_total += " Gbs";
+	}
+	else if (total > GIGABYTE)
+	{
+		vram_total += std::to_string(total / MEGABYTE_F);
+		vram_total += " Mbs";
+	}
+	else
+	{
+		vram_total += std::to_string(total);
+		vram_total += " Kbs";
+	}
+
+	// Used
+	vram_used = "VRAM used: ";
+	if (used > GIGABYTE)
+	{
+		vram_used += std::to_string(used / GIGABYTE_F);
+		vram_used += " Gbs";
+	}
+	else if (used > GIGABYTE)
+	{
+		vram_used += std::to_string(used / MEGABYTE_F);
+		vram_used += " Mbs";
+	}
+	else
+	{
+		vram_used += std::to_string(used);
+		vram_used += " Kbs";
+	}
+
+	// Available
+	vram_available = "VRAM available: ";
+	if (available > GIGABYTE)
+	{
+		vram_available += std::to_string(available / GIGABYTE_F);
+		vram_available += " Gbs";
+	}
+	else if (available > GIGABYTE)
+	{
+		vram_available += std::to_string(available / MEGABYTE_F);
+		vram_available += " Mbs";
+	}
+	else
+	{
+		vram_available += std::to_string(available);
+		vram_available += " Kbs";
+	}
+
+	// Reserved
+	vram_reserved = "VRAM reserved: ";
+	if (reserved > GIGABYTE)
+	{
+		vram_reserved += std::to_string(reserved / GIGABYTE_F);
+		vram_reserved += " Gbs";
+	}
+	else if (reserved > GIGABYTE)
+	{
+		vram_reserved += std::to_string(reserved / MEGABYTE_F);
+		vram_reserved += " Mbs";
+	}
+	else
+	{
+		vram_reserved += std::to_string(reserved);
+		vram_reserved += " Kbs";
+	}
+}
+
+float GUI_Config::AddPlotValue(std::vector<float> &vec, float value)
+{
+	if (vec.empty())
+	{
+		vec.push_back(value);
+		return value;
+	}
+
+	float max = vec[0];
+
+	if (vec.size() > PLOTING_BARS)
+	{
+		for (int i = 1; i < vec.size(); i++)
+		{
+			vec[i - 1] = vec[i];
+
+			if (vec[i] > max)
+				max = vec[i];
+		}
+
+		vec.back() = value;
+	}
+	else
+	{
+		vec.push_back(value);
+
+		for (int i = 0; i < vec.size(); i++)
+		{
+			if (vec[i] > max)
+				max = vec[i];
+		}
+	}
+
+	return max;
 }

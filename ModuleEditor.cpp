@@ -56,7 +56,6 @@ ModuleEditor::ModuleEditor(const char* name, bool start_enabled) : Module(name, 
 	console->LogConsole("------------ Console Ready -----------------\n");
 
 	colors = new Colors();
-	
 }
 
 ModuleEditor::~ModuleEditor()
@@ -116,6 +115,12 @@ bool ModuleEditor::Init()
 	style->Colors[ImGuiCol_Header] = colors->DarkerGreen;
 	style->Colors[ImGuiCol_CloseButton] = colors->pink;
 
+	return true;
+}
+
+bool ModuleEditor::Start()
+{
+	config_menu->UpdateHardware();
 	return true;
 }
 
