@@ -60,12 +60,8 @@ bool ModuleRenderer3D::Init(JSONNode config)
 
 	if(ret == true)
 	{
-		Load(&config);
-
-
-		//Use Vsync
-	//	if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
-			//LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+		if(App->config_values.vsync ? SDL_GL_SetSwapInterval(1) : SDL_GL_SetSwapInterval(0) == -1)
+			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -272,13 +268,12 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::Save(JSONNode* config) const
 {
-	config->PushBool("VSYNC", vsync);
+	config->PushBool("VSYNC", App->config_values.vsync);
 }
 
 void ModuleRenderer3D::Load(JSONNode* config)
 {
-	vsync = config->PullBool("VSYNC", false);
-	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
+	App->config_values.vsync = config->PullBool("VSYNC", false);
 }
 
 

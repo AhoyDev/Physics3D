@@ -21,6 +21,22 @@ class RandomGenerator;
 
 class JSONNode;
 
+struct ConfigValues
+{
+	const char *config_title, *title;
+	int config_max_fps, max_fps;
+	int config_width, width;
+	int config_height, height;
+	bool config_fullScreen, fullScreen;
+	bool config_resizable, resizable;
+	bool config_borderless, borderless;
+	bool config_fullscreenDesktop, fullscreenDesktop;
+	bool config_vsync, vsync;
+
+	bool NeedSaving();
+	bool NeedRestart();
+};
+
 class Application
 {
 public:
@@ -40,6 +56,7 @@ public:
 private: 
 
 	void SetConfig();
+	void SetConfigValues();
 	void Save() const;
 	void Load();
 	void FinishUpdate();
@@ -67,6 +84,8 @@ public:
 	ModuleResourceManager* resource_manager;
 	ModuleLighting* lighting;
 	ModuleScripting* scripting;*/
+
+	ConfigValues config_values;
 
 private:
 

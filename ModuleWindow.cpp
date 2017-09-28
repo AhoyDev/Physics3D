@@ -1,12 +1,14 @@
 #include "ModuleWindow.h"
 
-#include "Globals.h"
+#include "Application.h"
 #include "SDL/include/SDL.h"
 
 #include "GUI_Console.h"
 
+#define BORDER_HEIGHT 20
+
 ModuleWindow::ModuleWindow(const char* name, bool start_enabled) : Module(name, start_enabled),
-title(nullptr), window(nullptr), screen_surface(nullptr)
+window(nullptr), screen_surface(nullptr), flags(0)
 {}
 
 // Destructor
@@ -31,9 +33,13 @@ bool ModuleWindow::Init(JSONNode config)
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 		//Create window
-		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-		Load(&config);
-		window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(
+			App->config_values.title, // Title
+			SDL_WINDOWPOS_UNDEFINED, // x position
+			SDL_WINDOWPOS_UNDEFINED, // y position
+			App->config_values.width, // width
+			App->config_values.height, // height
+			flags); // flags
 
 		if(!window)
 		{
@@ -63,43 +69,44 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::Save(JSONNode* config) const
 {
-	config->PushString("window_title", title);
-	config->PushInt("window_width", width);
-	config->PushInt("window_height", height);
-	config->PushBool("win_fullscreen", false);
-	config->PushBool("win_resizable", true);
-	config->PushBool("win_borderless", false);
-	config->PushBool("win_fullscreen_desktop", false);
+	config->PushString("window_title", App->config_values.title);
+	config->PushInt("window_width", App->config_values.width);
+	config->PushInt("window_height", App->config_values.height);
+	config->PushBool("win_fullscreen", App->config_values.fullScreen);
+	config->PushBool("win_resizable", App->config_values.resizable);
+	config->PushBool("win_borderless", App->config_values.borderless);
+	config->PushBool("win_fullscreen_desktop", App->config_values.fullscreenDesktop);
 }
 
 void ModuleWindow::Load(JSONNode* config)
 {
-	title = config->PullString("window_title", "RubensEngine");
-	width = config->PullInt("window_width", 1280);
-	height = config->PullInt("window_height", 1024);
+	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+	App->config_values.title = config->PullString("window_title", "RubensEngine");
+	App->config_values.width = config->PullInt("window_width", 1280);
+	App->config_values.height = config->PullInt("window_height", 1024);
 
-	if (config->PullBool("win_fullscreen", false))
+	if (App->config_values.fullScreen = config->PullBool("win_fullscreen", false))
 		flags |= SDL_WINDOW_FULLSCREEN;
 
-	if (config->PullBool("win_resizable", true))
+	if (App->config_values.resizable = config->PullBool("win_resizable", true))
 		flags |= SDL_WINDOW_RESIZABLE;
 
-	if (config->PullBool("win_borderless", false))
+	if (App->config_values.borderless = config->PullBool("win_borderless", false))
 		flags |= SDL_WINDOW_BORDERLESS;
 
-	if (config->PullBool("win_fullscreen_desktop", false))
+	if (App->config_values.fullscreenDesktop = config->PullBool("win_fullscreen_desktop", false))
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 
 int ModuleWindow::GetWidth() const
 {
-	return (flags & SDL_WINDOW_FULLSCREEN) ? GetMaxWidth() : width;
+	return (flags & SDL_WINDOW_FULLSCREEN) ? GetMaxWidth() : App->config_values.width;
 }
 
 int ModuleWindow::GetHeight() const
 {
-	return (flags & SDL_WINDOW_FULLSCREEN) ? GetMaxHeigth() : height;
+	return (flags & SDL_WINDOW_FULLSCREEN) ? GetMaxHeight() : App->config_values.height;
 }
 
 int ModuleWindow::GetMaxWidth() const
@@ -116,7 +123,7 @@ int ModuleWindow::GetMaxWidth() const
 	return ret;
 }
 
-int ModuleWindow::GetMaxHeigth() const
+int ModuleWindow::GetMaxHeight() const
 {
 	int ret = -1;
 
@@ -150,8 +157,8 @@ void ModuleWindow::SetTitle(const char* new_title)
 {
 	if (new_title != nullptr)
 	{
-		SDL_SetWindowTitle(window, title);
-		title = SDL_GetWindowTitle(window);
+		App->config_values.title = new_title;
+		SDL_SetWindowTitle(window, App->config_values.title);
 	}
 }
 
@@ -172,7 +179,9 @@ void ModuleWindow::SetFullScreen(bool flag_value)
 			flags -= SDL_WINDOW_FULLSCREEN;
 		}
 
+		SDL_SetWindowSize(window, GetMaxWidth(), GetMaxHeight());
 		SDL_SetWindowFullscreen(window, flag);
+
 	}
 }
 
@@ -197,6 +206,9 @@ void ModuleWindow::SetBorderless(bool flag_value)
 		{
 			flag = SDL_TRUE;
 			flags |= SDL_WINDOW_BORDERLESS;
+			int x, y;
+			SDL_GetWindowPosition(window, &x, &y);
+			SDL_SetWindowPosition(window, x, y + BORDER_HEIGHT);
 		}
 		else
 		{
@@ -231,12 +243,11 @@ void ModuleWindow::SetFullDesktop(bool flag_value)
 
 void ModuleWindow::SetWindowSize(int new_width, int new_height)
 {
+	App->config_values.width = new_width;
+	App->config_values.height = new_height;
+
 	if (flags & SDL_WINDOW_RESIZABLE)
-	{
-		width = new_width;
-		height = new_height;
 		SDL_SetWindowSize(window, new_width, new_height);
-	}
 }
 
 

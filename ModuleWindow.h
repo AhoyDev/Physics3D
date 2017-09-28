@@ -21,7 +21,7 @@ public:
 	int		GetWidth() const;
 	int		GetHeight() const;
 	int		GetMaxWidth() const;
-	int		GetMaxHeigth() const;
+	int		GetMaxHeight() const;
 	float	GetBrightness()const;
 	bool	CheckFlag(uint flag) const;
 
@@ -46,9 +46,6 @@ public:
 
 private:
 
-	const char*	title;
-	int			width;
-	int			height;
 	uint		flags;
 
 };

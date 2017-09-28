@@ -74,8 +74,6 @@ private:
 	bool isGLTexture2DDOnce = false;
 
 	bool isWireFramed = false;
-	
-	bool vsync;
 };
 
 #endif

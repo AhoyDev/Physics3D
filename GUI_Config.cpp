@@ -12,7 +12,7 @@
 #include "mmgr\mmgr.h"
 #include "gpudetect\DeviceId.h"
 
-#define PLOTING_BARS 100
+#define PLOTING_BARS 50
 
 struct AppInfo
 {
@@ -22,23 +22,6 @@ struct AppInfo
 	std::string memory_usage = "Memory Usage: ";
 
 }; AppInfo info_app;
-
-bool ConfigValues::NeedSaving()
-{
-	return (config_max_fps != max_fps ||
-		config_width != width ||
-		config_height != height ||
-		config_vsync != vsync ||
-		config_fullScreen != fullScreen ||
-		config_resizable != resizable ||
-		config_borderless != borderless ||
-		config_fullscreenDesktop != fullscreenDesktop);
-}
-
-bool ConfigValues::NeedRestart()
-{
-	return false;
-}
 
 GUI_Config::GUI_Config(const bool active) : GUI_Window(active)
 {}
@@ -56,12 +39,12 @@ void GUI_Config::Draw()
 	
 	ImGui::Begin("Config");
 	
-	if (values.NeedSaving()) // if changes only have to be saved
+	if (App->config_values.NeedSaving()) // if changes only have to be saved
 	{
 		if (ImGui::Button("Save Changes"))
 			App->RequestSave();
 	}
-	else if (values.NeedRestart()) // if changes need restart to change
+	else if (App->config_values.NeedRestart()) // if changes need restart to change
 	{
 		if (ImGui::Button("Restart and Save Changes"))
 			App->RequestRestart();
@@ -86,25 +69,13 @@ void GUI_Config::Draw()
 	ImGui::End();
 }
 
-void GUI_Config::SetConfigValues()
-{
-	values.config_max_fps = values.max_fps = App->time->GetMaxFPS();
-	values.config_width = values.width = App->window->GetWidth();
-	values.config_height = values.height = App->window->GetHeight();
-	values.config_vsync = values.vsync = (SDL_GL_GetSwapInterval() == 1);
-	values.config_fullScreen = values.fullScreen = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN);
-	values.config_resizable = values.resizable = App->window->CheckFlag(SDL_WINDOW_RESIZABLE);
-	values.config_borderless = values.borderless = App->window->CheckFlag(SDL_WINDOW_BORDERLESS);
-	values.config_fullscreenDesktop = values.fullscreenDesktop = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN_DESKTOP);
-}
-
 void GUI_Config::ShowApp()
 {
 	info_app.title = "FrameRate: ";
 
 	// FPS Cap
-	if (ImGui::SliderInt("Max FPS", &values.max_fps, 0, 200, NULL))
-		App->time->SetMaxFPS(values.max_fps);
+	if (ImGui::SliderInt("Max FPS", &App->config_values.max_fps, 0, 200, NULL))
+		App->time->SetMaxFPS(App->config_values.max_fps);
 	
 	// FPS Plotter
 	
@@ -157,53 +128,53 @@ void GUI_Config::ShowWindow()
 		App->window->SetBrightness(brightness);
 	
 	// Window Dimensions
-	if (values.resizable)
+	if (App->config_values.resizable)
 	{
-		values.width = App->window->GetWidth();
-		if (ImGui::SliderInt("Width", &values.width, 0, App->window->GetMaxWidth()))
-			App->window->SetWindowSize(values.width, App->window->GetHeight());
+		App->config_values.width = App->window->GetWidth();
+		if (ImGui::SliderInt("Width", &App->config_values.width, 0, App->window->GetMaxWidth()))
+			App->window->SetWindowSize(App->config_values.width, App->window->GetHeight());
 
-		values.height = App->window->GetHeight();
-		if (ImGui::SliderInt("Height", &values.height, 0, App->window->GetMaxHeigth()))
-			App->window->SetWindowSize(App->window->GetHeight(), values.height);
+		App->config_values.height = App->window->GetHeight();
+		if (ImGui::SliderInt("Height", &App->config_values.height, 0, App->window->GetMaxHeight()))
+			App->window->SetWindowSize(App->window->GetHeight(), App->config_values.height);
 	}
 	else
 	{
-		ImGui::Text("Width: %d", values.width);
-		ImGui::Text("Height: %d", values.height);
+		ImGui::Text("Width: %d", App->config_values.width);
+		ImGui::Text("Height: %d", App->config_values.height);
 	}
 
 	// VSYNC
-	if (ImGui::RadioButton("VSYNC", values.vsync))
+	if (ImGui::RadioButton("VSYNC", App->config_values.vsync))
 	{
-		values.vsync = !values.vsync;
-		SDL_GL_SetSwapInterval(values.vsync ? 1 : 0);
+		App->config_values.vsync = !App->config_values.vsync;
+		SDL_GL_SetSwapInterval(App->config_values.vsync ? 1 : 0);
 	}
 
 	// Window Flags
-	if (ImGui::RadioButton("FullScreen", values.fullScreen))
+	if (ImGui::RadioButton("FullScreen", App->config_values.fullScreen))
 	{
-		values.fullScreen = !values.fullScreen;
+		App->config_values.fullScreen = !App->config_values.fullScreen;
 		App->window->SwapFullScreen();
 	}
 
 	ImGui::SameLine();
 
 	
-	if (ImGui::RadioButton("Resizable", values.resizable))
-		values.resizable = !values.resizable;
+	if (ImGui::RadioButton("Resizable", App->config_values.resizable))
+		App->config_values.resizable = !App->config_values.resizable;
 
-	if (ImGui::RadioButton("Borderless", values.borderless))
+	if (ImGui::RadioButton("Borderless", !App->config_values.borderless))
 	{
-		values.borderless = !values.borderless;
+		App->config_values.borderless = !App->config_values.borderless;
 		App->window->SwapBorderless();
 	}
 
 	ImGui::SameLine();
 	
-	if (ImGui::RadioButton("FullscreenDesktop", values.fullscreenDesktop))
+	if (ImGui::RadioButton("FullscreenDesktop", App->config_values.fullscreenDesktop))
 	{
-		values.fullscreenDesktop = !values.fullscreenDesktop;
+		App->config_values.fullscreenDesktop = !App->config_values.fullscreenDesktop;
 		App->window->SwapFullDesktop();
 	}
 }

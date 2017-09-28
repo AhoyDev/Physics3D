@@ -56,13 +56,12 @@ Application::Application() :
 
 	AddModule(editor);
 	AddModule(renderer3D);
-
-	SetConfig();
 }
 
 Application::~Application()
 {
-	/*delete fm;
+	/* Triggers error in Release: can't access elements
+	delete fm;
 	delete time;
 	delete config;*/
 
@@ -76,6 +75,9 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
+
+	SetConfig();
+	Load();
 
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = list_modules.begin();
@@ -152,12 +154,7 @@ bool Application::CleanUp()
 
 update_status Application::Restart()
 {
-	update_status ret = UPDATE_STOP;
-
-	if(CleanUp() && Init())
-		ret = UPDATE_CONTINUE;
-
-	return ret;
+	return (CleanUp() && Init()) ? UPDATE_CONTINUE : UPDATE_STOP;
 }
 
 void Application::RequestRestart()
@@ -200,6 +197,18 @@ void Application::SetConfig()
 	delete[] buffer;
 }
 
+void Application::SetConfigValues()
+{
+	config_values.config_max_fps = config_values.max_fps = App->time->GetMaxFPS();
+	config_values.config_width = config_values.width = App->window->GetWidth();
+	config_values.config_height = config_values.height = App->window->GetHeight();
+	config_values.config_vsync = config_values.vsync = (SDL_GL_GetSwapInterval() == 1);
+	config_values.config_fullScreen = config_values.fullScreen = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN);
+	config_values.config_resizable = config_values.resizable = App->window->CheckFlag(SDL_WINDOW_RESIZABLE);
+	config_values.config_borderless = config_values.borderless = App->window->CheckFlag(SDL_WINDOW_BORDERLESS);
+	config_values.config_fullscreenDesktop = config_values.fullscreenDesktop = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
 void Application::FinishUpdate()
 {
 	time->ManageFrameTimers();
@@ -209,7 +218,6 @@ void Application::FinishUpdate()
 		request_save = false;
 		Save();
 		Load();
-		editor->config_menu->SetConfigValues();
 	}
 
 	// manage events
@@ -237,6 +245,8 @@ void Application::Load()
 	{
 		(*item)->Load(&config->PullJObject((*item)->GetName()));
 	}
+
+	SetConfigValues();
 }
 
 void Application::AddModule(Module* mod)
@@ -244,5 +254,20 @@ void Application::AddModule(Module* mod)
 	list_modules.push_back(mod);
 }
 
+bool ConfigValues::NeedSaving()
+{
+	return (config_max_fps != max_fps ||
+		config_width != width ||
+		config_height != height ||
+		config_vsync != vsync ||
+		config_fullScreen != fullScreen ||
+		config_resizable != resizable ||
+		config_borderless != borderless ||
+		config_fullscreenDesktop != fullscreenDesktop);
+}
 
+bool ConfigValues::NeedRestart()
+{
+	return false;
+}
 
