@@ -1,12 +1,14 @@
 #include "TimeManager.h"
 
+#include "Application.h"
+
 TimeManager::TimeManager()
 {
 	frames = 0;
 	last_frame_ms = -1;
 	last_fps = -1;
 	capped_ms = 1000 / 60;
-	max_fps = fps_counter = 0;
+	fps_counter = 0;
 
 	ms_timer = CreateTimer();
 	fps_timer = CreateTimer();
@@ -67,12 +69,12 @@ float TimeManager::UpdateDeltaTime()
 
 void TimeManager::SetMaxFPS(int max)
 {
-	max_fps = max;
+	App->config_values.max_fps = max;
 
-	if (max_fps == 0)
+	if (max == 0)
 		capped_ms = 0;
 	else
-		capped_ms = 1000.0f / (double)max_fps;
+		capped_ms = 1000.0f / (double)max;
 }
 
 
@@ -100,12 +102,6 @@ int TimeManager::GetCappedMS() const
 {
 	return capped_ms;
 }
-
-int TimeManager::GetMaxFPS() const
-{
-	return max_fps;
-}
-
 
 // TIME =======================================================================================
 Timer::Timer(bool start_active)

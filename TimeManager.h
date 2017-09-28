@@ -25,8 +25,6 @@ public:
 	float	GetLastFrameMs() const;
 	int		GetLastFPS() const;
 	int		GetCappedMS() const;
-	int		GetMaxFPS() const;
-
 
 public:
 	
@@ -36,7 +34,6 @@ public:
 	float	last_frame_ms;
 	int		last_fps;
 	float	capped_ms;
-	int		max_fps = 60;
 
 private:
 

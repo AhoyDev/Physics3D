@@ -143,6 +143,8 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
+	Save();
+
 	std::list<Module*>::reverse_iterator rit = list_modules.rbegin();
 	for (; rit != list_modules.rend() && ret; ++rit)
 	{
@@ -199,14 +201,14 @@ void Application::SetConfig()
 
 void Application::SetConfigValues()
 {
-	config_values.config_max_fps = config_values.max_fps = App->time->GetMaxFPS();
-	config_values.config_width = config_values.width = App->window->GetWidth();
-	config_values.config_height = config_values.height = App->window->GetHeight();
-	config_values.config_vsync = config_values.vsync = (SDL_GL_GetSwapInterval() == 1);
-	config_values.config_fullScreen = config_values.fullScreen = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN);
-	config_values.config_resizable = config_values.resizable = App->window->CheckFlag(SDL_WINDOW_RESIZABLE);
-	config_values.config_borderless = config_values.borderless = App->window->CheckFlag(SDL_WINDOW_BORDERLESS);
-	config_values.config_fullscreenDesktop = config_values.fullscreenDesktop = App->window->CheckFlag(SDL_WINDOW_FULLSCREEN_DESKTOP);
+	config_values.config_max_fps = config_values.max_fps;
+	config_values.config_width = config_values.width;
+	config_values.config_height = config_values.height;
+	config_values.config_vsync = config_values.vsync;
+	config_values.config_fullScreen = config_values.fullScreen;
+	config_values.config_resizable = config_values.resizable;
+	config_values.config_borderless = config_values.borderless;
+	config_values.config_fullscreenDesktop = config_values.fullscreenDesktop;
 }
 
 void Application::FinishUpdate()
@@ -240,6 +242,7 @@ void Application::Save() const
 
 void Application::Load()
 {
+	config_values.max_fps = config->PullInt("FPS Cap", 60);
 	std::list<Module*>::const_iterator item = list_modules.begin();
 	for (; item != list_modules.end(); item++)
 	{
