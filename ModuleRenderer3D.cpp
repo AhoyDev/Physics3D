@@ -179,10 +179,31 @@ bool ModuleRenderer3D::Init()
 	GLfloat radius = 1.0f;
 	GLfloat height = 1.0f;
 	cilinder = new SCilinder(radius, height);
+	
+
+	//Sphere
+
+
+	sphere = new SSphere(vec(0.f,0.f,0.f),3.f,12,24);
+
+
+
+	geometry_importer = new GeometryImporter();
+	
+	RMesh* mesh;
+
+	//geometry_importer->LoadMesh("Assets/Skeleton.obj", mesh);
+
 
 
 	return ret;
 }
+
+
+
+
+
+
 
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
@@ -190,6 +211,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::LightBlue);
 
 	//Color c = App->camera->back
+
+
+
+
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -304,10 +329,18 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::MediumBlue);
 
+
+	/*Primitives draw*/
+
 	//DrawCubeDirectMode();
 	//DrawCubeGLDrawElements();
-	DrawCubeGLDrawArrays();
-	cilinder->DrawCilinder(cilinder->radius, cilinder->height,cilinder->R, cilinder->G,cilinder->B);
+	//DrawCubeGLDrawArrays();
+	//cilinder->DrawCilinder(cilinder->radius, cilinder->height,cilinder->R, cilinder->G,cilinder->B)
+	sphere->Render();
+	DrawLoadedMeshes();
+
+
+	//Editor Draws
 	App->editor->Draw();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
@@ -528,4 +561,40 @@ bool ModuleRenderer3D::getWireFrame()
 void ModuleRenderer3D::setWireFrame()
 {
 	isWireFramed = !isWireFramed;
+}
+
+
+void ModuleRenderer3D::DrawLoadedMeshes()
+{
+
+	LOG("Loading Intro assets");
+	bool ret = true;
+
+
+	for (int i = 0; i < geometry_importer->meshes.size(); i++)
+	{
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_vertices));
+
+		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_vertices);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->vertices, GL_STATIC_DRAW);
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_indices));
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry_importer->meshes[i]->id_indices);
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*geometry_importer->meshes[i]->numFaces, geometry_importer->meshes[i]->indices, GL_STATIC_DRAW);
+
+
+		glEnableClientState(GL_NORMAL_ARRAY);
+
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_normals));
+		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_normals);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->normals, GL_STATIC_DRAW);
+		glNormalPointer(GL_FLOAT, 0, NULL);
+
+	}
+
 }

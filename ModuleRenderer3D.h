@@ -7,7 +7,8 @@
 #include "SDL\include\SDL_video.h"
 #include "MathGeoLib\include\MathGeoLib.h"
 #include "SCilinder.h"
-
+#include "SSphere.h"
+#include "GeometryImporter.h"
 
 #define MAX_LIGHTS 8
 
@@ -29,6 +30,11 @@ public:
 	void DrawCubeDirectMode();
 	void DrawCubeGLDrawElements();
 	void DrawCubeGLDrawArrays();
+
+
+	void DrawLoadedMeshes();
+
+
 
 	bool getDepthTest();
 	void setDepthTest();
@@ -61,6 +67,10 @@ public:
 	uint	my_id;
 
 	SCilinder* cilinder;
+	SSphere* sphere;
+
+	GeometryImporter* geometry_importer;
+
 
 
 private:

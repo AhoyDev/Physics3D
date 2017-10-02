@@ -3,13 +3,17 @@
 
 #include "SPrimitive.h"
 
+#include "Glew\include\glew.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 class SSphere : public SPrimitive<Sphere>
 {
 public:
-	SSphere(float radius = 1.f);
-	SSphere(vec center, float radius = 1.f);
+	SSphere(float radius = 1.f, unsigned int rings = 12, unsigned int sectors = 24);
+	SSphere(vec center, float radius = 0.5f, unsigned int rings = 12, unsigned int sectors = 24);
 
-	void Render() const {}
+	void Render() const;
 
 	/*bool Intersects(const SPoint* other = nullptr) const;
 	bool Intersects(const SSegment* other = nullptr) const;
@@ -24,6 +28,13 @@ public:
 	bool Intersects(const SSphere* other = nullptr) const;
 	bool Intersects(const SCapsule* other = nullptr) const;
 	//bool Intersects(const SPolyhedron* other = nullptr) const;
+
+private:
+
+	std::vector<GLfloat> vertices;
+	std::vector<GLfloat> normals;
+	std::vector<GLfloat> texcoords;
+	std::vector<GLushort> indices;
 };
 
 /* Sphere intersects:
