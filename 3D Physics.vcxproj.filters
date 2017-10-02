@@ -67,6 +67,9 @@
     <Filter Include="3d Party\gpuDetect">
       <UniqueIdentifier>{a855a489-8b53-493d-8557-5d38c5ecb264}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Math\Sphere">
+      <UniqueIdentifier>{4200e4c3-ecd4-45cb-a1a9-a77ee7350f64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -424,6 +427,9 @@
     <ClInclude Include="GUI_Hardware.h">
       <Filter>Sources\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="SCilinder.h">
+      <Filter>Sources\Math\SPrimitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -677,6 +683,9 @@
     </ClCompile>
     <ClCompile Include="gpudetect\DeviceId.cpp">
       <Filter>3d Party\gpuDetect</Filter>
+    </ClCompile>
+    <ClCompile Include="SCilinder.cpp">
+      <Filter>Sources\Math\SPrimitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,8 @@
 #include "Light.h"
 #include "SDL\include\SDL_video.h"
 #include "MathGeoLib\include\MathGeoLib.h"
+#include "SCilinder.h"
+
 
 #define MAX_LIGHTS 8
 
@@ -24,7 +26,9 @@ public:
 	void Load(JSONNode* config);
 
 	void OnResize(int width, int height);
-	void DrawGeometry();
+	void DrawCubeDirectMode();
+	void DrawCubeGLDrawElements();
+	void DrawCubeGLDrawArrays();
 
 	bool getDepthTest();
 	void setDepthTest();
@@ -52,7 +56,15 @@ public:
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
+	float3*  vertices;
+	int		num_vertices;
+	uint	my_id;
+
+	SCilinder* cilinder;
+
+
 private:
+	//OpenGL config window bools (temporary)
 	bool isDepthTest = false;
 	bool isDepthTestOnce = false;
 	bool isDepthTestDOnce = false;

@@ -25,7 +25,9 @@
 
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(name, start_enabled)
-{}
+{
+	vertices = new float3[8];
+}
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
@@ -133,6 +135,51 @@ bool ModuleRenderer3D::Init()
 	
 	// Set camera initial pos
 	App->camera->Look(float3(1.75f, 1.75f, 5.0f), float3(0.0f, 0.0f, 0.0f));
+
+
+	
+
+
+	vertices[0] = float3(1.0f,1.0f,1.0f);
+
+
+	vertices[1] = float3(-1.0f, 1.0f, 1.0f);
+
+
+	vertices[2] = float3(-1.0f, -1.0f, 1.0f);
+
+
+	vertices[3] = float3(1.0f, -1.0f, 1.0f);
+
+	vertices[4] = float3(1.0f, -1.0f, -1.0f);
+
+
+	vertices[5] = float3(-1.0f, -1.0f, -1.0f);
+
+
+	vertices[6] = float3(-1.0f, 1.0f, -1.0f);
+	
+
+	vertices[7] = float3(1.0f, 1.0f, -1.0f);
+
+
+	
+
+	my_id = 0;
+	num_vertices = 8;
+
+	glGenBuffers(1, (GLuint*) &(my_id));
+	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*num_vertices * 3, vertices, GL_STATIC_DRAW);
+
+
+	//Cilinder
+
+	
+	GLfloat radius = 1.0f;
+	GLfloat height = 1.0f;
+	cilinder = new SCilinder(radius, height);
+
 
 	return ret;
 }
@@ -243,6 +290,11 @@ update_status ModuleRenderer3D::Update(float dt)
 		console->LogConsole("GL Texture 2D Disabled\n");
 	}
 
+
+
+
+
+
 	return UPDATE_CONTINUE;
 
 }
@@ -252,7 +304,10 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::MediumBlue);
 
-	DrawGeometry();
+	//DrawCubeDirectMode();
+	//DrawCubeGLDrawElements();
+	DrawCubeGLDrawArrays();
+	cilinder->DrawCilinder(cilinder->radius, cilinder->height,cilinder->R, cilinder->G,cilinder->B);
 	App->editor->Draw();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
@@ -323,14 +378,13 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	tmp_GLFLoat[14] = tmp.M[14];
 	tmp_GLFLoat[15] = tmp.M[15];
 
-
 	glLoadMatrixf(tmp_GLFLoat);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::DrawGeometry()
+void ModuleRenderer3D::DrawCubeDirectMode()
 {
 	// Render a cube
 	//glBegin(GL_QUADS);
@@ -342,47 +396,77 @@ void ModuleRenderer3D::DrawGeometry()
 	
 	// Top face
 	glColor3f(0.0f, 1.0f, 0.0f);  // Green
-	glVertex3f(1.0f, 1.0f, -1.0f);  // Top-right of top face
-	glVertex3f(-1.0f, 1.0f, -1.0f);  // Top-left of top face
-	glVertex3f(-1.0f, 1.0f, 1.0f);  // Bottom-left of top face
-	glVertex3f(1.0f, 1.0f, 1.0f);  // Bottom-right of top face
+	glVertex3f(1.0f, 1.0f, -1.0f);  
+	glVertex3f(-1.0f, 1.0f, -1.0f);  
+	glVertex3f(-1.0f, 1.0f, 1.0f);  
+	glVertex3f(1.0f, 1.0f, 1.0f);  
 
-								   // Bottom face
+								   
 	glColor3f(1.0f, 0.5f, 0.0f); // Orange
-	glVertex3f(1.0f, -1.0f, -1.0f); // Top-right of bottom face
-	glVertex3f(-1.0f, -1.0f, -1.0f); // Top-left of bottom face
-	glVertex3f(-1.0f, -1.0f, 1.0f); // Bottom-left of bottom face
-	glVertex3f(1.0f, -1.0f, 1.0f); // Bottom-right of bottom face
+	glVertex3f(1.0f, -1.0f, -1.0f); 
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+	glVertex3f(-1.0f, -1.0f, 1.0f); 
+	glVertex3f(1.0f, -1.0f, 1.0f); 
 
-								   // Front face
+								   
 	glColor3f(1.0f, 0.0f, 0.0f);  // Red
-	glVertex3f(1.0f, 1.0f, 1.0f);  // Top-Right of front face
-	glVertex3f(-1.0f, 1.0f, 1.0f);  // Top-left of front face
-	glVertex3f(-1.0f, -1.0f, 1.0f);  // Bottom-left of front face
-	glVertex3f(1.0f, -1.0f, 1.0f);  // Bottom-right of front face
+	glVertex3f(1.0f, 1.0f, 1.0f);  
+	glVertex3f(-1.0f, 1.0f, 1.0f);  
+	glVertex3f(-1.0f, -1.0f, 1.0f);  
+	glVertex3f(1.0f, -1.0f, 1.0f);  
 
-									// Back face
+									
 	glColor3f(1.0f, 1.0f, 0.0f); // Yellow
-	glVertex3f(1.0f, -1.0f, -1.0f); // Bottom-Left of back face
-	glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom-Right of back face
-	glVertex3f(-1.0f, 1.0f, -1.0f); // Top-Right of back face
-	glVertex3f(1.0f, 1.0f, -1.0f); // Top-Left of back face
+	glVertex3f(1.0f, -1.0f, -1.0f); 
+	glVertex3f(-1.0f, -1.0f, -1.0f); 
+	glVertex3f(-1.0f, 1.0f, -1.0f); 
+	glVertex3f(1.0f, 1.0f, -1.0f); 
 
-								   // Left face
-	glColor3f(0.0f, 0.0f, 1.0f);  // Blue
-	glVertex3f(-1.0f, 1.0f, 1.0f);  // Top-Right of left face
-	glVertex3f(-1.0f, 1.0f, -1.0f);  // Top-Left of left face
-	glVertex3f(-1.0f, -1.0f, -1.0f);  // Bottom-Left of left face
-	glVertex3f(-1.0f, -1.0f, 1.0f);  // Bottom-Right of left face
+								   
+	glColor3f(0.0f, 0.0f, 1.0f); 
+	glVertex3f(-1.0f, 1.0f, 1.0f);  
+	glVertex3f(-1.0f, 1.0f, -1.0f);  
+	glVertex3f(-1.0f, -1.0f, -1.0f); 
+	glVertex3f(-1.0f, -1.0f, 1.0f); 
 
-									 // Right face
+									 
 	glColor3f(1.0f, 0.0f, 1.0f);  // Violet
-	glVertex3f(1.0f, 1.0f, 1.0f);  // Top-Right of left face
-	glVertex3f(1.0f, 1.0f, -1.0f);  // Top-Left of left face
-	glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom-Left of left face
-	glVertex3f(1.0f, -1.0f, 1.0f);  // Bottom-Right of left face
+	glVertex3f(1.0f, 1.0f, 1.0f);  
+	glVertex3f(1.0f, 1.0f, -1.0f);  
+	glVertex3f(1.0f, -1.0f, -1.0f);  
+	glVertex3f(1.0f, -1.0f, 1.0f);  
 	
 	glEnd();
+}
+
+void ModuleRenderer3D::DrawCubeGLDrawElements()
+{
+	GLuint g_Indices[24] = {
+		0, 1, 2, 3,
+		7, 4, 5, 6,
+		6, 5, 2, 1,
+		7, 0, 3, 4,
+		7, 6, 1, 0,
+		3, 2, 5, 4,
+	};
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	// ... draw other buffers
+	//glDrawArrays(GL_TRIANGLES, 0, num_vertices * 3);
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, &g_Indices[0]);
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ModuleRenderer3D::DrawCubeGLDrawArrays()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	// ... draw other buffers
+	glDrawArrays(GL_TRIANGLES, 0, num_vertices * 3);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 

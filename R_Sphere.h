@@ -14,6 +14,7 @@ public:
 	//Now only supports Capsules for the sake of speed
 	bool Intersects(R_Capsule);
 
+
 	Sphere* sphere;
 };
 

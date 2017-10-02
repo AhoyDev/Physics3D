@@ -2,11 +2,11 @@
 #define __SFRUSTUM_H__
 
 #include "SPrimitive.h"
-
+#include "MathGeoLib\include\MathGeoLib.h"
 class SFrustum : public SPrimitive<Frustum>
 {
 public:
-	SFrustum() {}
+	SFrustum();
 
 	/*bool Intersects(const SPoint* other = nullptr) const;
 	bool Intersects(const SSegment* other = nullptr) const;
@@ -21,6 +21,15 @@ public:
 	bool Intersects(const SSphere* other = nullptr) const;
 	bool Intersects(const SCapsule* other = nullptr) const;
 	bool Intersects(const SPolyhedron* other = nullptr) const;*/
+
+
+
+
+	Frustum* frustum;
+
+
+
+
 
 };
 

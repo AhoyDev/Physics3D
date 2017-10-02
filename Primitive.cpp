@@ -300,3 +300,8 @@ void PrimPlane::InnerRender() const
 
 	glEnd();
 }
+
+void DrawCilinder()
+{
+
+}

@@ -10,3 +10,8 @@
 #include "SSphere.h"
 #include "SCapsule.h"
 #include "SPolyhedron.h"
+
+SFrustum::SFrustum()
+{
+	frustum = new Frustum();
+}
