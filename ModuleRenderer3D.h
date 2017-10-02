@@ -32,8 +32,7 @@ public:
 	void DrawCubeGLDrawArrays();
 
 
-	void DrawLoadedMeshes();
-
+	bool DrawMesh(RMesh* mesh);
 
 
 	bool getDepthTest();
@@ -70,7 +69,7 @@ public:
 	SSphere* sphere;
 
 	GeometryImporter* geometry_importer;
-
+	RMesh* mesh = nullptr;
 
 
 private:

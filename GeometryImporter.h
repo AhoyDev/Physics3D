@@ -9,7 +9,7 @@
 #include "Globals.h"
 #include <vector>
 #include "Module.h"
-#include "glmath.h"
+
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 

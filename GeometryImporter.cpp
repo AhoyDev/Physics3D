@@ -28,7 +28,7 @@ RMesh* GeometryImporter::LoadMesh(const char* path, RMesh* mesh)
 	}
 
 	const aiScene* scene = aiImportFile(path, 0);
-
+	LOG("%s", aiGetErrorString());
 	RMesh* tmpMesh;
 
 	if (scene->HasMeshes())

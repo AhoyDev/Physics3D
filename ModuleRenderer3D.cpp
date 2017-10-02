@@ -190,9 +190,45 @@ bool ModuleRenderer3D::Init()
 
 	geometry_importer = new GeometryImporter();
 	
-	RMesh* mesh;
 
-	//geometry_importer->LoadMesh("Assets/Skeleton.obj", mesh);
+
+	//Loading assets
+	
+	
+
+	mesh = geometry_importer->LoadMesh("warrior.FBX", mesh);
+
+
+	LOG("Loading Intro assets");
+	
+
+	for (int i = 0; i < geometry_importer->meshes.size(); i++)
+	{
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_vertices));
+
+		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_vertices);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->vertices, GL_STATIC_DRAW);
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_indices));
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry_importer->meshes[i]->id_indices);
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*geometry_importer->meshes[i]->numFaces, geometry_importer->meshes[i]->indices, GL_STATIC_DRAW);
+
+
+		glEnableClientState(GL_NORMAL_ARRAY);
+
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_normals));
+		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_normals);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->normals, GL_STATIC_DRAW);
+		glNormalPointer(GL_FLOAT, 0, NULL);
+
+	}
+
+
 
 
 
@@ -337,8 +373,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//DrawCubeGLDrawArrays();
 	//cilinder->DrawCilinder(cilinder->radius, cilinder->height,cilinder->R, cilinder->G,cilinder->B)
 	sphere->Render();
-	DrawLoadedMeshes();
-
+	DrawMesh(mesh);
+	
 
 	//Editor Draws
 	App->editor->Draw();
@@ -564,37 +600,29 @@ void ModuleRenderer3D::setWireFrame()
 }
 
 
-void ModuleRenderer3D::DrawLoadedMeshes()
+bool ModuleRenderer3D::DrawMesh(RMesh* mesh)
 {
-
-	LOG("Loading Intro assets");
 	bool ret = true;
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
 
-	for (int i = 0; i < geometry_importer->meshes.size(); i++)
-	{
 
-		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+	glNormalPointer(GL_FLOAT, 0, NULL);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_indices);
 
-		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_indices));
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry_importer->meshes[i]->id_indices);
-
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*geometry_importer->meshes[i]->numFaces, geometry_importer->meshes[i]->indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+	glDrawElements(GL_TRIANGLES, mesh->numFaces, GL_UNSIGNED_INT, NULL);
 
 
-		glEnableClientState(GL_NORMAL_ARRAY);
 
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 
-		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_normals));
-		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_normals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->normals, GL_STATIC_DRAW);
-		glNormalPointer(GL_FLOAT, 0, NULL);
-
-	}
-
+	return ret;
 }
