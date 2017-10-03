@@ -6,6 +6,17 @@
 #include "ModuleEditor.h"
 #include "Gui_Console.h"
 
+
+#pragma comment (lib, "Devil/libx86/DevIL.lib")
+#pragma comment (lib, "Devil/libx86/ILU.lib")
+#pragma comment (lib, "Devil/libx86/ILUT.lib")
+
+#include "Devil/include/il.h"
+#include "Devil/include/ilu.h"
+#include "Devil/include/ilut.h"
+
+
+
 using namespace std;
 
 GeometryImporter::GeometryImporter()

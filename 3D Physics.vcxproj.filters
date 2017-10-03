@@ -73,6 +73,9 @@
     <Filter Include="3d Party\Assimp">
       <UniqueIdentifier>{456e4c0d-7e62-4553-80b4-9b675e2170ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3d Party\Devil">
+      <UniqueIdentifier>{43248a2e-81de-4b62-9c52-15c9788718a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -546,6 +549,30 @@
     </ClInclude>
     <ClInclude Include="Assimp\include\version.h">
       <Filter>3d Party\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\config.h">
+      <Filter>3d Party\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\devil_internal_exports.h">
+      <Filter>3d Party\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\il.h">
+      <Filter>3d Party\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\il_wrap.h">
+      <Filter>3d Party\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\ilu.h">
+      <Filter>3d Party\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\ilu_region.h">
+      <Filter>3d Party\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\ilut.h">
+      <Filter>3d Party\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="Devil\include\ilut_config.h">
+      <Filter>3d Party\Devil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
