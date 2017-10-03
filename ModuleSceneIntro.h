@@ -2,6 +2,10 @@
 #define __MODULESCENEINTRO_H__
 
 #include "Module.h"
+#include "SCilinder.h"
+#include "SSphere.h"
+#include "GeometryImporter.h"
+
 
 class SDL_Texture;
 
@@ -17,6 +21,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	update_status PostUpdate(float dt);
 	bool CleanUp();
 
 	void ReceiveEvent(const Event& event);
@@ -27,6 +32,40 @@ public:
 
 	SDL_Texture* graphics;
 	PhysBody3D* ground;
+
+	
+
+
+	//Methods for primitives
+private:
+	void initializeCube();
+	void CreateCilinder(GLfloat radius, GLfloat height);
+	void CreateSphere(vec pos, float radius, unsigned int rings, unsigned int sectors);
+	
+	//Render
+	void DrawCubeDirectMode();
+
+	//Temporary objects in the scene
+
+	float3*  vertices;
+	int		num_vertices;
+	uint	my_id;
+
+	//Cilinder
+	SCilinder* cilinder;
+
+
+
+	//Sphere
+	SSphere* sphere;
+
+	
+	RMesh* mesh = nullptr;
+
+
+
+
+
 };
 
 #endif

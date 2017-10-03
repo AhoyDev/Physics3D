@@ -26,7 +26,7 @@
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(name, start_enabled)
 {
-	vertices = new float3[8];
+	
 }
 
 // Destructor
@@ -136,100 +136,7 @@ bool ModuleRenderer3D::Init()
 	// Set camera initial pos
 	App->camera->Look(float3(1.75f, 1.75f, 5.0f), float3(0.0f, 0.0f, 0.0f));
 
-
-	
-
-
-	vertices[0] = float3(1.0f,1.0f,1.0f);
-
-
-	vertices[1] = float3(-1.0f, 1.0f, 1.0f);
-
-
-	vertices[2] = float3(-1.0f, -1.0f, 1.0f);
-
-
-	vertices[3] = float3(1.0f, -1.0f, 1.0f);
-
-	vertices[4] = float3(1.0f, -1.0f, -1.0f);
-
-
-	vertices[5] = float3(-1.0f, -1.0f, -1.0f);
-
-
-	vertices[6] = float3(-1.0f, 1.0f, -1.0f);
-	
-
-	vertices[7] = float3(1.0f, 1.0f, -1.0f);
-
-
-	
-
-	my_id = 0;
-	num_vertices = 8;
-
-	glGenBuffers(1, (GLuint*) &(my_id));
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*num_vertices * 3, vertices, GL_STATIC_DRAW);
-
-
-	//Cilinder
-
-	
-	GLfloat radius = 1.0f;
-	GLfloat height = 1.0f;
-	cilinder = new SCilinder(radius, height);
-	
-
-	//Sphere
-
-
-	sphere = new SSphere(vec(0.f,0.f,0.f),3.f,12,24);
-
-
-
 	geometry_importer = new GeometryImporter();
-	
-
-
-	//Loading assets
-	
-	
-
-	mesh = geometry_importer->LoadMesh("warrior.FBX", mesh);
-
-
-	LOG("Loading Intro assets");
-	
-
-	for (int i = 0; i < geometry_importer->meshes.size(); i++)
-	{
-
-		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_vertices));
-
-		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_vertices);
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->vertices, GL_STATIC_DRAW);
-
-		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_indices));
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry_importer->meshes[i]->id_indices);
-
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*geometry_importer->meshes[i]->numFaces, geometry_importer->meshes[i]->indices, GL_STATIC_DRAW);
-
-
-		glEnableClientState(GL_NORMAL_ARRAY);
-
-
-		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_normals));
-		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_normals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->normals, GL_STATIC_DRAW);
-		glNormalPointer(GL_FLOAT, 0, NULL);
-
-	}
-
-
-
 
 
 	return ret;
@@ -366,15 +273,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::MediumBlue);
 
 
-	/*Primitives draw*/
-
-	//DrawCubeDirectMode();
-	//DrawCubeGLDrawElements();
-	//DrawCubeGLDrawArrays();
-	//cilinder->DrawCilinder(cilinder->radius, cilinder->height,cilinder->R, cilinder->G,cilinder->B)
-	sphere->Render();
-	DrawMesh(mesh);
-	
 
 	//Editor Draws
 	App->editor->Draw();
@@ -508,7 +406,7 @@ void ModuleRenderer3D::DrawCubeDirectMode()
 	glEnd();
 }
 
-void ModuleRenderer3D::DrawCubeGLDrawElements()
+void ModuleRenderer3D::DrawCubeGLDrawElements(GLuint my_id)
 {
 	GLuint g_Indices[24] = {
 		0, 1, 2, 3,
@@ -520,7 +418,7 @@ void ModuleRenderer3D::DrawCubeGLDrawElements()
 	};
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+	glBindBuffer(GL_ARRAY_BUFFER,my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	// ... draw other buffers
 	//glDrawArrays(GL_TRIANGLES, 0, num_vertices * 3);
@@ -528,7 +426,7 @@ void ModuleRenderer3D::DrawCubeGLDrawElements()
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void ModuleRenderer3D::DrawCubeGLDrawArrays()
+void ModuleRenderer3D::DrawCubeGLDrawArrays(GLuint my_id, int num_vertices)
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
@@ -536,6 +434,40 @@ void ModuleRenderer3D::DrawCubeGLDrawArrays()
 	// ... draw other buffers
 	glDrawArrays(GL_TRIANGLES, 0, num_vertices * 3);
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ModuleRenderer3D::LoadMeshesOGL()
+{
+	LOG("Loading Intro assets");
+
+
+	for (int i = 0; i < geometry_importer->meshes.size(); i++)
+	{
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_vertices));
+
+		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_vertices);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->vertices, GL_STATIC_DRAW);
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_indices));
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry_importer->meshes[i]->id_indices);
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*geometry_importer->meshes[i]->numFaces, geometry_importer->meshes[i]->indices, GL_STATIC_DRAW);
+
+
+		glEnableClientState(GL_NORMAL_ARRAY);
+
+
+		glGenBuffers(1, (GLuint*) &(geometry_importer->meshes[i]->id_normals));
+		glBindBuffer(GL_ARRAY_BUFFER, geometry_importer->meshes[i]->id_normals);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *geometry_importer->meshes[i]->numVertex * 3, geometry_importer->meshes[i]->normals, GL_STATIC_DRAW);
+		glNormalPointer(GL_FLOAT, 0, NULL);
+
+	}
+
+
 }
 
 
@@ -603,26 +535,29 @@ void ModuleRenderer3D::setWireFrame()
 bool ModuleRenderer3D::DrawMesh(RMesh* mesh)
 {
 	bool ret = true;
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
+
+	if(geometry_importer->meshes.size() > 0)
+	{
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glEnableClientState(GL_NORMAL_ARRAY);
 
 
 
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+			glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
-	glNormalPointer(GL_FLOAT, 0, NULL);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+			glNormalPointer(GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_indices);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_indices);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-	glDrawElements(GL_TRIANGLES, mesh->numFaces, GL_UNSIGNED_INT, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+			glDrawElements(GL_TRIANGLES, mesh->numFaces, GL_UNSIGNED_INT, NULL);
 
 
 
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-
+			glDisableClientState(GL_VERTEX_ARRAY);
+			glDisableClientState(GL_NORMAL_ARRAY);
+	}
 	return ret;
 }

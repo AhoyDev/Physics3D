@@ -6,9 +6,9 @@
 #include "Light.h"
 #include "SDL\include\SDL_video.h"
 #include "MathGeoLib\include\MathGeoLib.h"
-#include "SCilinder.h"
-#include "SSphere.h"
 #include "GeometryImporter.h"
+#include "Glew\include\glew.h"
+
 
 #define MAX_LIGHTS 8
 
@@ -28,8 +28,11 @@ public:
 
 	void OnResize(int width, int height);
 	void DrawCubeDirectMode();
-	void DrawCubeGLDrawElements();
-	void DrawCubeGLDrawArrays();
+	void DrawCubeGLDrawElements(GLuint my_id);
+	void DrawCubeGLDrawArrays(GLuint my_id, int num_vertices);
+
+	void LoadMeshesOGL();
+
 
 
 	bool DrawMesh(RMesh* mesh);
@@ -61,16 +64,7 @@ public:
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
-	float3*  vertices;
-	int		num_vertices;
-	uint	my_id;
-
-	SCilinder* cilinder;
-	SSphere* sphere;
-
 	GeometryImporter* geometry_importer;
-	RMesh* mesh = nullptr;
-
 
 private:
 	//OpenGL config window bools (temporary)
