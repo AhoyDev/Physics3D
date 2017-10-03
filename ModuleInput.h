@@ -2,7 +2,7 @@
 #define __MODULEINPUT_H__
 
 #include "Module.h"
-//#include "Event.h"
+#include "Event.h"
 #include <queue>
 
 #define MAX_MOUSE_BUTTONS 5
@@ -49,8 +49,8 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 	int mouse_wheel_motion;
-
-//	std::queue<Event> own_event_queue;
+	
+	std::queue<Event> own_event_queue;
 };
 
 #endif // !__MODULEINPUT_H__

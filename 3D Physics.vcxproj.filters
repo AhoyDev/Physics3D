@@ -574,6 +574,9 @@
     <ClInclude Include="Devil\include\ilut_config.h">
       <Filter>3d Party\Devil</Filter>
     </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
