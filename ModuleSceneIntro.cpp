@@ -28,7 +28,7 @@ bool ModuleSceneIntro::Start()
 	initializeCube();
 
 	//Loading assets
-	mesh = App->renderer3D->geometry_importer->LoadMesh("warrior.FBX", mesh);
+	//mesh = App->renderer3D->geometry_importer->LoadMesh("warrior.FBX", mesh);
 	App->renderer3D->LoadMeshesOGL();
 
 
@@ -90,6 +90,8 @@ void ModuleSceneIntro::ReceiveEvent(const Event& event)
 void ModuleSceneIntro::DroppedFile(const char* file)
 {
 	LOG(file);
+	mesh = App->renderer3D->geometry_importer->LoadMesh(file, mesh);
+	App->renderer3D->LoadMeshesOGL();
 }
 
 void ModuleSceneIntro::initializeCube()
