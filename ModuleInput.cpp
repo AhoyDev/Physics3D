@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleSceneIntro.h"
 #include "SDL\include\SDL.h"
 
 #define MAX_KEYS 300
@@ -293,6 +294,12 @@ void ModuleInput::HandleEventQueue()
 
 /* Drag and drop events */
 		case SDL_DROPFILE:/**< The system requests a file open */
+			/*Event drop;
+			drop.data.str = e.drop.file;
+			App->scene_intro->ReceiveEvent(drop);*/
+
+			App->scene_intro->DroppedFile(e.drop.file);
+
 			break;
 
 /* Render events */

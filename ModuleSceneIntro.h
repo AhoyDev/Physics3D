@@ -19,6 +19,10 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	void ReceiveEvent(const Event& event);
+
+	void DroppedFile(const char* file);
+
 public:
 
 	SDL_Texture* graphics;

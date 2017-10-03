@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 #include "GUI_Console.h"
+#include "Event.h"
 
 ModuleSceneIntro::ModuleSceneIntro(const char* name, bool start_enabled) : Module(name, start_enabled),
 graphics(NULL), ground(NULL)
@@ -36,4 +37,17 @@ update_status ModuleSceneIntro::Update(float dt)
 	PrimPlane(0, 1, 0, 0).Render();
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleSceneIntro::ReceiveEvent(const Event& event)
+{
+
+
+
+	 // event.data.str contains const char* with filename of file dropped
+}
+
+void ModuleSceneIntro::DroppedFile(const char* file)
+{
+	LOG(file);
 }
