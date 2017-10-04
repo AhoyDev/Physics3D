@@ -6,9 +6,10 @@
 #include "Light.h"
 #include "SDL\include\SDL_video.h"
 #include "MathGeoLib\include\MathGeoLib.h"
-#include "GeometryImporter.h"
 #include "Glew\include\glew.h"
 
+struct RMesh;
+class GeometryImporter;
 
 #define MAX_LIGHTS 8
 
