@@ -24,6 +24,8 @@
 // TEMPORAL
 #include "glmath.h"
 
+#define CHECKERS_HEIGHT 128 
+#define CHECKERS_WIDTH 128
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(name, start_enabled)
 {
@@ -138,6 +140,33 @@ bool ModuleRenderer3D::Init()
 	App->camera->Look(float3(1.75f, 1.75f, 5.0f), float3(0.0f, 0.0f, 0.0f));
 
 	geometry_importer = new GeometryImporter();
+
+
+
+	GLuint checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	for (int i = 0; i < CHECKERS_HEIGHT; i++)
+	{
+		for (int j = 0; j < CHECKERS_WIDTH; j++)
+		{
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &ImageName);
+	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
 
 
 	return ret;
@@ -357,54 +386,91 @@ void ModuleRenderer3D::DrawCubeDirectMode()
 	// Render a cube
 	//glBegin(GL_QUADS);
 	
+
+
+
+	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glEnable(GL_TEXTURE_2D);
+	
 	if(isWireFramed)
 		glBegin(GL_LINE_STRIP);
 	else
 		glBegin(GL_QUADS);
 	
+	
+	
 	// Top face
 	glColor3f(0.0f, 1.0f, 0.0f);  // Green
 	glVertex3f(1.0f, 1.0f, -1.0f);  
-	glVertex3f(-1.0f, 1.0f, -1.0f);  
+	glTexCoord2f(1.0f,0.0f);
+
+	glVertex3f(-1.0f, 1.0f, -1.0f); 
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);  
-	glVertex3f(1.0f, 1.0f, 1.0f);  
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
 
 								   
 	glColor3f(1.0f, 0.5f, 0.0f); // Orange
-	glVertex3f(1.0f, -1.0f, -1.0f); 
+	glVertex3f(1.0f, -1.0f, -1.0f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f); 
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f); 
+	glTexCoord2f(1.0f, 0.0f);
 
 								   
 	glColor3f(1.0f, 0.0f, 0.0f);  // Red
-	glVertex3f(1.0f, 1.0f, 1.0f);  
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);  
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);  
-	glVertex3f(1.0f, -1.0f, 1.0f);  
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(1.0f, -1.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
 
 									
 	glColor3f(1.0f, 1.0f, 0.0f); // Yellow
 	glVertex3f(1.0f, -1.0f, -1.0f); 
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f); 
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f); 
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(1.0f, 1.0f, -1.0f); 
+	glTexCoord2f(0.0f, 0.0f);
 
 								   
 	glColor3f(0.0f, 0.0f, 1.0f); 
-	glVertex3f(-1.0f, 1.0f, 1.0f);  
+	glVertex3f(-1.0f, 1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);  
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f); 
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f); 
+	glTexCoord2f(1.0f, 1.0f);
 
 									 
-	glColor3f(1.0f, 0.0f, 1.0f);  // Violet
-	glVertex3f(1.0f, 1.0f, 1.0f);  
+	glColor3f(1.0f, 0.0f, 1.0f);  
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(1.0f, 1.0f, -1.0f);  
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);  
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);  
+	glTexCoord2f(0.0f, 1.0f);
 	
 	glEnd();
+
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void ModuleRenderer3D::DrawCubeGLDrawElements(GLuint my_id)
@@ -468,6 +534,11 @@ void ModuleRenderer3D::LoadMeshesOGL()
 
 	}
 
+
+}
+
+void ModuleRenderer3D::initializeTexture()
+{
 
 }
 

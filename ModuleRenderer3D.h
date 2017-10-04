@@ -34,7 +34,7 @@ public:
 
 	void LoadMeshesOGL();
 
-
+	void initializeTexture();
 
 	bool DrawMesh(RMesh* mesh);
 
@@ -66,6 +66,10 @@ public:
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	GeometryImporter* geometry_importer;
+	
+	GLuint checkImage;
+	GLuint ImageName = 0;
+
 
 private:
 	//OpenGL config window bools (temporary)
