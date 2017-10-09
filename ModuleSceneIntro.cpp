@@ -72,7 +72,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	/*Primitives draw*/
 	App->renderer3D->DrawCubeDirectMode();
 	GLuint my_id = 1;
-	App->renderer3D->DrawCubeGLDrawElements(my_id);
+	//App->renderer3D->DrawCubeGLDrawElements(my_id);
 	//DrawCubeGLDrawArrays();
 	//cilinder->DrawCilinder(cilinder->radius, cilinder->height,cilinder->R, cilinder->G,cilinder->B)
 

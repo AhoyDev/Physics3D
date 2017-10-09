@@ -67,8 +67,8 @@ public:
 
 	GeometryImporter* geometry_importer;
 	
-	GLuint checkImage;
-	GLuint ImageName = 0;
+	GLuint* checkImage;
+	GLuint ImageName;
 
 
 private:
