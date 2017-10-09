@@ -97,6 +97,11 @@ int ModuleInput::GetMouseYMotion() const
 	return mouse_y_motion;
 }
 
+bool ModuleInput::MouseMoved() const
+{
+	return (mouse_x_motion != 0 || mouse_x_motion != 0);
+}
+
 void ModuleInput::UpdateKeyboard()
 {
 	const Uint8* keys = SDL_GetKeyboardState(NULL);

@@ -34,6 +34,8 @@ public:
 	int GetMouseYMotion() const;
 	int GetMouseWheelMotion() const;
 
+	bool MouseMoved() const;
+
 private:
 
 	void UpdateKeyboard();
