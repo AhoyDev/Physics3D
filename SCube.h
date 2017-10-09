@@ -3,7 +3,7 @@
 
 #include "SPrimitive.h"
 #include "Glew\include\glew.h"
-
+#include "Globals.h"
 // Cube undefined in MathGeoLib
 class Cube;
 
@@ -15,7 +15,7 @@ public:
 
 	void InnerRender_Direct(vec pos) const;
 	void InnerRender_Arrays(GLuint my_id, int num_vertices);
-
+	void DrawCubeGLDrawElements(GLuint my_id);
 
 
 
@@ -36,7 +36,9 @@ public:
 	GLuint* checkImage;
 	GLuint ImageName;
 
-
+	float3*  vertices;
+	int		num_vertices;
+	uint	my_id;
 };
 
 class Cube

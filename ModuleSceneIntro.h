@@ -38,15 +38,13 @@ public:
 
 	//Methods for primitives
 private:
-	void initializeCube();
+
 	void CreateCilinder(GLfloat radius, GLfloat height);
 	void CreateSphere(vec pos, float radius, unsigned int rings, unsigned int sectors);
 
 	//Temporary objects in the scene
 
-	float3*  vertices;
-	int		num_vertices;
-	uint	my_id;
+	
 
 	//Cilinder
 	SCilinder* cilinder;
@@ -62,7 +60,7 @@ private:
 	//cube
 	SCube* cube_checkers;
 	SCube* cube_arrays;
-
+	SCube* cube_elements;
 
 };
 

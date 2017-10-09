@@ -6,13 +6,13 @@
 #include "GUI_Console.h"
 #include "Event.h"
 #include "ModuleRenderer3D.h"
-#include "SCube.h"
+//#include "SCube.h"
 
 
 ModuleSceneIntro::ModuleSceneIntro(const char* name, bool start_enabled) : Module(name, start_enabled),
 graphics(NULL), ground(NULL)
 {
-	vertices = new float3[8];
+	
 	
 }
 
@@ -25,8 +25,7 @@ bool ModuleSceneIntro::Start()
 	console->LogConsole("Loading Intro assets\n");
 	bool ret = true;
 	
-	//Init primitives
-	initializeCube();
+	
 
 	//Loading assets
 	
@@ -38,9 +37,10 @@ bool ModuleSceneIntro::Start()
 	CreateSphere(vec (0.f,0.f,0.f), 1.f, 12, 24);
 
 	//Cube
-	cube_checkers = new SCube(vec(3.f,3.f,3.f));
-	//cube_arrays = new SCube(vec(1.f,1.f,1.f));
-
+	cube_checkers = new SCube(vec(4.f,4.f,4.f));
+	cube_arrays = new SCube(vec(1.f,1.f,1.f));
+	cube_elements = new SCube(vec(1.f,5.f,1.f));
+	
 	return ret;
 }
 
@@ -59,8 +59,6 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 
-
-
 	return UPDATE_CONTINUE;
 }
 
@@ -73,13 +71,13 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	/*Primitives draw*/
 	
 
-	cube_checkers->InnerRender_Direct(vec(4.f,0.f,0.f));
+	cube_checkers->InnerRender_Direct(vec(5.f,5.f,5.f));
 
 	GLuint my_id = 1;
-	//cube_arrays->InnerRender_Arrays(my_id,num_vertices);
+	cube_arrays->InnerRender_Arrays(cube_arrays->my_id,cube_arrays->num_vertices);
 	
-	cilinder->DrawCilinder(cilinder->radius, cilinder->height, cilinder->R, cilinder->G, cilinder->B);
-
+	//cilinder->DrawCilinder(cilinder->radius, cilinder->height, cilinder->R, cilinder->G, cilinder->B);
+	//cube_elements->DrawCubeGLDrawElements(cube_elements->my_id);
 
 
 	return UPDATE_CONTINUE;
@@ -98,46 +96,7 @@ void ModuleSceneIntro::DroppedFile(const char* file)
 	App->renderer3D->LoadMeshesOGL();
 }
 
-void ModuleSceneIntro::initializeCube()
-{
 
-	vertices[0] = float3(1.0f, 1.0f, 1.0f);
-
-
-	vertices[1] = float3(-1.0f, 1.0f, 1.0f);
-
-
-	vertices[2] = float3(-1.0f, -1.0f, 1.0f);
-
-
-	vertices[3] = float3(1.0f, -1.0f, 1.0f);
-
-	vertices[4] = float3(1.0f, -1.0f, -1.0f);
-
-
-	vertices[5] = float3(-1.0f, -1.0f, -1.0f);
-
-
-	vertices[6] = float3(-1.0f, 1.0f, -1.0f);
-
-
-	vertices[7] = float3(1.0f, 1.0f, -1.0f);
-
-
-
-
-	my_id = 0;
-	num_vertices = 8;
-
-
-	glGenBuffers(1, (GLuint*) &(my_id));
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*num_vertices * 3, vertices, GL_STATIC_DRAW);
-
-
-
-
-}
 
 void ModuleSceneIntro::CreateCilinder(GLfloat radius, GLfloat height)
 {
