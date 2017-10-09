@@ -3,49 +3,30 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "SDL\include\SDL.h"
-#include "PhysBody3D.h"
-#include "GUI_Console.h"
+#include "SFrustum.h"
 
-// TEMPORAL
-#include "glmath.h"
-
-
-ModuleCamera3D::ModuleCamera3D(const char* name, bool start_enabled) : Module(name, start_enabled)
-{
-	CalculateViewMatrix();
-
-	X = float3(1.0f, 0.0f, 0.0f);
-	Y = float3(0.0f, 1.0f, 0.0f);
-	Z = float3(0.0f, 0.0f, 1.0f);
-
-	Position = float3(0.0f, 0.0f, 5.0f);
-	Reference = float3(0.0f, 0.0f, 0.0f);
-
-	following = NULL;
-}
+ModuleCamera3D::ModuleCamera3D(const char* name, bool start_enabled) : Module(name, start_enabled),
+frust(nullptr), proj_changed(true), focuspoint(vec(0.f)), is_focused(false),
+move_speed(10.f), rotate_speed(1.f), zoom_speed(15.f)
+{}
 
 ModuleCamera3D::~ModuleCamera3D()
 {}
 
-// -----------------------------------------------------------------
-bool ModuleCamera3D::Start()
+bool ModuleCamera3D::Init()
 {
-	console->LogConsole("Setting up the camera\n");
-	bool ret = true;
-
-	return ret;
-}
-
-// -----------------------------------------------------------------
-bool ModuleCamera3D::CleanUp()
-{
-	//LOG("Cleaning camera\n");
-
+	frust = new SFrustum();
 	return true;
 }
 
-// -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
+{
+	HandleCameraInput(dt);
+
+	return UPDATE_CONTINUE;
+}
+
+/*update_status ModuleCamera3D::Update(float dt)
 {
 	// Follow code
 	if(following != NULL)
@@ -178,10 +159,92 @@ update_status ModuleCamera3D::Update(float dt)
 	CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
+}*/
+
+bool ModuleCamera3D::CleanUp()
+{
+	delete frust;
+	frust = nullptr;
+
+	return true;
 }
 
+void ModuleCamera3D::SetCameraPos(const vec pos)
+{
+	frust->SetPos(pos);
+}
+
+void ModuleCamera3D::SetAR(float ratio)
+{
+	frust->SetAR(ratio);
+}
+
+void ModuleCamera3D::Focus(const vec pos)
+{
+	focuspoint = pos;
+	is_focused = true;
+}
+
+void ModuleCamera3D::FreeFocus()
+{
+	is_focused = false;
+}
+
+vec ModuleCamera3D::GetCameraPos() const
+{
+	return frust->GetPos();
+}
+
+float* ModuleCamera3D::GetViewMatrix()
+{
+	return frust->GetViewMatrix();
+}
+
+float* ModuleCamera3D::GetProjMatrix()
+{
+	return frust->GetProjMatrix();
+}
+
+void ModuleCamera3D::HandleCameraInput(float dt)
+{
+	// Right click turns on “WASD” fps - like movement
+	vec mov = vec::zero;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) mov += frust->GetForward();
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) mov -= frust->GetForward();
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) mov -= frust->GetRight();
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) mov += frust->GetRight();
+
+	if (!mov.Equals(vec::zero))
+	{
+		FreeFocus();
+		frust->Translate(mov * move_speed * dt);
+	}
+
+	// Mouse wheel should zoom in and out
+	if (App->input->GetMouseWheelMotion() != 0)
+		frust->TranslateForward(zoom_speed * App->input->GetMouseWheelMotion());
+
+	// Alt+Left click should orbit the object
+	if (App->input->GetMouseButton(0)
+		&& App->input->MouseMoved()
+		&& App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+	{
+		Circle circle(focuspoint, frust->GetUp(), focuspoint.Distance(frust->GetPos()));
+		Quat rot = Quat(frust->GetUp(), rotate_speed * dt);
+		frust->SetPos(circle.ExtremePoint(frust->GetBack() * rot.ToFloat3x3()));
+	}
+
+	// Pressing “f” should focus the camera around the geometry
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		// get focus from scene
+		Focus(vec::zero);
+	}
+}
+
+
 // -----------------------------------------------------------------
-void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference)
+/*void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference)
 {
 	this->Position = Position;
 	this->Reference = Reference;
@@ -235,3 +298,4 @@ void ModuleCamera3D::UnFollow()
 {
 	following = NULL;
 }
+*/

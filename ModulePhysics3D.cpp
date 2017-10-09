@@ -303,7 +303,7 @@ update_status ModulePhysics3D::Update(float dt)
 		world->debugDrawWorld();
 
 		// drop primitives on 1,2,3
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			PrimSphere s(1);
 			s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
@@ -322,7 +322,7 @@ update_status ModulePhysics3D::Update(float dt)
 			PrimCylinder c(0.5, 1);
 			c.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 			AddBody(c);
-		}
+		}*/
 	}
 
 	return UPDATE_CONTINUE;

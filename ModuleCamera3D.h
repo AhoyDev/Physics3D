@@ -4,39 +4,49 @@
 #include "Module.h"
 #include "MathGeoLib\include\MathGeoLib.h"
 
+class SFrustum;
+
 class ModuleCamera3D : public Module
 {
 public:
 	ModuleCamera3D(const char* name, bool start_enabled = true);
 	~ModuleCamera3D();
 
-	bool Start();
+	bool Init();
 	update_status Update(float dt);
 	bool CleanUp();
+	
+	void SetCameraPos(const vec pos);
+	void SetAR(float ratio);
+	void Focus(const vec pos);
+	void FreeFocus();
 
-	void Follow(PhysBody3D* body, float min, float max, float height);
+	vec GetCameraPos() const;
+	float* GetViewMatrix();
+	float* GetProjMatrix();
+
+	/*void Follow(PhysBody3D* body, float min, float max, float height);
 	void UnFollow();
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void Move(const float3 &Movement);
-	float* GetViewMatrix();
+	float* GetViewMatrix();*/
 
 private:
 
-	void CalculateViewMatrix();
-
-public:
+	void HandleCameraInput(float dt);
 	
-	float3 X, Y, Z, Position, Reference;
+public:
+
+	float move_speed;
+	float rotate_speed;
+	float zoom_speed;
+	bool proj_changed;
 
 private:
 
-	float4x4 ViewMatrix, ViewMatrixInverse;
-	PhysBody3D* following;
-	float min_following_dist;
-	float max_following_dist;
-	float following_height;
-
-	//Frustrum* frustrum;
+	SFrustum* frust;
+	vec focuspoint;
+	bool is_focused;
 };
 
 #endif
