@@ -9,8 +9,12 @@ public:
 	SFrustum(const float near_plane_dist = 0.1f, const float far_plane_dist = 1000.f);
 	SFrustum(const vec pos, const float near_plane_dist = 0.1f, const float far_plane_dist = 1000.f);
 
+	void Translate(const vec pos);
+	void TranslateForward(const float dist);
+
 	void SetPos(const float3 pos);
 	void SetRotation(const Quat rot);
+	void SetAR(float ratio);
 	void SetPerspective(const float horizontal, const float vertical);
 	void SetOrthographic(const float ortho_width, const float ortho_height);
 	void ChangeSettings(const bool space_gl, const bool right_handed);
@@ -22,6 +26,14 @@ public:
 	float GetAspectRatio() const;
 	float GetNearPlaneDist() const;
 	float GetFarPlaneDist() const;
+	vec GetUp() const;
+	vec GetRight() const;
+	vec GetLeft() const;
+	vec GetForward() const;
+	vec GetBack() const;
+
+	float* GetViewMatrix() const;
+	float* GetProjMatrix() const;
 
 	bool IsPerspective() const;
 	bool IsOrthographic() const;

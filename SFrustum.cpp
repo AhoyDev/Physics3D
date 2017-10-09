@@ -27,6 +27,17 @@ SFrustum::SFrustum(vec pos, float near_plane_dist, float far_plane_dist) : SPrim
 	shape->SetFrame(pos, vec(0.f, 0.f, 1.f), vec(0.f, 1.f, 0.f));
 }
 
+void SFrustum::Translate(const vec pos)
+{
+	transform.Translate(pos);
+	shape->Translate(pos);
+}
+
+void SFrustum::TranslateForward(const float dist)
+{
+	Translate(shape->Front() * dist);
+}
+
 void SFrustum::SetPos(const float3 pos)
 {
 	transform.v[3][0] = pos.x;
@@ -38,8 +49,26 @@ void SFrustum::SetPos(const float3 pos)
 void SFrustum::SetRotation(const Quat rot)
 {
 	transform.SetRotatePart(rot);
-	shape->SetFront(transform.WorldZ());
-	shape->SetUp(transform.WorldY());
+	shape->SetFront(shape->Front() * rot.ToFloat3x3());
+}
+
+void SFrustum::SetAR(float ratio)
+{
+	/* 
+	At the projection plane you have
+	ytop / near = tan (fovy/2) and also
+	yright / near = tan (fovx/2)
+
+	From the definition of A.R., you have
+	yright = aspect * ytop
+
+	Algebra gives:
+	tan(fovx/2) = aspect * tan(fovy/2) and then
+	fovx = 2 * atan(aspect * tan(fovy/2))
+	From: https://www.opengl.org/discussion_boards/showthread.php/168009-How-to-get-the-horizontal-fov */
+
+	float h_fov = 2.f * atanf(tanf(shape->VerticalFov() * 0.5f) * ratio);
+	shape->SetHorizontalFovAndAspectRatio(h_fov, ratio);
 }
 
 void SFrustum::SetPerspective(const float horizontal, const float vertical)
@@ -61,17 +90,20 @@ void SFrustum::ChangeSettings(const bool space_gl, const bool right_handed)
 
 void SFrustum::SetPlanesDist(const float near_plane_dist, const float far_plane_dist)
 {
-	shape->SetViewPlaneDistances(near_plane_dist, far_plane_dist);
+	if(near_plane_dist >= 0 && near_plane_dist < far_plane_dist)
+		shape->SetViewPlaneDistances(near_plane_dist, far_plane_dist);
 }
 
 void SFrustum::SetNearPlaneDist(const float dist)
 {
-	shape->SetViewPlaneDistances(dist, shape->FarPlaneDistance());
+	if(dist < shape->FarPlaneDistance())
+		shape->SetViewPlaneDistances(dist, shape->FarPlaneDistance());
 }
 
 void SFrustum::SetFarPlaneDist(const float dist)
 {
-	shape->SetViewPlaneDistances(shape->NearPlaneDistance(), dist);
+	if (dist > shape->NearPlaneDistance())
+		shape->SetViewPlaneDistances(shape->NearPlaneDistance(), dist);
 }
 
 float SFrustum::GetFOV() const
@@ -92,6 +124,45 @@ float SFrustum::GetNearPlaneDist() const
 float SFrustum::GetFarPlaneDist() const
 {
 	return shape->FarPlaneDistance();
+}
+
+vec SFrustum::GetUp() const
+{
+	return shape->Up();
+}
+
+vec SFrustum::GetRight() const
+{
+	return Cross(shape->Up(), shape->Front());
+}
+
+vec SFrustum::GetLeft() const
+{
+	return GetRight() * -1.f;
+}
+
+vec SFrustum::GetForward() const
+{
+	return shape->Front();
+}
+
+vec SFrustum::GetBack() const
+{
+	return GetForward() * -1.f;
+}
+
+float* SFrustum::GetViewMatrix() const
+{
+	static float4x4 view = shape->ViewMatrix();
+	view.Transpose();
+	return (float*)view.v;
+}
+
+float* SFrustum::GetProjMatrix() const
+{
+	static float4x4 proj = shape->ProjectionMatrix();
+	proj.Transpose();
+	return (float*)proj.v;
 }
 
 bool SFrustum::IsPerspective() const
