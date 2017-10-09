@@ -28,9 +28,7 @@
 #define CHECKERS_WIDTH 128
 
 ModuleRenderer3D::ModuleRenderer3D(const char* name, bool start_enabled) : Module(name, start_enabled)
-{
-	
-}
+{}
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
@@ -130,14 +128,11 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_TEXTURE_2D);
 	}
 
-	// Projection matrix for
-	OnResize(App->window->GetWidth(), App->window->GetHeight());
-
 	// Initialize ImGui w/ SdlGL3
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	
 	// Set camera initial pos
-	App->camera->Look(float3(1.75f, 1.75f, 5.0f), float3(0.0f, 0.0f, 0.0f));
+	App->camera->SetCameraPos(float3(10.75f, 10.75f, -5.0f));
 
 	geometry_importer = new GeometryImporter();
 
@@ -145,19 +140,18 @@ bool ModuleRenderer3D::Init()
 	return ret;
 }
 
-
-
-
-
-
+bool ModuleRenderer3D::Start()
+{
+	OnResize(App->window->GetWidth(), App->window->GetHeight());
+	return true;
+}
 
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::LightBlue);
 
-	//Color c = App->camera->back
-
+	if (App->camera->proj_changed) UpdateProj();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -166,7 +160,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].position = App->camera->GetCameraPos();
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -268,7 +262,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::MediumBlue);
 
-
 	//Editor Draws
 	App->editor->Draw();
 	SDL_GL_SwapWindow(App->window->window);
@@ -297,55 +290,25 @@ void ModuleRenderer3D::Load(JSONNode* config)
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
+	App->camera->SetAR((float)width / (float)height);
 	glViewport(0, 0, width, height);
+	UpdateProj();
+}
 
+void ModuleRenderer3D::UpdateProj()
+{
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	/* OpenGL perspective projection matrix function calls:
-		- ProjectionMatrix = OpenGLPerspProjLH(float n, float f, float h, float v);
-		- ProjectionMatrix = OpenGLPerspProjRH(float n, float f, float h, float v);
 
-	In OpenGL, the post-perspective unit cube ranges in [-1, 1] in all X, Y and Z directions.
-	OpenGLPerspProjLH is the same as OpenGLPerspProjRH, except that the camera looks towards +Z in view space, instead of -Z.
-
-	Although these functions change the projection matrix, it will eventually depend on the fustrum culling.
-	Furthermore OnResize should more conveniently trigger an event the later updates the projection matrix.
-
-	Therefore, for now trashy code will have to suffice.*/
-
-	mat4x4 tmp = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-
-	for (int row = 0; row < 4; row++)
-		for (int col = 0; col < 4; col++)
-			ProjectionMatrix[row][col] = tmp[(row * 4) + col];
-
-	//ProjectionMatrix = (GLfloat*)ProjectionMatrix.v;
-	GLfloat* tmp_GLFLoat = new GLfloat[16]();
-
-	tmp_GLFLoat[0] = tmp.M[0];
-	tmp_GLFLoat[1] = tmp.M[1];
-	tmp_GLFLoat[2] = tmp.M[2];
-	tmp_GLFLoat[3] = tmp.M[3];
-	tmp_GLFLoat[4] = tmp.M[4];
-	tmp_GLFLoat[5] = tmp.M[5];
-	tmp_GLFLoat[6] = tmp.M[6];
-	tmp_GLFLoat[7] = tmp.M[7];
-	tmp_GLFLoat[8] = tmp.M[8];
-	tmp_GLFLoat[9] = tmp.M[9];
-	tmp_GLFLoat[10] = tmp.M[10];
-	tmp_GLFLoat[11] = tmp.M[11];
-	tmp_GLFLoat[12] = tmp.M[12];
-	tmp_GLFLoat[13] = tmp.M[13];
-	tmp_GLFLoat[14] = tmp.M[14];
-	tmp_GLFLoat[15] = tmp.M[15];
-
-	glLoadMatrixf(tmp_GLFLoat);
+	float* proj = App->camera->GetProjMatrix();
+	glLoadMatrixf((GLfloat*)proj);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-}
 
+	App->camera->proj_changed = false;
+}
 
 
 void ModuleRenderer3D::DrawCubeGLDrawElements(GLuint my_id)
