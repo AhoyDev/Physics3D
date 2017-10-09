@@ -28,9 +28,8 @@ public:
 	void Load(JSONNode* config);
 
 	void OnResize(int width, int height);
-	void DrawCubeDirectMode();
 	void DrawCubeGLDrawElements(GLuint my_id);
-	void DrawCubeGLDrawArrays(GLuint my_id, int num_vertices);
+	
 
 	void LoadMeshesOGL();
 
@@ -67,8 +66,7 @@ public:
 
 	GeometryImporter* geometry_importer;
 	
-	GLuint* checkImage;
-	GLuint ImageName;
+	
 
 
 private:
@@ -92,7 +90,7 @@ private:
 	bool isGLTexture2D = false;
 	bool isGLTexture2DOnce = false;
 	bool isGLTexture2DDOnce = false;
-
+public:
 	bool isWireFramed = false;
 };
 

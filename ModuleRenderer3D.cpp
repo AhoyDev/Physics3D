@@ -141,31 +141,6 @@ bool ModuleRenderer3D::Init()
 
 	geometry_importer = new GeometryImporter();
 
-	
-
-	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
-		for (int j = 0; j < CHECKERS_WIDTH; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-			checkImage[i][j][0] = (GLubyte)c;
-			checkImage[i][j][1] = (GLubyte)c;
-			checkImage[i][j][2] = (GLubyte)c;
-			checkImage[i][j][3] = (GLubyte)255;
-		}
-	}
-
-	
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &ImageName);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
-
-
 
 	return ret;
 }
@@ -182,9 +157,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//BROFILER_CATEGORY("ModulePhysics3D::Generate_Heightmap", Profiler::Color::LightBlue);
 
 	//Color c = App->camera->back
-
-
-
 
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -287,10 +259,6 @@ update_status ModuleRenderer3D::Update(float dt)
 	}
 
 
-
-
-
-
 	return UPDATE_CONTINUE;
 
 }
@@ -378,159 +346,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::DrawCubeDirectMode()
-{
-	// Render a cube
-	
-	
 
-
-
-	glBindTexture(GL_TEXTURE_2D, ImageName);
-	glEnable(GL_TEXTURE_2D);
-	
-	if(isWireFramed)
-		glBegin(GL_LINE_STRIP);
-	else
-		glBegin(GL_TRIANGLES);
-	
-	
-	
-	// Top face
-	//glColor3f(0.0f, 1.0f, 0.0f);  // Green
-	
-
-	
-	//Top triangle 1
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);  //b
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);	//c
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);	//d*/
-
-
-	// second triangle, top right half
-
-
-	//Top triangle 2	   
-	//glColor3f(1.0f, 0.5f, 0.0f); // Orange
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);	//b
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);	//d
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);		//a
-	
-	
-
-	//Bot triangle 1							   
-	//glColor3f(1.0f, 0.0f, 0.0f);  // Red
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);	//g
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);  //f
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);  //h
-	
-
-
-	//Bot triangle 2								
-	//glColor3f(1.0f, 1.0f, 0.0f); // Yellow
-	glVertex3f(1.0f, -1.0f, -1.0f); //h
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f); //f
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f); //e
-	glTexCoord2f(1.0f, 0.0f);
-	
-
-								   
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);//b
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);  //c
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f); //g
-	
-
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);//a
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);  //d
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);  //h
-
-	
-
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);//a
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f); //e
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);  //h
-
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);//b
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f); //g
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f); //f
-
-	//
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);  //c
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f); //g
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);  //d
-
-	
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f); //g
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);  //h
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);  //d
-
-	
-
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);//b
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f); //f
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f); //e
-
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);//b
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f); //e
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);//a
-
-
-	
-
-
-
-
-
-
-	
-	
-	glEnd();
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	
-
-}
 
 void ModuleRenderer3D::DrawCubeGLDrawElements(GLuint my_id)
 {
@@ -552,15 +368,7 @@ void ModuleRenderer3D::DrawCubeGLDrawElements(GLuint my_id)
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void ModuleRenderer3D::DrawCubeGLDrawArrays(GLuint my_id, int num_vertices)
-{
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	// ... draw other buffers
-	glDrawArrays(GL_TRIANGLES, 0, num_vertices * 3);
-	glDisableClientState(GL_VERTEX_ARRAY);
-}
+
 
 void ModuleRenderer3D::LoadMeshesOGL()
 {

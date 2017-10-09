@@ -2,6 +2,7 @@
 #define __SCUBE_H__
 
 #include "SPrimitive.h"
+#include "Glew\include\glew.h"
 
 // Cube undefined in MathGeoLib
 class Cube;
@@ -12,7 +13,11 @@ public:
 	SCube();
 	SCube(vec size);
 
-	void InnerRender() const;
+	void InnerRender_Direct(vec pos) const;
+	void InnerRender_Arrays(GLuint my_id, int num_vertices);
+
+
+
 
 	/*bool Intersects(const SPoint* other = nullptr) const;
 	bool Intersects(const SSegment* other = nullptr) const;
@@ -27,6 +32,10 @@ public:
 	bool Intersects(const SSphere* other = nullptr) const;
 	bool Intersects(const SCapsule* other = nullptr) const;
 	bool Intersects(const SPolyhedron* other = nullptr) const;*/
+	//To texture/gl methods
+	GLuint* checkImage;
+	GLuint ImageName;
+
 
 };
 
@@ -40,6 +49,9 @@ public:
 public:
 
 	vec size;
+	
+
+
 };
 
 #endif

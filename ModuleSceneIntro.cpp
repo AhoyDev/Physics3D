@@ -6,6 +6,7 @@
 #include "GUI_Console.h"
 #include "Event.h"
 #include "ModuleRenderer3D.h"
+#include "SCube.h"
 
 
 ModuleSceneIntro::ModuleSceneIntro(const char* name, bool start_enabled) : Module(name, start_enabled),
@@ -28,7 +29,7 @@ bool ModuleSceneIntro::Start()
 	initializeCube();
 
 	//Loading assets
-	//mesh = App->renderer3D->geometry_importer->LoadMesh("warrior.FBX", mesh);
+	
 	App->renderer3D->LoadMeshesOGL();
 
 
@@ -36,9 +37,9 @@ bool ModuleSceneIntro::Start()
 	CreateCilinder(1.f,1.f);
 	CreateSphere(vec (0.f,0.f,0.f), 1.f, 12, 24);
 
-
-
-
+	//Cube
+	cube_checkers = new SCube(vec(3.f,3.f,3.f));
+	//cube_arrays = new SCube(vec(1.f,1.f,1.f));
 
 	return ret;
 }
@@ -46,7 +47,7 @@ bool ModuleSceneIntro::Start()
 // Load assets
 bool ModuleSceneIntro::CleanUp()
 {
-	//console->LogConsole("Unloading Intro scene\n");
+
 	
 	return true;
 }
@@ -70,11 +71,14 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	App->renderer3D->DrawMesh(mesh);
 
 	/*Primitives draw*/
-	App->renderer3D->DrawCubeDirectMode();
+	
+
+	cube_checkers->InnerRender_Direct(vec(4.f,0.f,0.f));
+
 	GLuint my_id = 1;
-	//App->renderer3D->DrawCubeGLDrawElements(my_id);
-	//DrawCubeGLDrawArrays();
-	//cilinder->DrawCilinder(cilinder->radius, cilinder->height,cilinder->R, cilinder->G,cilinder->B)
+	//cube_arrays->InnerRender_Arrays(my_id,num_vertices);
+	
+	cilinder->DrawCilinder(cilinder->radius, cilinder->height, cilinder->R, cilinder->G, cilinder->B);
 
 
 
@@ -145,60 +149,4 @@ void ModuleSceneIntro::CreateSphere(vec pos, float radius, unsigned int rings, u
 {
 	sphere = new SSphere(pos, radius, rings, sectors);
 }
-
-void ModuleSceneIntro::DrawCubeDirectMode()
-{
-	// Render a cube
-	//glBegin(GL_QUADS);
-
-	//if (isWireFramed)
-	//	glBegin(GL_LINE_STRIP);
-	//else
-	//	
-	glBegin(GL_QUADS);
-	// Top face
-	glColor3f(0.0f, 1.0f, 0.0f);  // Green
-	glVertex3f(1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-
-
-	glColor3f(1.0f, 0.5f, 0.0f); // Orange
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-
-
-	glColor3f(1.0f, 0.0f, 0.0f);  // Red
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-
-
-	glColor3f(1.0f, 1.0f, 0.0f); // Yellow
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-
-
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-
-
-	glColor3f(1.0f, 0.0f, 1.0f);  // Violet
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-
-	glEnd();
-}
-
 

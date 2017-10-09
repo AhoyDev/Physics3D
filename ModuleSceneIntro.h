@@ -5,7 +5,7 @@
 #include "SCilinder.h"
 #include "SSphere.h"
 #include "GeometryImporter.h"
-
+#include "SCube.h"
 
 class SDL_Texture;
 
@@ -41,9 +41,6 @@ private:
 	void initializeCube();
 	void CreateCilinder(GLfloat radius, GLfloat height);
 	void CreateSphere(vec pos, float radius, unsigned int rings, unsigned int sectors);
-	
-	//Render
-	void DrawCubeDirectMode();
 
 	//Temporary objects in the scene
 
@@ -62,8 +59,9 @@ private:
 	
 	RMesh* mesh = nullptr;
 
-
-
+	//cube
+	SCube* cube_checkers;
+	SCube* cube_arrays;
 
 
 };
